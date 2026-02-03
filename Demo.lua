@@ -1,169 +1,24 @@
 
--- ############## MATHS ##############
 
-sqrt,abs,sin,cos,tan,pi,min,max,floor=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.pi,math.min,math.max,math.floor
-rand,seed=math.random,math.randomseed
+Parts = { Part1, Part2 }
+iPart = 0
 
-function remap( x, t1, t2, s1, s2 )
- local f = ( x - t1 ) / ( t2 - t1 )
- return f * ( s2 - s1 ) + s1
+function PartNext()
+	iPart = iPart+1
+	if iPart>#Parts then iPart = 1 end
+	PartCur = Parts[iPart]
+	PartCur.init()
 end
 
-function clamp(x, l, h)
-	if x<l then return l elseif x>h then return h else return x end
-end
-
-function lerp(a,b,r)
-	return a*(1-r)+b*r
-end
-
-function cuberp(a,b,c,d,t)
-	local A=d-c-a+b
-	local B=a-b-A
-	local C=c-a
-	local D=b
-	local T=t*t
-	return A*t*T+B*T+C*t+D
-end
-
-function overlap(x,y,x0,x1,y0,y1)
-   if x<x0 or x>x1 or y<y0 or y>y1 then return false end
-   return true
-end
-
-function distance(x0,y0,x1,y1)
-	local dx=x0-x1
-	local dy=y0-y1
-	return sqrt(dx*dx+dy*dy)
-end
-
-function rad2deg( r )
-	return r/math.pi*180
-end
-
-function deg2rad( d )
-	return d/180*math.pi
-end
-
-function cubicBezier(t, p0, p1, p2, p3)
-	return (1 - t)^3*p0 + 3*(1 - t)^2*t*p1 + 3*(1 - t)*t^2*p2 + t^3*p3
-end
-
-function cubicBezier2(t,x0,y0,x1,y1,x2,y2,x3,y3)
-	return cubicBezier(t,x0,x1,x2,x3),cubicBezier(t,y0,y1,y2,y3)
-end
-
-function easeInOutCubic(x)
-	if x < 0.5 then
-		return 4 * x * x * x
-	else
---		return 1 - Math.pow(-2 * x + 2, 3) / 2
-		return 1 - ((-2*x+2)^3) / 2
-	end
-end
-
-function invEase(x)
-	x2=x*x
-	x3=x2*x
-	m0=2
-	m1=2
-	return(x3-2*x2+x)*m0 + (-2*x3+3*x2) + (x3-x2)*m1
-end
-
-function rotate(x, y, angle)
-	c=cos(angle)
-	s=sin(angle)
-	return x*c-y*s, x*s+y*c
-end
-
-function shuffle( array )
-   local returnArray = {}
-   -- loop over elements of array
-   for i = #array, 1, -1 do
-      -- get a random index
-      local j = math.random(i)
-      -- swap the elements of the array
-      array[i], array[j] = array[j], array[i]
-      -- insert the element in target array
-      table.insert(returnArray, array[i])
-   end
-
-   -- return the target array
-   return returnArray
-end
-
-gSizeX	=240
-gSizeY	=136
-gSizeX2	=gSizeX/2
-gSizeY2	=gSizeY/2
-gBlack	=0
-gWhite	=12
-gGrey 	=15
-
--- ############## Part 1 ##############
-Part1={
-	scan = function()
-		for y=0,136 do
-			for x=0,240 do
-				c=pix(x,y)
-				if c~=0 then 
-					table.insert(list, {x=x,y=y,c=c,r=0,t=t+2+3*invEase(rand())})
-				end
-			end
-		end
-	end
-	,init = function()
-		list={}
-		txt={"Hello", "Revision", "Welcome", "to", "my", "Demo"	}
-		iTxt=-1
-		t=0
-		cls()
-
-		PartCur.scan()
-
-		shuffle(list)
-	end
-	, tic = function()
-		t=t+1/60
-		cls()
-		
-		if floor(t)>iTxt then
-			iTxt=floor(t)
-			print(txt[(iTxt%#txt)+1], rand()*gSizeX, rand()*gSizeY, iTxt%16, false, 1)
-			PartCur.scan()
-		end
-
-		local mx,my,ml,mm,mr=mouse()
-		
-		for k,it in pairs(list) do 
-			x1=it.x
-			y1=it.y
-			if t>it.t then
-				if it.r<0.5 then it.r=it.r+0.0003 end
-				dx=x1-mx
-				dy=y1-my
-				l=sqrt(dx*dx+dy*dy)
-				x,y=rotate(dx, dy, it.r*100/max(l,60))
-				it.x=x*0.992+mx
-				it.y=y*0.992+my
-			end
-			line(x1,y1,it.x,it.y,it.c)
-			if t>(it.t+10) then 
-				list[k]=nil
-			end
-		end
-	end
-}
-
-PartCur = Part1
-
-PartCur.init()
+PartNext()
 
 -- ############## Demo ##############
 
 function main()
 
-	PartCur.tic()
+	if PartCur.tic() then
+		PartNext()
+	end
 
 --	cls(t/100%16)
 

@@ -11,10 +11,14 @@ if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
   	require("lldebugger").start()
 end
 
+require "Helpers"
+require "Maths"
+require "Part1"
+require "Part2"
 require "Demo"
 
 t=0
-music(0)
+--music(0)
 
 function TIC()
 

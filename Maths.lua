@@ -1,7 +1,7 @@
 
 -- ############## MATHS ##############
 
-sqrt,abs,sin,cos,tan,pi,min,max,floor=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.pi,math.min,math.max,math.floor
+sqrt,abs,sin,cos,tan,atan,pi,min,max,floor=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor
 rand,seed=math.random,math.randomseed
 
 function remap( x, t1, t2, s1, s2 )
@@ -95,27 +95,3 @@ function matmul(a,b)
 	return dot
 end
 
-function rotatexyz(a)
-	zrot = {
-		{math.cos(a),-math.sin(a),0},
-		{math.sin(a),math.cos(a),0},
-		{0,0,1}
-	}
-	yrot = {
-		{math.cos(a),0,math.sin(a)},
-		{0,1,0},
-		{-math.sin(a), 0, math.cos(a)}
-	}
-	xrot = {
-		{1,0,0},
-		{0,math.cos(a),-math.sin(a)},
-		{0,math.sin(a),math.cos(a)}
-	}
-	pm = {{1,0,0},{0,1,0}, {0,0,1}}
-	return matmul(matmul(matmul(pm, xrot),yrot),zrot)
-end
-
-function projectPoint2(point,a)
-	local projected = matmul(rotatexyz(a),point)
-	return { projected[1][1], projected[2][1], projected[3][1]}
-end

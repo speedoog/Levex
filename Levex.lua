@@ -15,6 +15,7 @@ require "Helpers"
 require "Maths"
 require "Part1"
 require "Part2"
+require "FxBezier"
 require "Demo"
 
 t=0

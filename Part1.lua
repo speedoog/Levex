@@ -53,6 +53,6 @@ Part1={
 			end
 		end
 
-		return t>10
+		return t>20
 	end
 }

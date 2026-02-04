@@ -49,7 +49,6 @@ Part2={
 		w = 240
 		h = 136
 		r = 2
-
 	end
 	, tic = function()
 		t=t+1/60

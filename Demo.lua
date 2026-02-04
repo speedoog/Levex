@@ -1,6 +1,6 @@
 
 
-Parts = { Part1, Part2 }
+Parts = { Part2, Part2 }
 iPart = 0
 
 function PartNext()

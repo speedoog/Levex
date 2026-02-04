@@ -111,13 +111,11 @@ function rotatexyz(a)
 		{0,math.cos(a),-math.sin(a)},
 		{0,math.sin(a),math.cos(a)}
 	}
-	pm = {{1,0,0},{0,1,0}}
+	pm = {{1,0,0},{0,1,0}, {0,0,1}}
 	return matmul(matmul(matmul(pm, xrot),yrot),zrot)
 end
 
-function projectPoint(i,a)
-	point = points[i]
-	projected = matmul(rotatexyz(a),point)
-	circ(projected[1][1]+w/2,projected[2][1]+h/2,r,12)
-	return projected
+function projectPoint2(point,a)
+	local projected = matmul(rotatexyz(a),point)
+	return { projected[1][1], projected[2][1], projected[3][1]}
 end

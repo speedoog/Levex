@@ -13,9 +13,9 @@ end
 
 require "Helpers"
 require "Maths"
-require "Part1"
-require "Part2"
-require "FxBezier"
+require "fxDisolve"
+require "fxCube"
+require "fxBeziers"
 require "Demo"
 
 t=0

@@ -4,6 +4,10 @@
 sqrt,abs,sin,cos,tan,atan,pi,min,max,floor=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor
 rand,seed=math.random,math.randomseed
 
+function square(x)
+	return x*x
+end
+
 function remap( x, t1, t2, s1, s2 )
  local f = ( x - t1 ) / ( t2 - t1 )
  return f * ( s2 - s1 ) + s1
@@ -24,6 +28,10 @@ function cuberp(a,b,c,d,t)
 	local D=b
 	local T=t*t
 	return A*t*T+B*T+C*t+D
+end
+
+function inrange(x,a,b)
+	return x>=a and x<=b
 end
 
 function overlap(x,y,x0,x1,y0,y1)

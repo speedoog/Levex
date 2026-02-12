@@ -1,19 +1,19 @@
 
-function rotatexyz(a)
+function rotatexyz(a,b,c)
 	zrot = {
-		{math.cos(a),-math.sin(a),0},
-		{math.sin(a),math.cos(a),0},
+		{cos(a),-sin(a),0},
+		{sin(a),cos(a),0},
 		{0,0,1}
 	}
 	yrot = {
-		{math.cos(a),0,math.sin(a)},
+		{cos(b),0,sin(b)},
 		{0,1,0},
-		{-math.sin(a), 0, math.cos(a)}
+		{-sin(b), 0, cos(b)}
 	}
 	xrot = {
 		{1,0,0},
-		{0,math.cos(a),-math.sin(a)},
-		{0,math.sin(a),math.cos(a)}
+		{0,cos(c),-sin(c)},
+		{0,sin(c),cos(c)}
 	}
 	pm = {{1,0,0},{0,1,0}, {0,0,1}}
 	return matmul(matmul(matmul(pm, xrot),yrot),zrot)
@@ -61,14 +61,14 @@ end
 -- ///////////////////////////
 
 
-function DrawCube()
+function DrawCube(ox,oy,oz,rx,ry,rz)
 	local projected = {}
 
-	local tmp = rotatexyz(a)
+	local tmp = rotatexyz(rx,ry,rz)
 
 	for i=1,#points do
 		local tmpxform = matmul(tmp,points[i])
-		local pp = { tmpxform[1][1], tmpxform[2][1], tmpxform[3][1]}
+		local pp = { tmpxform[1][1]+ox, tmpxform[2][1]-oy, tmpxform[3][1]+oz}
 		local xy=to_screen(0.1, pp)
 		projected[i] = xy
 	end
@@ -81,20 +81,20 @@ function DrawCube()
 	-- for i=1,#points do
 	-- 	local pp=projected[i]
 	-- 	z=pp[3]
-	-- 	circ(pp[1],pp[2],5*atan(1/z),12)
+	-- 	circ(pp[1],pp[2],10*atan(1/z),10)
 	-- end
 
 	for i=1,#tris do
-		local col = 1+i%4
+		local col = (1+i)//2
 		local tria=tris[i]
 		local a = projected[tria[1]]
 		local b = projected[tria[2]]
 		local c = projected[tria[3]]
 		if  FaceOrient(a,b,c) < 0 then
 			tri(a[1],a[2],b[1],b[2],c[1],c[2],col)
-			line(a[1],a[2],b[1],b[2], 11)
-			line(b[1],b[2],c[1],c[2], 11)
-			line(c[1],c[2],a[1],a[2], 11)
+			line(a[1],a[2],b[1],b[2], 12)
+			line(b[1],b[2],c[1],c[2], 12)
+--			line(c[1],c[2],a[1],a[2], 11)
 		end
 	end
 
@@ -105,40 +105,64 @@ function v3(x,y,z)
 end
 
 -- ############## Part 1 ##############
-Part2={
-	init = function()
-		t=0
-
+fxCube={
+	init = function(self)
 		points={v3(-1,-1,-1),v3(-1,1,-1),v3(1,1,-1),v3(1,-1,-1),v3(-1,-1,1),v3(-1,1,1),v3(1,1,1),v3(1,-1,1)}
 		lines={	{1,2},{2,3},{3,4},{4,1},	-- bot
 				{5,6},{6,7},{7,8},{8,5},	-- top
 				{1,5},{2,6},{3,7},{4,8}}	-- verticals
 		tris={
 		{3,7,8},
-		{3,8,4},
+		{8,4,3},
 		{1,5,6},
-		{1,6,2},
+		{6,2,1},
 		{7,3,2},
-		{7,2,6},
+		{2,6,7},
 		{4,8,5},
-		{4,5,1},
+		{5,1,4},
 		{8,7,6},
-		{8,6,5},
+		{6,5,8},
 		{3,4,1},
-		{3,1,2}}
+		{1,2,3}
+		}
 
-		a=0
-		r = 2
+--		a=0
+		r = 5
+		self.ox=0
+		self.oy=0
+		self.oz=0
+		self.rx=0
+		self.ry=0
+		self.rz=0
 	end
-	, tic = function()
-		t=t+1/60
---		vbank(1)
-		cls()
-		DrawCube()
---		a = a + 0.02*(1.5+sin(t)) --0.01
-		a = a + 0.04
---		vbank(0)
+	, tic = function(self,t)
+		local at=self.dt*3
+		-- local rx,ry,rz=a,a*1.12,a*1.5
 
-		return t>10
+		if t<2 then
+			self.oz=remap(t, 0, 2, 10, 0)^1.5
+			self.rx=0
+			self.ry=0
+			self.rz=self.rz+3*self.dt
+		elseif t<10 then
+			self.oz=0
+			self.oy=abs(3*sin(2*t))-2
+			self.rx=self.rx+at
+			self.ry=self.ry+at*1.123
+			self.rz=self.rz+at*1.478
+		else
+			self.ox=2*t-25
+			local _t=math.fmod(t*2+1, 2)-1
+			-- print(tostring(_t))
+			self.oy=2-4*_t*_t
+			self.oz=0
+			self.rx=self.rx+at
+			self.ry=self.ry+at*1.123
+			self.rz=self.rz+at*1.478
+		end
+
+		DrawCube(self.ox,self.oy,self.oz,self.rx,self.ry,self.rz)
+--		a = a + 0.02*(1.5+sin(t)) --0.01
+--		a = a + 0.04
 	end
 }

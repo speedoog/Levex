@@ -106,7 +106,8 @@ end
 
 -- ############## Part 1 ##############
 fxCube={
-	init = function(self)
+	name = "Cube"
+	, init = function(self)
 		points={v3(-1,-1,-1),v3(-1,1,-1),v3(1,1,-1),v3(1,-1,-1),v3(-1,-1,1),v3(-1,1,1),v3(1,1,1),v3(1,-1,1)}
 		lines={	{1,2},{2,3},{3,4},{4,1},	-- bot
 				{5,6},{6,7},{7,8},{8,5},	-- top
@@ -126,7 +127,6 @@ fxCube={
 		{1,2,3}
 		}
 
---		a=0
 		r = 5
 		self.ox=0
 		self.oy=0
@@ -135,25 +135,26 @@ fxCube={
 		self.ry=0
 		self.rz=0
 	end
-	, tic = function(self,t)
-		local at=self.dt*3
-		-- local rx,ry,rz=a,a*1.12,a*1.5
+	, tic = function(self,t,dt)
+		local at=dt*3
 
 		if t<2 then
+			self.ox=0
+			self.oy=0
 			self.oz=remap(t, 0, 2, 10, 0)^1.5
 			self.rx=0
 			self.ry=0
-			self.rz=self.rz+3*self.dt
-		elseif t<10 then
+			self.rz=3*t
+		elseif t<4 then
+			self.ox=0
+			self.oy=0
 			self.oz=0
-			self.oy=abs(3*sin(2*t))-2
-			self.rx=self.rx+at
-			self.ry=self.ry+at*1.123
-			self.rz=self.rz+at*1.478
+			self.rx=3*(cos(t-2)-1)
+			self.ry=0
+			self.rz=3*t
 		else
-			self.ox=2*t-25
-			local _t=math.fmod(t*2+1, 2)-1
-			-- print(tostring(_t))
+			self.ox=5.5*sin(t-4)
+			local _t=math.fmod(t*2+1.6, 2)-1
 			self.oy=2-4*_t*_t
 			self.oz=0
 			self.rx=self.rx+at
@@ -162,7 +163,6 @@ fxCube={
 		end
 
 		DrawCube(self.ox,self.oy,self.oz,self.rx,self.ry,self.rz)
---		a = a + 0.02*(1.5+sin(t)) --0.01
---		a = a + 0.04
+
 	end
 }

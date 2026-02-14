@@ -2,7 +2,8 @@
 
 -- ############## Part 1 ##############
 fxDisolve={
-	scan = function(self,t)
+	name = "Disolve"
+	, scan = function(self,t)
 		for y=0,136 do
 			for x=0,240 do
 				local c=pix(x,y)
@@ -20,7 +21,7 @@ fxDisolve={
 		cls()
 		self:scan(0)
 	end
-	, tic = function(self, t)
+	, tic = function(self, t, dt)
 		
 		if floor(t)>iTxt then
 			iTxt=floor(t)
@@ -33,7 +34,7 @@ fxDisolve={
 		for k,it in pairs(self.list) do 
 			local x1=it.x
 			local y1=it.y
-			if t>it.t then
+			if dt>0 and t>it.t then
 				if it.r<0.5 then it.r=it.r+0.0003 end
 				local dx=x1-mx
 				local dy=y1-my
@@ -42,6 +43,7 @@ fxDisolve={
 				it.x=x*0.992+mx
 				it.y=y*0.992+my
 			end
+			
 			line(x1,y1,it.x,it.y,it.c)
 			if t>(it.t+10) then 
 				self.list[k]=nil

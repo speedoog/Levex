@@ -13,7 +13,7 @@ fxDisolve={
 			end
 		end
 	end
-	,init = function(self)
+	,start = function(self)
 		self.list={}
 		txt={"Hello", "Revision", "Welcome", "to", "my", "Demo"	}
 		iTxt=-1

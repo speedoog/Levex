@@ -16,6 +16,9 @@ require "Maths"
 require "fxDisolve"
 require "fxCube"
 require "fxBeziers"
+require "fxScrollText"
+require "fxCPC"
+require "fxBlower"
 require "Demo"
 
 t=0

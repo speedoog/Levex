@@ -34,9 +34,10 @@ end
 -- ############## FX Bezier ##############
 fxBeziers={
 	name = "Beziers"
-	, init = function()	end
+	, start = function()	end
 	, tic = function(self,t,dt)
-		local l=t/5
+		local l=min(t/10,0.5)
+		l=l+0.25*sin(t)
 		plotbidule(t,l)
 		plotbidule(t+1,l)
 		plotbidule(t+2,l)

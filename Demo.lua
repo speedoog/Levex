@@ -2,14 +2,17 @@
 RunningFx = { }
 Sequence = 
 {
-	{	0,	20, fxCube,		1},
-	{	3,	15,	fxBeziers,	0},
-	{	15,	25,	fxDisolve,	0}
+	{	0,	20, fxBlower,		1},
+--	{	0,	20, fxCPC,			1},
+--	{	0,	20, fxCube,			1},
+--	{	0,	20, fxScrollText,	0},
+--	{	3,	15,	fxBeziers,		0},
+--	{	15,	25,	fxDisolve,		0}
 }
 
 function Startfx(fx,vbank, start)
 	if fx.started then return end
-	fx:init()
+	fx:start()
 	if vbank==nil then vbank=0 end
 	table.insert(RunningFx, {fx=fx, start=start, vbank=vbank})
 	fx.started=true

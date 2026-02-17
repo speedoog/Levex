@@ -1,6 +1,7 @@
 fxTerrain = {
 	name = "Terrain",
 	_Distance = 1024,
+    _h=0.5,
 	_map = {},
 	GetMapValue = function(self, x, y)
 		return self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance]
@@ -9,7 +10,7 @@ fxTerrain = {
 		self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] = v
 	end,
 	S = function(self, x, y)
-		I = self:GetMapValue(floor(x * self._Distance), floor(y * self._Distance))
+		local I = self:GetMapValue(floor(x * self._Distance), floor(y * self._Distance))
 		return 1 - I * I * 9
 	end,
 	start = function(self)
@@ -75,7 +76,6 @@ fxTerrain = {
 			poke(paladr, tonumber("0x" .. palet:sub(i, i) .. palet:sub(i + 1, i + 1)))
 			paladr = paladr + 1
 		end
-
 	end,
 	tic = function(self, t, dt)
 		local a_x = 0
@@ -105,7 +105,18 @@ fxTerrain = {
 			end
 		end
 
-		for i = 0, size_x do
+        local h = 0.6 +.15*cos(5+t*1.33)
+        local ox=.025*sin(t*.44)+.03*t
+        
+        h=10
+        for d=0,1.5,0.05 do
+            h=min(h,self:S(.5+ox+.05*sin(30*d),(t+d)*.3)-.25+.15*cos(5+t*1.33));
+        end
+
+        self._h=lerp(self._h,h,.02)
+
+        local iFrame = floor(t*60)
+		for i = iFrame&1, size_x,2 do
 			s_x = a_x + i
 			e_x = a_x + i
 
@@ -114,23 +125,21 @@ fxTerrain = {
 
 			local w = (i / size_x) * 2 - 1
 
-			local h = 0.7 --self:S(.5,t*.2)-.5;
-
-			for j = 30, 200,1.5 do
+			for j = 40+.5*(iFrame&3), 300,2 do
 				local _z = j / 500.
 				local z = _z * _z * 500
 
 				local x = w * z
-				local u = x / 200 + .5
-				local v = z / 200 + t * .4
+				local u = x / 200 + .5 +ox
+				local v = z / 200 + t * .3
 
 				local l = self:S(u, v)
 
-				local y = (l - h) * 32
+				local y = (l - self._h) * 32
 				s_y = a_y + size_y * (y / (z + .1) + .25)
 				if (s_y < e_y) then
-					I = l - self:S(u + .01, v + .005) + .01
-					I = I * sign(I) * 30 + .2
+					local I = l - self:S(u + .01, v + .005) + .02
+--					I = I * sign(I) * 30 + .2
 					--O=1.0-exp(-z*3e-4);
 					-- o_x = L(o_x,.6,2);
 					-- o_y = L(o_y,.25,4);
@@ -138,13 +147,15 @@ fxTerrain = {
 
 					--d->AddLine(s,e,ImColor(o));
 
-					line(s_x,s_y,e_x,e_y,  clamp(I*8*clamp(8/z,0,1),0,15) )
-					--rect(s_x, s_y, 2, e_y - s_y + 1, clamp(I * 4, 0, 15))
+                    local color=clamp(I*12*30*clamp(6/z,0,1),0,15)
+					line(s_x,s_y,e_x,e_y, color)
+					--rect(s_x, s_y, 2, e_y - s_y + 1, color)
 
 					e_y = s_y
 				end
 			end
-		end
+			line(s_x,e_y,e_x,0, 0)
+    	end
 	end
 }
 

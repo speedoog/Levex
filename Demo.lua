@@ -35,8 +35,11 @@ end
 gTime=0
 gInfos=false
 gPlay=true
+gDeltaTime=0
 
 function main()
+
+	local tStart=time()
 
  	if keyp(61,20,1) then
 		if key(63) then
@@ -67,9 +70,9 @@ function main()
 	end
 	
 	vbank(1)
-	cls()
+--	cls()
 	vbank(0)
-	cls()
+--	cls()
 
 	for k,sh in pairs(Sequence) do 
 		local shouldrun = inrange(gTime, sh[1], sh[2])
@@ -100,7 +103,13 @@ function main()
 		end
 	end
 
-	if gInfos then print(string.format("%.2f",gTime), 0, 130, gWhite)  end
+	if gInfos then
+		print(string.format("%.2f",gTime), 0, 130, gWhite)
+		local tEnd=time()
+		local tElapse=(tEnd-tStart)
+		gDeltaTime=lerp(gDeltaTime,tElapse,.1)
+		print(string.format("%.f %%",100*gDeltaTime/(1000/60) ), 215, 130, gWhite)
+	end
 
 	if gPlay then gTime=gTime+1/60 end
 

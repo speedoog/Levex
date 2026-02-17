@@ -8,7 +8,7 @@
 
 if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
 	trace("Debugger ok")
-  	require("lldebugger").start()
+	require("lldebugger").start()
 end
 
 require "Helpers"

@@ -2,12 +2,13 @@
 RunningFx = { }
 Sequence = 
 {
+	{	0,		200, fxTerrain,		0},
 --	{	0,		20, fxCPC,			1},
-	{	0,		20, fxCube,			1},
-	{	1.8,	3,  fxBlower,		0},
+--	{	0,		20, fxCube,			1},
+--	{	1.8,	3,  fxBlower,		0},
 --	{	0,		20, fxScrollText,	0},
-	{	3,		15,	fxBeziers,		0},
-	{	15,		25,	fxDisolve,		0}
+--	{	3,		15,	fxBeziers,		0},
+--	{	15,		25,	fxDisolve,		0}
 }
 
 function Startfx(fx,vbank, start)

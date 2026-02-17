@@ -1,7 +1,7 @@
 
 -- ############## MATHS ##############
 
-sqrt,abs,sin,cos,tan,atan,pi,min,max,floor=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor
+sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp
 rand,seed=math.random,math.randomseed
 
 function square(x)

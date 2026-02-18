@@ -106,7 +106,7 @@ fxTerrain = {
 		end
 
         local h = 0.6 +.15*cos(5+t*1.33)
-        local ox=.025*sin(t*.44)+.03*t
+        local ox=.025*sin(t*.44)+.05*t
         
         h=10
         for d=0,1.5,0.05 do
@@ -125,7 +125,7 @@ fxTerrain = {
 
 			local w = (i / size_x) * 2 - 1
 
-			for j = 40+.5*(iFrame&3), 300,2 do
+			for j = 40+.5*(iFrame&3), 350,1.5 do
 				local _z = j / 500.
 				local z = _z * _z * 500
 

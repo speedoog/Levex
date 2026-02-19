@@ -2,6 +2,9 @@
 RunningFx = { }
 Sequence = 
 {
+--	{	0,		200,	fxBeziers,		0},
+
+
 	{	0,		200, fxTerrain,		0},
 --	{	0,		20, fxCPC,			1},
 --	{	0,		20, fxCube,			1},
@@ -70,9 +73,9 @@ function main()
 	end
 	
 	vbank(1)
---	cls()
+	cls()
 	vbank(0)
---	cls()
+	cls()
 
 	for k,sh in pairs(Sequence) do 
 		local shouldrun = inrange(gTime, sh[1], sh[2])

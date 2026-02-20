@@ -68,12 +68,21 @@ fxTerrain = {
 				p = "000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff",
 				name = "grayscale"
 			}
+            ,
+			{
+				p = "0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff",
+				name = "blueish"
+			}
 		}
 		palet = palettes[4].p
 
 		paladr = 0x3fc0
 		for i = 1, palet:len(), 2 do
-			poke(paladr, tonumber("0x" .. palet:sub(i, i) .. palet:sub(i + 1, i + 1)))
+            if i%3==2 then
+			    poke(paladr, tonumber("0x" .. palet:sub(i, i) .. palet:sub(i + 1, i + 1)))
+            else
+			    poke(paladr, tonumber("0x" .. palet:sub(i, i) .. palet:sub(i + 1, i + 1))*0.7)
+            end
 			paladr = paladr + 1
 		end
 	end,
@@ -132,7 +141,7 @@ fxTerrain = {
 ---			for j = 40+.5*(iFrame&3), 350,0 do
             local inc=1.5
             local j=0+.5*(iFrame&3)
-            while j<300 do
+            while j<350 do
                 j=j+inc
 				local _z = j / 500.
 				local z = _z * _z * 500

@@ -2,10 +2,10 @@
 RunningFx = { }
 Sequence = 
 {
---	{	0,		200,	fxBeziers,		0},
+--	{	0,		200,	fxBeziers,		1},
 
 
-	{	0,		200, fxTerrain,		0},
+	{	0,		200, fxTerrain,		0, false},
 --	{	0,		20, fxCPC,			1},
 --	{	0,		20, fxCube,			1},
 --	{	1.8,	3,  fxBlower,		0},
@@ -14,7 +14,7 @@ Sequence =
 --	{	15,		25,	fxDisolve,		0}
 }
 
-function Startfx(fx,vbank, start)
+function Startfx(fx,vbank,start)
 	if fx.started then return end
 	fx:start()
 	if vbank==nil then vbank=0 end
@@ -72,18 +72,27 @@ function main()
 		gPlay=not gPlay
 	end
 	
-	vbank(1)
-	cls()
-	vbank(0)
-	cls()
-
+	local vclear={true,true}
+	
 	for k,sh in pairs(Sequence) do 
 		local shouldrun = inrange(gTime, sh[1], sh[2])
 		local fx=sh[3]
-		if shouldrun and fx.started~=true then
-			Startfx(fx, sh[4], sh[1])
+		if shouldrun then
+			if fx.started~=true then
+				Startfx(fx, sh[4], sh[1])
+			end
+			if (sh[5]==false) then
+				vclear[sh[4]+1]=false
+			end
 		end
 	end
+
+	if vclear[1] then vbank(0) cls() end
+	if vclear[2] then vbank(1) cls() end
+
+--	vbank(1)
+--	cls()
+--	cls()
 
 	local i=0
 	for k,fh in pairs(RunningFx) do 

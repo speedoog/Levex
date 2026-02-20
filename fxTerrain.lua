@@ -113,7 +113,11 @@ fxTerrain = {
             h=min(h,self:S(.5+ox+.05*sin(30*d),(t+d)*.3)-.25+.15*cos(5+t*1.33));
         end
 
-        self._h=lerp(self._h,h,.02)
+        self._h=lerp2(self._h,h,0.2,dt)
+
+        local matrixSize = 8
+        local matrixMask = 7
+        local mat_max=matrixSize*matrixSize-1
 
         local iFrame = floor(t*60)
 		for i = iFrame&1, size_x,2 do
@@ -125,7 +129,11 @@ fxTerrain = {
 
 			local w = (i / size_x) * 2 - 1
 
-			for j = 40+.5*(iFrame&3), 350,1.5 do
+---			for j = 40+.5*(iFrame&3), 350,0 do
+            local inc=1.5
+            local j=0+.5*(iFrame&3)
+            while j<300 do
+                j=j+inc
 				local _z = j / 500.
 				local z = _z * _z * 500
 
@@ -136,6 +144,18 @@ fxTerrain = {
 				local l = self:S(u, v)
 
 				local y = (l - self._h) * 32
+
+                if l>0.9 then
+                    inc=remap(l, 0.9, 1, 1.5, 3)
+				elseif l>0.3 then
+ 					inc=remap(l, 0.3, 0.9, 1, 1.5)
+                else
+ 					inc=remap(l, 0, 0.3, .5, 1)
+                end
+
+
+                -- if y<16 then inc = 0.5 else inc=4 end
+
 				s_y = a_y + size_y * (y / (z + .1) + .25)
 				if (s_y < e_y) then
 					local I = l - self:S(u + .01, v + .005) + .02
@@ -148,7 +168,17 @@ fxTerrain = {
 					--d->AddLine(s,e,ImColor(o));
 
                     local color=clamp(I*12*30*clamp(6/z,0,1),0,15)
-					line(s_x,s_y,e_x,e_y, color)
+                    local icolor=floor(color)
+                    local fColorPart=mat_max*(color-icolor)
+                    for iy=floor(s_y),e_y do
+                    	local threshold = Bayer8x8[(s_x&matrixMask)+1][(iy&matrixMask)+1]
+                        if fColorPart>threshold then
+                            pix(s_x,iy,color+1)
+                        else
+                            pix(s_x,iy,color)
+                        end
+                    end
+--					line(s_x,s_y,e_x,e_y, color)
 					--rect(s_x, s_y, 2, e_y - s_y + 1, color)
 
 					e_y = s_y

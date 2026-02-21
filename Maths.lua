@@ -1,7 +1,7 @@
 
 -- ############## MATHS ##############
 
-sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp
+sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp,pow=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp,math.pow
 rand,seed=math.random,math.randomseed
 
 function square(x)
@@ -138,3 +138,56 @@ Bayer8x8 = {
 	{15, 47, 7, 39, 13, 45, 5, 37},
 	{63, 31, 55, 23, 61, 29, 53, 21},
 }
+
+CatmullRomCoefs = {
+    { -1, 2,-1, 0},
+    {  3,-5, 0, 2},
+    { -3, 4, 1, 0},
+    {  1,-1, 0, 0} }
+
+-- CatmullRom https://iquilezles.org/articles/minispline/
+-- keys format : spline ={0,x0,y0,1,x1,y1,2,x2,y2,3,x3,y3}
+function CatmullRom(keys, dim, t)
+	-- init result
+	local v = {}			-- out
+	for i=1,dim do
+		v[i] = 0
+	end
+
+	local num =#keys
+
+    -- find key
+    local k = 0
+	while k<num and keys[1+k][1]<t do
+		k=k+1;
+	end
+
+    -- interpolant
+    local h
+	if k<=0 then
+		h=0
+	elseif k>=num then
+		h=1
+	elseif k>0 then
+		local t1=keys[k][1]
+		local t2=keys[1+k][1]
+	 	h=(t-t1)/(t2-t1)
+	end
+
+    -- add basis functions
+    for i=1,4 do
+        local kn = k+i-3;
+		if kn<0 then
+			kn=0
+		elseif kn>(num-1) then
+			kn=num-1
+		end
+		
+		local co=CatmullRomCoefs[i]
+        local b = 0.5*(((co[1]*h + co[2])*h + co[3])*h + co[4]);
+        for j=1,dim do
+			v[j] = v[j] + b*keys[1+kn][2][j]
+		end
+    end
+	return v
+end

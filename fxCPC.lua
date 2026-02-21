@@ -6,7 +6,7 @@ fxCPC = {
 ]],
 	start = function() end,
 	tic = function(self, t, dt)
-        cls(8)
+        cls(0)
 		print(self.Text, 0, 0, 4)
 	end
 }

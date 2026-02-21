@@ -3,9 +3,12 @@ RunningFx = { }
 Sequence = 
 {
 --	{	0,		200,	fxBeziers,		1},
-
+	{	3,		6, 	CreateFxText(50,10,"Demo mode",gWhite), 1 },
+	{	9,	   12, 	CreateFxText(50,10,"Enjoy",4), 1 },
 
 	{	0,		200, fxTerrain,		0, false},
+
+
 --	{	0,		20, fxCPC,			1},
 --	{	0,		20, fxCube,			1},
 --	{	1.8,	3,  fxBlower,		0},

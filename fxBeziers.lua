@@ -50,57 +50,7 @@ function plotBeziers(t)
 	plotbidule(t+3,l)
 end
 
-coefs = {
-    { -1, 2,-1, 0},
-    {  3,-5, 0, 2},
-    { -3, 4, 1, 0},
-    {  1,-1, 0, 0} }
 
--- CatmullRom https://iquilezles.org/articles/minispline/
-
-function CatmullRom(keys, dim, t)
-	-- init result
-	local v = {}			-- out
-	for i=1,dim do
-		v[i] = 0
-	end
-
-    local size = dim + 1;
-	local num =floor(#keys/size)
-
-    -- find key
-    local k = 0
-	while k<num and keys[1+k*size]<t do
-		k=k+1;
-	end
-
-    -- interpolant
-    local h
-	if k<=0 then
-		h=0
-	elseif k>=num then
-		h=1
-	elseif k>0 then
-	 	h=(t-keys[1+(k-1)*size])/(keys[1+k*size]-keys[1+(k-1)*size])
-	end
-
-    -- add basis functions
-    for i=1,4 do
-        local kn = k+i-3;
-		if kn<0 then
-			kn=0
-		elseif kn>(num-1) then
-			kn=num-1
-		end
-		
-		local co=coefs[i]
-        local b = 0.5*(((co[1]*h + co[2])*h + co[3])*h + co[4]);
-        for j=1,dim do
-			v[j] = v[j]+ b*keys[kn*size+j+1]
-		end
-    end
-	return v
-end
 
 function plotCatmullRom(t)
 	local x0=20+t*sin(t*1.23)
@@ -112,7 +62,7 @@ function plotCatmullRom(t)
 	local x3=gSizeX-20+60*sin(t*1.44)
 	local y3=70+60*cos(t*1.33)
 
-	local spline ={0,x0,y0,1,x1,y1,2,x2,y2,3,x3,y3}
+	local spline ={{0,{x0,y0}},{1,{x1,y1}},{2,{x2,y2}},{3,{x3,y3}}}
 	
 	local v,xa,ya,xb,yb
 	local t=0
@@ -138,7 +88,10 @@ fxBeziers={
 	name = "Beziers"
 	, start = function()	end
 	, tic = function(self,t,dt)
-		plotBeziers(t)
---		plotCatmullRom(t)
+--		plotBeziers(t)
+
+		for tt=0,3,0.1 do
+			plotCatmullRom(t+tt)
+		end
 	end
 }

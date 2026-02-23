@@ -220,50 +220,34 @@ fxTerrain = {
 -- 		end
 		
 		local gradiant ={ 	{ 0, Hex2RGB(0x1a1c2c)},	-- black
-						  	{ 2, Hex2RGB(0x5d275d)},	-- violet
-						  	{ 5, Hex2RGB(0xb13e53)},	-- Red
+						  	{ 4, Hex2RGB(0x5d275d)},	-- violet
+						  	{ 7, Hex2RGB(0xb13e53)},	-- Red
 							{ 11,Hex2RGB(0xef7d57)},	-- orange
 							{ 15,Hex2RGB(0xffcd75)}		-- yellow
 						 }
 		local pal = PaletteGradiant(gradiant)
 		PaletteApply(pal)
 
-		-- 1a1c2c	
-		-- 5d275d	
-		-- b13e53	
-		-- ef7d57	
-		-- ffcd75	
-
-		-- local p1 =	make_gradient_direct(0x1a,0x1c,0x2c, 0x5d,0x27,0x5d, 5)
-		-- local p2 =	make_gradient_direct(0x5d,0x27,0x5d, 0xb1,0x3e,0x53, 5)
-		-- local p3 =	make_gradient_direct(0xb1,0x3e,0x53, 0xef,0x7d,0x57, 5)
-		-- local p4 =	make_gradient_direct(0xef,0x7d,0x57, 0xff,0xcd,0x75, 4)
-
-		-- paladr = 0x3fc0
-		-- poke(paladr, p1[1].r) poke(paladr+1, p1[1].g) poke(paladr+2, p1[1].b) paladr=paladr+3
-		-- poke(paladr, p1[2].r) poke(paladr+1, p1[2].g) poke(paladr+2, p1[2].b) paladr=paladr+3
-		-- poke(paladr, p1[3].r) poke(paladr+1, p1[3].g) poke(paladr+2, p1[3].b) paladr=paladr+3
-		-- poke(paladr, p1[4].r) poke(paladr+1, p1[4].g) poke(paladr+2, p1[4].b) paladr=paladr+3
-		-- poke(paladr, p1[5].r) poke(paladr+1, p1[5].g) poke(paladr+2, p1[5].b) paladr=paladr+3
-		-- poke(paladr, p2[2].r) poke(paladr+1, p2[2].g) poke(paladr+2, p2[2].b) paladr=paladr+3
-		-- poke(paladr, p2[3].r) poke(paladr+1, p2[3].g) poke(paladr+2, p2[3].b) paladr=paladr+3
-		-- poke(paladr, p2[4].r) poke(paladr+1, p2[4].g) poke(paladr+2, p2[4].b) paladr=paladr+3
-		-- poke(paladr, p2[5].r) poke(paladr+1, p2[5].g) poke(paladr+2, p2[5].b) paladr=paladr+3
-		-- poke(paladr, p3[2].r) poke(paladr+1, p3[2].g) poke(paladr+2, p3[2].b) paladr=paladr+3
-		-- poke(paladr, p3[3].r) poke(paladr+1, p3[3].g) poke(paladr+2, p3[3].b) paladr=paladr+3
-		-- poke(paladr, p3[4].r) poke(paladr+1, p3[4].g) poke(paladr+2, p3[4].b) paladr=paladr+3
-		-- poke(paladr, p3[5].r) poke(paladr+1, p3[5].g) poke(paladr+2, p3[5].b) paladr=paladr+3
-		-- poke(paladr, p4[2].r) poke(paladr+1, p4[2].g) poke(paladr+2, p4[2].b) paladr=paladr+3
-		-- poke(paladr, p4[3].r) poke(paladr+1, p4[3].g) poke(paladr+2, p4[3].b) paladr=paladr+3
-		-- poke(paladr, p4[4].r) poke(paladr+1, p4[4].g) poke(paladr+2, p4[4].b) paladr=paladr+3
-
-
 	end,
 	tic = function(self, t, dt)
-		local a_x = 0
-		local a_y = 0
-		local size_x = 240
-		local size_y = 136
+
+		-- local gradiant ={ 	{ 0, Hex2RGB(0x1a1c2c)},	-- black
+		-- 				  	{ 2, {80*sin(0.5*t)+80, 27, 80*cos(0.5*t)+80} },	-- violet
+		-- 				  	{ 5, {hsvToRgb(sin(t),1,1)} },	-- Red
+		-- 					{ 11,Hex2RGB(0xef7d57)},	-- orange
+		-- 					{ 15,Hex2RGB(0xffcd75)}		-- yellow
+		-- 				 }
+		-- local pal = PaletteGradiant(gradiant)
+		-- PaletteApply(pal)
+
+
+--		local border=max(0,floor((136/2)-10*t))
+		local border=0
+
+		local a_x = 0+border
+		local a_y = 0+border
+		local size_x = 240-border*2
+		local size_y = 136-border*2
 
 		local s_x = a_x
 		local s_y = a_y
@@ -289,7 +273,7 @@ fxTerrain = {
 
 		local h
 		--        h = 0.6 +.15*cos(5+t*1.33)
-		local ox = .025 * sin(t * .44) + .05 * t
+		local ox = .025 * sin(t * .44) + .09 * t
 
 		h = 10
 		for d = 0, 1.5, 0.05 do
@@ -307,8 +291,8 @@ fxTerrain = {
 			s_x = a_x + i
 			e_x = a_x + i
 
-			e_y = size_y
-			s_y = size_y
+			e_y = size_y+a_y
+			s_y = size_y+a_y
 
 			local w = (i / size_x) * 2 - 1
 
@@ -340,7 +324,7 @@ fxTerrain = {
 
 				s_y = a_y + size_y * (y / (z + .1) + .25)
 				if (s_y < e_y) then
-					local I = l - self:S(u + .01, v + .005) + .02
+					local I = l - 0.96*self:S(u + .01, v + .005) + .02
 					--					I = I * sign(I) * 30 + .2
 					--O=1.0-exp(-z*3e-4);
 					-- o_x = L(o_x,.6,2);
@@ -366,7 +350,7 @@ fxTerrain = {
 					e_y = s_y
 				end
 			end
-			line(s_x, e_y, e_x, 0, 0)
+			line(s_x, e_y, e_x, a_y, 0)
 		end
 	end
 }

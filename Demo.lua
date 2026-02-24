@@ -2,8 +2,8 @@
 RunningFx = { }
 Sequence = 
 {
-	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
-	{	s=3,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={"x", {0,0, 1,50} } },
+--	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
+	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={"x", {0,0, 3,50}, "y", {0,0,1,30,2,40,3,45 } } },
 --	{	s=9,	e=12, 	fx=CreateFxText(50,10,"Enjoy",4), vb=1 },
 	{	s=0,	e=200,  fx=fxTerrain,		vb=0, cls=false},
 
@@ -15,11 +15,12 @@ Sequence =
 --	{	s=15,	e=25,	fx=fxDisolve,		vb=1}
 }
 
-function Startfx(fx,vbank,start)
+function Startfx(fx,sh)
+	local vbank,start=sh.vb,sh.s
 	if fx.started then return end
 	fx:start()
 	if vbank==nil then vbank=0 end
-	table.insert(RunningFx, {fx=fx, start=start, vbank=vbank})
+	table.insert(RunningFx, {fx=fx, start=start, vbank=vbank, sh=sh})
 	fx.started=true
 	fx.t=0
 	fx.dt=0
@@ -80,7 +81,7 @@ function main()
 		local fx=sh.fx
 		if shouldrun then
 			if fx.started~=true then
-				Startfx(fx, sh.vb, sh.s)
+				Startfx(fx, sh)
 			end
 			if (sh.cls==false) then
 				vclear[sh.vb+1]=false
@@ -91,10 +92,6 @@ function main()
 	if vclear[1] then vbank(0) cls() end
 	if vclear[2] then vbank(1) cls() end
 
---	vbank(1)
---	cls()
---	cls()
-
 	local i=0
 	for k,fh in pairs(RunningFx) do 
 		vbank(fh.vbank)
@@ -102,6 +99,18 @@ function main()
 		local oldt=fx.t
 		fx.t=gTime-fh.start
 		fx.dt=fx.t-oldt
+
+		-- update modifiers
+		local mod=fh.sh.mod
+		if mod then
+			for i=1,#mod,2 do
+				local att=mod[i]
+				local keys=mod[i+1]
+				local v=CatmullRom(keys, 1, fx.t)
+				fx[att]=v[1]
+			end
+		end
+
 		fh.fx:tic(fx.t,fx.dt)
 		
 		if gInfos then print(string.format("%.1f %s",fx.t,fx.name), 0, i*7, gWhite,true)  end

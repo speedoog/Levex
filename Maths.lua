@@ -147,6 +147,7 @@ CatmullRomCoefs = {
 
 -- CatmullRom https://iquilezles.org/articles/minispline/
 -- keys format : spline ={0,x0,y0,1,x1,y1,2,x2,y2,3,x3,y3}
+
 function CatmullRom(keys, dim, t)
 	-- init result
 	local v = {}			-- out
@@ -154,11 +155,12 @@ function CatmullRom(keys, dim, t)
 		v[i] = 0
 	end
 
-	local num =#keys
+    local size = dim + 1;
+	local num =floor(#keys/size)
 
     -- find key
     local k = 0
-	while k<num and keys[1+k][1]<t do
+	while k<num and keys[1+k*size]<t do
 		k=k+1;
 	end
 
@@ -169,8 +171,8 @@ function CatmullRom(keys, dim, t)
 	elseif k>=num then
 		h=1
 	elseif k>0 then
-		local t1=keys[k][1]
-		local t2=keys[1+k][1]
+		local t1=keys[1+(k-1)*size]
+		local t2=keys[1+k*size]
 	 	h=(t-t1)/(t2-t1)
 	end
 
@@ -186,7 +188,7 @@ function CatmullRom(keys, dim, t)
 		local co=CatmullRomCoefs[i]
         local b = 0.5*(((co[1]*h + co[2])*h + co[3])*h + co[4]);
         for j=1,dim do
-			v[j] = v[j] + b*keys[1+kn][2][j]
+			v[j] = v[j]+ b*keys[kn*size+j+1]
 		end
     end
 	return v

@@ -2,19 +2,17 @@
 RunningFx = { }
 Sequence = 
 {
---	{	0,		200,	fxBeziers,		1},
-	{	3,		6, 	CreateFxText(50,10,"Demo mode",gWhite), 1 },
-	{	9,	   12, 	CreateFxText(50,10,"Enjoy",4), 1 },
+	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
+	{	s=3,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={"x", {0,0, 1,50} } },
+--	{	s=9,	e=12, 	fx=CreateFxText(50,10,"Enjoy",4), vb=1 },
+	{	s=0,	e=200,  fx=fxTerrain,		vb=0, cls=false},
 
-	{	0,		200, fxTerrain,		0, false},
-
-
---	{	0,		20, fxCPC,			1},
---	{	0,		20, fxCube,			1},
---	{	1.8,	3,  fxBlower,		0},
---	{	0,		20, fxScrollText,	0},
---	{	3,		15,	fxBeziers,		0},
---	{	15,		25,	fxDisolve,		0}
+--	{	s=0,	e=20, 	fx=fxCPC,			vb=1},
+--	{	s=0,	e=20, 	fx=fxCube,			vb=1},
+--	{	s=1.8,	e=3,  	fx=fxBlower,		vb=0},
+--	{	s=0,	e=20, 	fx=fxScrollText,	vb=0},
+--	{	s=3,	e=15,	fx=fxBeziers,		vb=0},
+--	{	s=15,	e=25,	fx=fxDisolve,		vb=1}
 }
 
 function Startfx(fx,vbank,start)
@@ -78,14 +76,14 @@ function main()
 	local vclear={true,true}
 	
 	for k,sh in pairs(Sequence) do 
-		local shouldrun = inrange(gTime, sh[1], sh[2])
-		local fx=sh[3]
+		local shouldrun = inrange(gTime, sh.s, sh.e)
+		local fx=sh.fx
 		if shouldrun then
 			if fx.started~=true then
-				Startfx(fx, sh[4], sh[1])
+				Startfx(fx, sh.vb, sh.s)
 			end
-			if (sh[5]==false) then
-				vclear[sh[4]+1]=false
+			if (sh.cls==false) then
+				vclear[sh.vb+1]=false
 			end
 		end
 	end
@@ -111,8 +109,8 @@ function main()
 	end
 
 	for k,sh in pairs(Sequence) do 
-		local shouldrun = inrange(gTime, sh[1], sh[2])
-		local fx=sh[3]
+		local shouldrun = inrange(gTime, sh.s, sh.e)
+		local fx=sh.fx
 		if not shouldrun and fx.started then
 			Stopfx(fx)
 		end

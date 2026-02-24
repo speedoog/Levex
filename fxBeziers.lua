@@ -62,7 +62,7 @@ function plotCatmullRom(t)
 	local x3=gSizeX-20+60*sin(t*1.44)
 	local y3=70+60*cos(t*1.33)
 
-	local spline ={{0,{x0,y0}},{1,{x1,y1}},{2,{x2,y2}},{3,{x3,y3}}}
+	local spline ={0,x0,y0,1,x1,y1,2,x2,y2,3,x3,y3}
 	
 	local v,xa,ya,xb,yb
 	local t=0

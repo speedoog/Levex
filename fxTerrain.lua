@@ -114,9 +114,16 @@ function PaletteApply(pal)
 end
 
 function PaletteGradiant(keys)
+	local tmp={}
+	for i=1,#keys,2 do
+		table.insert(tmp, keys[i])
+		table.insert(tmp, keys[i+1][1])
+		table.insert(tmp, keys[i+1][2])
+		table.insert(tmp, keys[i+1][3])
+	end
 	local ret={}
 	for i=0,15 do
-		local k=CatmullRom(keys, 3, i)
+		local k=CatmullRom(tmp, 3, i)
 		table.insert(ret, k)
 	end
 	return ret
@@ -219,11 +226,11 @@ fxTerrain = {
 -- 			paladr = paladr + 1
 -- 		end
 		
-		local gradiant ={ 	{ 0, Hex2RGB(0x1a1c2c)},	-- black
-						  	{ 4, Hex2RGB(0x5d275d)},	-- violet
-						  	{ 7, Hex2RGB(0xb13e53)},	-- Red
-							{ 11,Hex2RGB(0xef7d57)},	-- orange
-							{ 15,Hex2RGB(0xffcd75)}		-- yellow
+		local gradiant ={ 	 0, Hex2RGB(0x1a1c2c),	-- black
+						  	 4, Hex2RGB(0x5d275d),	-- violet
+						  	 7, Hex2RGB(0xb13e53),	-- Red
+							 11,Hex2RGB(0xef7d57),	-- orange
+							 15,Hex2RGB(0xffcd75)	-- yellow
 						 }
 		local pal = PaletteGradiant(gradiant)
 		PaletteApply(pal)

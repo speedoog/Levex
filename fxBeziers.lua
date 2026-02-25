@@ -90,8 +90,10 @@ fxBeziers={
 	, tic = function(self,t,dt)
 --		plotBeziers(t)
 
-		for tt=0,3,0.1 do
-			plotCatmullRom(t+tt)
-		end
+		-- for tt=0,3,0.1 do
+		-- 	plotCatmullRom(t+tt)
+		-- end
+		plotCatmullRom(t)
+
 	end
 }

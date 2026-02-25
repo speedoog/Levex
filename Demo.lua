@@ -1,11 +1,33 @@
 
+
+function mdKF(att, ...)
+	local out,keys={},{...}
+	out.call =function(self, fx)
+		fx[att]=CatmullRom(keys, 1, fx.t)[1]
+	end
+	return out
+end
+
+function mdSin(att,a,f,o,p)
+	local out={}
+	if not p then p=0 end
+	out.call =function(self, fx)
+		fx[att]=o+a*sin(f*2*pi*fx.t+p*2*pi)
+	end
+	return out
+end
+
 RunningFx = { }
 Sequence = 
 {
---	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
-	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={"x", {0,0, 3,50}, "y", {0,0,1,30,2,40,3,45 } } },
+	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
+
+	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
+
+--	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",70,1.12,120), mdSin("y",50,1.43,70,0.25) } },
+
 --	{	s=9,	e=12, 	fx=CreateFxText(50,10,"Enjoy",4), vb=1 },
-	{	s=0,	e=200,  fx=fxTerrain,		vb=0, cls=false},
+--	{	s=0,	e=200,  fx=fxTerrain,		vb=0, cls=false},
 
 --	{	s=0,	e=20, 	fx=fxCPC,			vb=1},
 --	{	s=0,	e=20, 	fx=fxCube,			vb=1},
@@ -103,12 +125,15 @@ function main()
 		-- update modifiers
 		local mod=fh.sh.mod
 		if mod then
-			for i=1,#mod,2 do
-				local att=mod[i]
-				local keys=mod[i+1]
-				local v=CatmullRom(keys, 1, fx.t)
-				fx[att]=v[1]
+			for k,v in pairs(mod) do
+				v:call(fx)
 			end
+			-- for i=1,#mod,2 do
+			-- 	local att=mod[i]
+			-- 	local keys=mod[i+1]
+			-- 	local v=CatmullRom(keys, 1, fx.t)
+			-- 	fx[att]=v[1]
+			-- end
 		end
 
 		fh.fx:tic(fx.t,fx.dt)

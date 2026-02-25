@@ -21,6 +21,8 @@ require "fxText"
 require "fxCPC"
 require "fxBlower"
 require "fxTerrain"
+require "fxBalls"
+require "fxPowerOff"
 require "Demo"
 
 t=0

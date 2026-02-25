@@ -22,27 +22,30 @@ Sequence =
 {
 --	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
 
-	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
+--	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
 
---	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",70,1.12,120), mdSin("y",50,1.43,70,0.25) } },
+--	{	s=0,	e=200,	fx=CreateFxBalls(),	vb=0},
 
 --	{	s=9,	e=12, 	fx=CreateFxText(50,10,"Enjoy",4), vb=1 },
-	{	s=0,	e=200,  fx=fxTerrain,		vb=0, cls=false},
+	{	s=0,	e=4,  fx=fxTerrain,				vb=0},
+	{	s=4,	e=6.5,  fx=CreateFxPowerOff(),	vb=0},
 
 --	{	s=0,	e=20, 	fx=fxCPC,			vb=1},
---	{	s=0,	e=20, 	fx=fxCube,			vb=1},
---	{	s=1.8,	e=3,  	fx=fxBlower,		vb=0},
+	{	s=0,	e=20, 	fx=fxCube,			vb=1},
+	{	s=1.8,	e=3,  	fx=fxBlower,		vb=0},
 --	{	s=0,	e=20, 	fx=fxScrollText,	vb=0},
 --	{	s=3,	e=15,	fx=fxBeziers,		vb=0},
 --	{	s=15,	e=25,	fx=fxDisolve,		vb=1}
 }
 
 function Startfx(fx,sh)
-	local vbank,start=sh.vb,sh.s
 	if fx.started then return end
+
+	local vb,start=sh.vb,sh.s
+	if vb==nil then vb=0 end
+	vbank(vb)
 	fx:start()
-	if vbank==nil then vbank=0 end
-	table.insert(RunningFx, {fx=fx, start=start, vbank=vbank, sh=sh})
+	table.insert(RunningFx, {fx=fx, start=start, vbank=vb, sh=sh})
 	fx.started=true
 	fx.t=0
 	fx.dt=0
@@ -63,6 +66,14 @@ gTime=0
 gInfos=false
 gPlay=true
 gDeltaTime=0
+
+function BOOT()
+	for k,v in pairs(Sequence) do
+		if v.fx.Init then
+			v.fx:Init()
+		end
+	end
+end
 
 function main()
 
@@ -105,7 +116,7 @@ function main()
 			if fx.started~=true then
 				Startfx(fx, sh)
 			end
-			if (sh.cls==false) then
+			if (fx.cls==false) then
 				vclear[sh.vb+1]=false
 			end
 		end

@@ -138,6 +138,7 @@ end
 
 fxTerrain = {
 	name = "Terrain",
+    cls = false,
 	_Distance = 1024,
 	_h = 0.5,
 	_map = {},
@@ -151,17 +152,17 @@ fxTerrain = {
 		local I = self:GetMapValue(floor(u * self._Distance), floor(v * self._Distance))
 		return 1 - I * I * 9
 	end,
-	start = function(self)
+	Init = function(self)
 		seed(1)
 		local _Random = function()
 			return (2 * rand() - 1)
 		end
-
+	
 		self._map = {}
 		for i = 0, self._Distance * self._Distance do
 			self._map[i] = 0
 		end
-
+	
 		local l = .5
 		local T = self._Distance
 		while T > 1 do
@@ -185,6 +186,8 @@ fxTerrain = {
 				end
 			end
 		end
+	end,
+	start = function(self)
 
 		--        Palette: Build palette here then add palette setter, ex pico8:
 		--        palet="0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8"

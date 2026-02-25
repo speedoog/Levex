@@ -20,14 +20,14 @@ end
 RunningFx = { }
 Sequence = 
 {
-	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
+--	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
 
 	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
 
 --	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",70,1.12,120), mdSin("y",50,1.43,70,0.25) } },
 
 --	{	s=9,	e=12, 	fx=CreateFxText(50,10,"Enjoy",4), vb=1 },
---	{	s=0,	e=200,  fx=fxTerrain,		vb=0, cls=false},
+	{	s=0,	e=200,  fx=fxTerrain,		vb=0, cls=false},
 
 --	{	s=0,	e=20, 	fx=fxCPC,			vb=1},
 --	{	s=0,	e=20, 	fx=fxCube,			vb=1},

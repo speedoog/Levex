@@ -20,14 +20,19 @@ end
 RunningFx = { }
 Sequence = 
 {
+	-- Boot sequence
+	{	s=0,	e=4,	fx=CreateFxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)},	vb=0},
+	{	s=1,	e=3, 	fx=CreateFxText(100,80,"TIC-80"), vb=0 },
+	{	s=1.2,	e=3, 	fx=CreateFxText(80,90,"tiny computer"), vb=0 },
+	{	s=4,	e=10, 	fx=CreateFxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2), vb=1 },
+	{	s=6,	e=10, 	fx=CreateFxText(10,50,'Load "LEVEX"',13,5), vb=1 },
+
 --	{	s=0,	e=200,	fx=fxBeziers,		vb=1},
 
 --	{	s=0,	e=600, 	fx=CreateFxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
 
 --	{	s=0,	e=200,	fx=CreateFxBalls(),	vb=0},
 
-	{	s=0,	e=12, 	fx=CreateFxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2), vb=1 },
-	{	s=3,	e=12, 	fx=CreateFxText(10,50,'Load "LEVEX"',13,5), vb=1 },
 --	{	s=0,	e=4,  fx=fxTerrain,				vb=0},
 --	{	s=4,	e=6.5,  fx=CreateFxPowerOff(),	vb=0},
 

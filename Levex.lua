@@ -18,11 +18,11 @@ require "fxCube"
 require "fxBeziers"
 require "fxScrollText"
 require "fxText"
-require "fxCPC"
 require "fxBlower"
 require "fxTerrain"
 require "fxBalls"
 require "fxPowerOff"
+require "fxSprite"
 require "Demo"
 
 t=0

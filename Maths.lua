@@ -27,8 +27,8 @@ function lerp2(a,b,f,dt)
 	return a+(b-a)*r
 end
 
--- Wrap a number x between a range [a..b]
-function Wrap(x, a, b)
+-- wrap a number x between a range [a..b]
+function wrap(x, a, b)
 	local fRange = b - a
 	if abs(fRange)>1e-6 then
 		return x - fRange * floor((x - a) / fRange)

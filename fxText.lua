@@ -1,6 +1,6 @@
-CreateFxText = function(x, y, txt, c)
+CreateFxText = function(x, y, txt, c, speed,incol)
 	local fxText = {
-		name = "ScrollText",
+		name = "Text",
 		x = x,
 		y = y,
 		text = txt,
@@ -8,7 +8,10 @@ CreateFxText = function(x, y, txt, c)
 		start = function()
 		end,
 		tic = function(self, t, dt)
-			print(self.text, self.x, self.y, self.c)
+			local e=floor(t*speed)
+--			print(self.text:sub(0,e), self.x, self.y, self.c)
+			font(self.text:sub(0,e), self.x, self.y, self.c, 6, 8, true, 1, false)
+
 		end
 	}
 	return fxText

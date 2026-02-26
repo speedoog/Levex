@@ -26,13 +26,14 @@ Sequence =
 
 --	{	s=0,	e=200,	fx=CreateFxBalls(),	vb=0},
 
---	{	s=9,	e=12, 	fx=CreateFxText(50,10,"Enjoy",4), vb=1 },
-	{	s=0,	e=4,  fx=fxTerrain,				vb=0},
-	{	s=4,	e=6.5,  fx=CreateFxPowerOff(),	vb=0},
+	{	s=0,	e=12, 	fx=CreateFxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2), vb=1 },
+	{	s=3,	e=12, 	fx=CreateFxText(10,50,'Load "LEVEX"',13,5), vb=1 },
+--	{	s=0,	e=4,  fx=fxTerrain,				vb=0},
+--	{	s=4,	e=6.5,  fx=CreateFxPowerOff(),	vb=0},
 
 --	{	s=0,	e=20, 	fx=fxCPC,			vb=1},
-	{	s=0,	e=20, 	fx=fxCube,			vb=1},
-	{	s=1.8,	e=3,  	fx=fxBlower,		vb=0},
+--	{	s=0,	e=20, 	fx=fxCube,			vb=1},
+--	{	s=1.8,	e=3,  	fx=fxBlower,		vb=0},
 --	{	s=0,	e=20, 	fx=fxScrollText,	vb=0},
 --	{	s=3,	e=15,	fx=fxBeziers,		vb=0},
 --	{	s=15,	e=25,	fx=fxDisolve,		vb=1}

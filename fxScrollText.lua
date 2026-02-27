@@ -1,3 +1,6 @@
+
+-- TO REMOVE UNUSED ---
+
 fxScrollText = {
 	name = "ScrollText",
 	Warning = [[

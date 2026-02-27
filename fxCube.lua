@@ -1,5 +1,6 @@
 
 function rotatexyz(a,b,c)
+	local xrot,yrot,zrot
 	zrot = {
 		{cos(a),-sin(a),0},
 		{sin(a),cos(a),0},
@@ -15,7 +16,7 @@ function rotatexyz(a,b,c)
 		{0,cos(c),-sin(c)},
 		{0,sin(c),cos(c)}
 	}
-	pm = {{1,0,0},{0,1,0}, {0,0,1}}
+	local pm = {{1,0,0},{0,1,0}, {0,0,1}}
 	return matmul(matmul(matmul(pm, xrot),yrot),zrot)
 end
 

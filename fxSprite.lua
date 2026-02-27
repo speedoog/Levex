@@ -1,4 +1,4 @@
-CreateFxSprite = function(x, y)
+FxSprite = function(x, y)
 	local fx = {
 		name = "Sprite",
 		x = x,

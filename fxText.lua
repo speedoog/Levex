@@ -1,5 +1,5 @@
-CreateFxText = function(x, y, txt, c, speed,incol)
-	local fxText = {
+FxText = function(x, y, txt, c, speed,incol)
+	local fx = {
 		name = "Text",
 		x = x,
 		y = y,
@@ -15,5 +15,5 @@ CreateFxText = function(x, y, txt, c, speed,incol)
 
 		end
 	}
-	return fxText
+	return fx
 end

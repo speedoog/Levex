@@ -1,4 +1,4 @@
-CreateFxBalls = function()
+FxBalls = function()
     local fx = {
         name = "Balls",
         cls = false,

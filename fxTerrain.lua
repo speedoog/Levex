@@ -1,157 +1,13 @@
-function rgbToHsv(r, g, b)
-	r, g, b = r / 255, g / 255, b / 255
-	local max, min = math.max(r, g, b), math.min(r, g, b)
-	local h, s, v
-	v = max
-	local d = max - min
-	if max == 0 then
-		s = 0
-	else
-		s = d / max
-	end
-	if max == min then
-		h = 0
-	else
-		if max == r then
-			h = (g - b) / d
-			if g < b then
-				h = h + 6
-			end
-		elseif max == g then
-			h = (b - r) / d + 2
-		elseif max == b then
-			h = (r - g) / d + 4
-		end
-		h = h / 6
-	end
-	return h, s, v
-end
-
-function hsvToRgb(h, s, v)
-	local r, g, b
-	local i = math.floor(h * 6)
-	local f = h * 6 - i
-	local p = v * (1 - s)
-	local q = v * (1 - f * s)
-	local t = v * (1 - (1 - f) * s)
-	i = i % 6
-	if i == 0 then
-		r, g, b = v, t, p
-	elseif i == 1 then
-		r, g, b = q, v, p
-	elseif i == 2 then
-		r, g, b = p, v, t
-	elseif i == 3 then
-		r, g, b = p, q, v
-	elseif i == 4 then
-		r, g, b = t, p, v
-	elseif i == 5 then
-		r, g, b = v, p, q
-	end
-	return math.floor(r * 255), math.floor(g * 255), math.floor(b * 255)
-end
-
-function make_gradient(r1, g1, b1, r2, g2, b2, steps)
-	steps = math.abs(steps)
-	local out = {}
-	local h1 = 0
-	local s1 = 0
-	local v1 = 0
-	h1, s1, v1 = rgbToHsv(r1, g1, b1)
-	local h2 = 0
-	local s2 = 0
-	local v2 = 0
-	h2, s2, v2 = rgbToHsv(r2, g2, b2)
-	local stepamount = 1 / (steps-1)
-	local prog = 0
-	local i = 0
-	for i = 1, steps, 1 do
-		local temph = lerp(h1, h2, prog)
-		local temps = lerp(s1, s2, prog)
-		local tempv = lerp(v1, v2, prog)
-		out[i] = {}
-		out[i].r, out[i].g, out[i].b = hsvToRgb(temph, temps, tempv)
-		prog = prog + stepamount
-	end
-	return out
-end
-function make_gradient_direct(r1, g1, b1, r2, g2, b2, steps)
-	steps = math.abs(steps)
-	local out = {}
-	local stepamount = 1 / (steps-1)
-	local prog = 0
-	local i = 0
-	for i = 1, steps, 1 do
-		out[i] = {}
-		out[i].r = lerp(r1, r2, prog)
-		out[i].g = lerp(g1, g2, prog)
-		out[i].b = lerp(b1, b2, prog)
-		prog = prog + stepamount
-	end
-	return out
-end
-
-function PaletteLoadString(s)
-	local ret={}
-	local i=1
-	while i<s:len() do
-		local r = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
-		local g = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
-		local b = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
-		table.insert(ret, {r,g,b})
-	end
-	return ret
-end
-
-function PaletteApply(pal)
-	paladr = 0x3fc0
-	for k,v in pairs(pal) do
-		poke(paladr,   v[1])
-		poke(paladr+1, v[2])
-		poke(paladr+2, v[3])
-		paladr=paladr+3
-	end
-end
-
-function PaletteGradiant(keys)
-	local tmp={}
-	for i=1,#keys,2 do
-		table.insert(tmp, keys[i])
-		table.insert(tmp, keys[i+1][1])
-		table.insert(tmp, keys[i+1][2])
-		table.insert(tmp, keys[i+1][3])
-	end
-	local ret={}
-	for i=0,15 do
-		local k=CatmullRom(tmp, 3, i)
-		table.insert(ret, k)
-	end
-	return ret
-end
-
-function Hex2RGB(Hex)
-	local r=Hex>>16
-	local g=(Hex>>8)&0xFF
-	local b=Hex&0xFF
-	return {r,g,b}
-end
-
-fxTerrain = {
+FxTerrain = function()
+	local fx = {
 	name = "Terrain",
     cls = false,
 	_Distance = 1024,
 	_h = 0.5,
 	_map = {},
-	GetMapValue = function(self, x, y)
-		return self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance]
-	end,
-	SetMapValue = function(self, x, y, v)
-		self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] = v
-	end,
-	S = function(self, u, v)
-		local I = self:GetMapValue(floor(u * self._Distance), floor(v * self._Distance))
-		return 1 - I * I * 9
-	end,
+	GetMapValue = function(self, x, y) 		return self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] 	end,
+	SetMapValue = function(self, x, y, v)	self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] = v		end,
+	S = function(self, u, v)				local I = self:GetMapValue(floor(u * self._Distance), floor(v * self._Distance)) return 1 - I * I * 9 end,
 	Init = function(self)
 		seed(1)
 		local _Random = function()
@@ -188,47 +44,6 @@ fxTerrain = {
 		end
 	end,
 	start = function(self)
-
-		--        Palette: Build palette here then add palette setter, ex pico8:
-		--        palet="0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8"
-		palettes = {
-			{
-				p = "1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57",
-				name = "sweetie16"
-			},
-			{
-				p = "140c1c44243430346d4e4a4f854c30346524d04648757161597dced27d2c8595a16daa2cd2aa996dc2cadad45edeeed6",
-				name = "classic tic80"
-			},
-			{
-				p = "0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8",
-				name = "pico8"
-			},
-			{
-				p = "000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff",
-				name = "grayscale"
-			},
-			{
-				p = "0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff",
-				name = "blueish"
-			},
-		}
-
-		pal=PaletteLoadString(palettes[5].p)
-		PaletteApply(pal)
-
---		palet = palettes[1].p
-
--- 		paladr = 0x3fc0
--- 		for i = 1, palet:len(), 2 do
--- --			if i % 3 == 2 then
--- 				poke(paladr, tonumber("0x" .. palet:sub(i, i) .. palet:sub(i + 1, i + 1)))
--- --			else
--- --				poke(paladr, tonumber("0x" .. palet:sub(i, i) .. palet:sub(i + 1, i + 1)) * 0.7)
--- --			end
--- 			paladr = paladr + 1
--- 		end
-		
 		local gradiant ={ 	 0, Hex2RGB(0x1a1c2c),	-- black
 						  	 4, Hex2RGB(0x5d275d),	-- violet
 						  	 7, Hex2RGB(0xb13e53),	-- Red
@@ -237,19 +52,8 @@ fxTerrain = {
 						 }
 		local pal = PaletteGradiant(gradiant)
 		PaletteApply(pal)
-
 	end,
 	tic = function(self, t, dt)
-
-		-- local gradiant ={ 	{ 0, Hex2RGB(0x1a1c2c)},	-- black
-		-- 				  	{ 2, {80*sin(0.5*t)+80, 27, 80*cos(0.5*t)+80} },	-- violet
-		-- 				  	{ 5, {hsvToRgb(sin(t),1,1)} },	-- Red
-		-- 					{ 11,Hex2RGB(0xef7d57)},	-- orange
-		-- 					{ 15,Hex2RGB(0xffcd75)}		-- yellow
-		-- 				 }
-		-- local pal = PaletteGradiant(gradiant)
-		-- PaletteApply(pal)
-
 
 --		local border=max(0,floor((136/2)-10*t))
 		local border=0
@@ -263,11 +67,6 @@ fxTerrain = {
 		local s_y = a_y
 		local e_x = size_x
 		local e_y = size_y
-		-- mx,my=mouse()
-		-- o_x=mx/size_x
-		-- o_y=my/size_y
-		-- o_z=0
-		-- o_w=1
 
 		-- L=function(x,a,c)
 		--     return sqrt(1.-exp(-a*I*(1.-O)-c*O))
@@ -364,6 +163,8 @@ fxTerrain = {
 		end
 	end
 }
+return fx
+end
 
 --[[
 _Distance 2048

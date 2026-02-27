@@ -1,4 +1,4 @@
-CreateFxPowerOff = function()
+FxPowerOff = function()
 	local fx = {
 		name = "PowerOff",
 		cls = false,

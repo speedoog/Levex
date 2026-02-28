@@ -2,12 +2,14 @@ FxTerrain = function()
 	local fx = {
 	name = "Terrain",
     cls = false,
+	alt = 32.0,
+	mul = 9,
 	_Distance = 1024,
 	_h = 0.5,
 	_map = {},
 	GetMapValue = function(self, x, y) 		return self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] 	end,
 	SetMapValue = function(self, x, y, v)	self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] = v		end,
-	S = function(self, u, v)				local I = self:GetMapValue(floor(u * self._Distance), floor(v * self._Distance)) return 1 - I * I * 9 end,
+	S = function(self, u, v)				local I = self:GetMapValue(floor(u * self._Distance), floor(v * self._Distance)) return 1 - I * I * self.mul end,
 	Init = function(self)
 		seed(1)
 		local _Random = function()
@@ -119,7 +121,7 @@ FxTerrain = function()
 
 				local l = self:S(u, v)
 
-				local y = (l - self._h) * 32
+				local y = (l - self._h) * self.alt
 
 				if l > 0.9 then
 					inc = remap(l, 0.9, 1, 1.5, 3)

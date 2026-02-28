@@ -21,15 +21,15 @@ RunningFx = { }
 Sequence = 
 {
 	-- Boot sequence
-	{	s=0,	e=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
-	{	s=1,	e=3, 	vb=0, 	fx=FxText(100,80,"TIC-80")},
-	{	s=1.2,	e=3, 	vb=0, 	fx=FxText(80,90,"tiny computer")},
-	{	s=4,	e=10, 	vb=0, 	fx=FxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2)},
-	{	s=6,	e=10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
+--	{	s=0,	e=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
+--	{	s=1,	e=3, 	vb=0, 	fx=FxText(100,80,"TIC-80")},
+--	{	s=1.2,	e=3, 	vb=0, 	fx=FxText(80,90,"tiny computer")},
+--	{	s=4,	e=10, 	vb=0, 	fx=FxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2)},
+--	{	s=6,	e=10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
 
-	{	s=0,	e=20, 	vb=1,	fx=fxCube			},
+--	{	s=0,	e=20, 	vb=1,	fx=fxCube			},
 	
---	{	s=0,	e=4,  	vb=0,	fx=FxTerrain()		},
+	{	s=0,	e=200,  vb=0,	fx=FxTerrain(),		mod={mdKF("alt",0,16,30,40), mdKF("mul",0,0,10,6,20,9,30,14) } },
 --	{	s=0,	e=200,	vb=1, 	fx=FxBeziers()		},
 --	{	s=0,	e=200,	vb=0,	fx=FxBalls()		},
 --	{	s=4,	e=6.5,  vb=0,	fx=FxPowerOff()		},

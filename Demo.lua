@@ -17,28 +17,44 @@ function mdSin(att,a,f,o,p)
 	return out
 end
 
+pt1=0	-- boot
+pt2=10	-- mountain draw + spectrals
+pt3=20	-- balls + beziers
+pt4=30	-- levex + moutain vector
+pt5=40	-- cube 
+pt6=50	-- greetz disolve
+pt7=80  -- terrain
+pt8=120 -- end
+
 RunningFx = { }
 Sequence = 
 {
 	-- Boot sequence
---	{	s=0,	e=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
---	{	s=1,	e=3, 	vb=0, 	fx=FxText(100,80,"TIC-80")},
---	{	s=1.2,	e=3, 	vb=0, 	fx=FxText(80,90,"tiny computer")},
---	{	s=4,	e=10, 	vb=0, 	fx=FxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2)},
---	{	s=6,	e=10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
+	{	s=0,	e=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
+	{	s=1,	e=3, 	vb=0, 	fx=FxText(100,80,"TIC-80")},
+	{	s=1.2,	e=3, 	vb=0, 	fx=FxText(80,90,"tiny computer")},
+	{	s=4,	e=10, 	vb=0, 	fx=FxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2)},
+	{	s=6,	e=10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
 
---	{	s=0,	e=20, 	vb=1,	fx=fxCube			},
+	{	s=pt2+0,	e=pt2+10, 	vb=0, 	fx=FxDraw("Spectrals.txt") },
+
+	{	s=pt3+0,	e=pt3+5,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
+	{	s=pt3+5,	e=pt3+10,	vb=1, 	fx=FxBeziers()		},
+
+	{	s=pt4+0,	e=pt5, 		fx=FxText(50,50,"PH logo Levex", gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
+
+	{	s=pt5+0,	e=pt6, 		vb=1,	fx=fxCube			},
+	{	s=pt5+1.8,	e=pt5+3,  	vb=0,	fx=FxBlower()		},
 	
-	{	s=0,	e=200,  vb=0,	fx=FxTerrain(),		mod={mdKF("alt",0,16,30,40), mdKF("mul",0,0,10,6,20,9,30,14) } },
---	{	s=0,	e=200,	vb=1, 	fx=FxBeziers()		},
---	{	s=0,	e=200,	vb=0,	fx=FxBalls()		},
---	{	s=4,	e=6.5,  vb=0,	fx=FxPowerOff()		},
---	{	s=1.8,	e=3,  	vb=0,	fx=FxBlower()		},
+	{	s=pt6+0,	e=pt7,		vb=1,	fx=fxDisolve()		},
+
+	{	s=pt7+0,	e=pt8,  	vb=0,	fx=FxTerrain(),		mod={mdKF("alt",0,16,30,40), mdKF("mul",0,0,10,6,20,9,30,14) } },
+	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Code", gWhite), 		vb=1, mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Speedman", gWhite), 	vb=1, mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+
+	{	s=pt8+0,	e=pt8+2.5,  vb=0,	fx=FxPowerOff()		},
 
 --	{	s=0,	e=600, 	fx=FxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
-
---	{	s=0,	e=20, 	vb=0,	fx=fxScrollText		},
---	{	s=15,	e=25,	vb=1,	fx=fxDisolve		}
 }
 
 function Startfx(fx,sh)
@@ -73,6 +89,7 @@ gDeltaTime=0
 function BOOT()
 	for k,v in pairs(Sequence) do
 		if v.fx.Init then
+			v.fx.fh=v
 			v.fx:Init()
 		end
 	end

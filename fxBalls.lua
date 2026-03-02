@@ -2,6 +2,7 @@ FxBalls = function()
     local fx = {
         name = "Balls",
         cls = false,
+        scale=1,
         start = function()
         end,
         tic = function(self, t, dt)
@@ -23,7 +24,11 @@ FxBalls = function()
 
             for c = 1, 4 do
                 for i = 0, 16 do
-                    circ(120 + 100 * sin(t / 11 + 1.3 * c), 68 + 50 * sin(t / 9 + c), 8 + sin(t / 10 + c) * 6, c)
+                    local x,y,r
+                    x=120 + 100 * sin(t / 11 + 1.3 * c)
+                    y=68 + 50 * sin(t / 9 + c)
+                    r=self.scale*(8 + sin(t / 10 + c) * 6)
+                    circ(x, y, r, c)
                 end
             end
         end

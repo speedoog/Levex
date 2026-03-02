@@ -78,12 +78,12 @@ FxBeziers = function()
 		start = function()
 		end,
 		tic = function(self, t, dt)
---			plotBeziers(t)
+			plotBeziers(t)
 
 			-- for tt=0,3,0.1 do
 			-- 	plotCatmullRom(t+tt)
 			-- end
-			plotCatmullRom(t)
+--			plotCatmullRom(t)
 		end
 	}
 	return fx

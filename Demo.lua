@@ -25,7 +25,7 @@ pt6=50	-- greetz disolve
 pt7=80  -- terrain
 pt8=120 -- end
 
-gTime=0			--pt7	--+30
+gTime=0	--pt7
 gInfos=false
 gPlay=true
 gDeltaTime=0
@@ -53,7 +53,7 @@ Sequence =
 	
 	{	s=pt6+0,	e=pt7,		vb=1,	fx=fxDisolve()		},
 
-	{	s=pt7+0,	e=pt8,  	vb=0,	fx=FxTerrain(),		mod={mdKF("alt",0,16,30,40), mdKF("mul",0,0,10,6,20,9,30,14) } },
+	{	s=pt7+0,	e=pt8,  	vb=0,	fx=FxTerrain(),		mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
 	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Code", gWhite), 		vb=1, mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
 	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Speedman", gWhite), 	vb=1, mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
 

@@ -17,32 +17,41 @@ fxDisolve = function()
 		start = function(self)
 			self.list={}
 			txt={
-				"Tpolm", "Abyss", "Desire", "Nah-Kolor", "Fairlight", "Razor1911", "Razor1911", "Hoffman", 
+				"Tpolm", "Abyss", "Desire", "Nah-Kolor", "Fairlight", "Razor1911", "Hoffman", 
 				"ASD", "Spaceballs", "DeadLiners", "Conspiracy", "Logicoma", "Bomb", "Futuris", "LFT",
 				"Skaven", "Cookie Collective", "IQ", "Oxygene", "Limp Ninja", "Farbrausch", "Monad", "Rebels", "Calodox",
-				"Cocoon", "Ninjadev", "Mercury", "Loonies", "Altair", "TBL", "Still", "Satori"
+				"Cocoon", "Ninjadev", "Mercury", "Loonies", "Altair", "TBL", "Still", "Satori",
 			}
 			iTxt=-1
+
+			table.sort(txt)	-- sort ascending
 
 			cls()
 			self:scan(0)
 		end,
 		tic = function(self, t, dt)
-			local it=floor(t*2)
-			if it>iTxt then
+			local it=floor(t*1.3)
+			if it>iTxt and it<#txt then
 				iTxt=it
-				local c=iTxt%16
+				local c=iTxt%12+2
 				local s=txt[(iTxt%#txt)+1]
 				local w=print(s,-500,-500, c, false, 1)
 				local b=10
+				seed(iTxt)
 				local x=remap(rand(),0,1, b, gSizeX-w-b)
 				local y=remap(rand(),0,1, b, gSizeY-8-b)
+				for a=-1,1 do
+					for b=-1,1 do
+						print(s, x+a, y+b, c+6, false, 1)
+					end
+				end
 				print(s, x, y, c, false, 1)
 				self:scan(t)
 			end
 
 --			local mx,my,ml,mm,mr=mouse()
-			local mx,my=remap(sin(t), -1, 1, 0, gSizeX),gSizeY+100
+--			local mx,my=remap(sin(t), -1, 1, 0, gSizeX),gSizeY+150
+			local mx,my=gSizeX/2+2*gSizeX*sin(t/2), gSizeY/2+2*gSizeY*cos(t/2)
 			
 			for k,it in pairs(self.list) do 
 				local x1=it.x
@@ -56,6 +65,7 @@ fxDisolve = function()
 					it.x=x*0.992+mx
 					it.y=y*0.992+my
 				end
+
 				
 				line(x1,y1,it.x,it.y,it.c)
 				if t>(it.t+10) then 

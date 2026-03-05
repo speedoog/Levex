@@ -1,16 +1,19 @@
 FxTerrain = function()
+	local _Distance = 1024
+	local _DistanceMask=1024-1
 	local fx = {
 	name = "Terrain",
     cls = false,
 	alt = 32.0,
 	mul = 9,
-	_Distance = 1024,
 	_h = 0.5,
 	_map = {},
-	GetMapValue = function(self, x, y) 		return self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] 	end,
-	SetMapValue = function(self, x, y, v)	self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] = v		end,
-	S = function(self, u, v)				local I = self:GetMapValue(floor(u * self._Distance), floor(v * self._Distance)) return 1 - I * I * self.mul end,
---	S = function(self, u, v)				return 1.5*sin(10*u)*cos(10*v)+(sin(20*u)*cos(20*v)) end,
+	GetMapValue = function(self, x, y) 		return self._map[(x & _DistanceMask) + (y & _DistanceMask) * _Distance + 1] 	end,
+	SetMapValue = function(self, x, y, v)	self._map[(x & _DistanceMask) + (y & _DistanceMask) * _Distance + 1] = v		end,
+	Surface = function(self, u, v)			return 1-self:GetMapValue(floor(u * _Distance), floor(v * _Distance)) * self.mul end,
+--	SurfaceOG = function(self, u, v)			local I = self:GetMapValue(floor(u * _Distance), floor(v * _Distance)) return 1 - I * I * self.mul end,
+--	Surface = function(self, u, v)			return (1.2*sin(19*u)*cos(19*v)+(sin(11*u)*cos(11*v)))* self.mul/9 end,
+--	Surface = function(self, u, v)			return u*v end,
 	Init = function(self)
 		seed(1)
 		local _Random = function()
@@ -18,25 +21,24 @@ FxTerrain = function()
 		end
 	
 		self._map = {}
-		for i = 0, self._Distance * self._Distance do
-			self._map[i] = 0
+		for i = 0, _Distance * _Distance do
+			self._map[i+1] = 0
 		end
 	
-		local l = .5
-		local T = self._Distance
+		local l,T = .5,_Distance
 		while T > 1 do
 			l = l / 2
 			T = T / 2
 			local M = T / 2
 			if M < 1 then
-				break
+				M=1
 			end
-			for j = 0, self._Distance, T do
-				for i = 0, self._Distance, T do
-					w = self:GetMapValue(i, j)
-					x = self:GetMapValue(i + T, j)
-					y = self:GetMapValue(i, j + T)
-					z = self:GetMapValue(i + T, j + T)
+			for j = 0, _Distance-1, T do
+				for i = 0, _Distance-1, T do
+					local w = self:GetMapValue(i, j)
+					local x = self:GetMapValue(i + T, j)
+					local y = self:GetMapValue(i, j + T)
+					local z = self:GetMapValue(i + T, j + T)
 					self:SetMapValue(i + M, j, (w + x) / 2 + _Random() * l)
 					self:SetMapValue(i + M, j + T, (y + z) / 2 + _Random() * l)
 					self:SetMapValue(i, j + M, (w + y) / 2 + _Random() * l)
@@ -45,6 +47,14 @@ FxTerrain = function()
 				end
 			end
 		end
+			
+		for j = 0, _Distance-1 do
+			for i = 0, _Distance-1 do
+				local x = self:GetMapValue(i, j)
+				self:SetMapValue(i, j, x*x)
+			end
+		end
+
 	end,
 	start = function(self)
 		local gradiant ={ 	 0, Hex2RGB(0x1a1c2c),	-- black
@@ -90,10 +100,10 @@ FxTerrain = function()
 
 		h = 10
 		for d = 0, 1.5, 0.05 do
-			h = min(h, self:S(.5 + ox + .05 * sin(30 * d), (t + d) * .3) - .25 + .15 * cos(5 + t * 1.33))
+			h = min(h, self:Surface(.5 + ox + .05 * sin(30 * d), (t + d) * .3) - .25 + .15 * cos(5 + t * 1.33))
 		end
 
-		self._h = lerp2(self._h, h, 0.2, dt)
+		self._h = lerp2(self._h, h, 0.2, max(0,dt))
 
 		local matrixSize = 8
 		local matrixMask = 7
@@ -110,7 +120,7 @@ FxTerrain = function()
 			local w = (i / size_x) * 2 - 1
 
 			---			for j = 40+.5*(iFrame&3), 350,0 do
-			local inc = 1.5
+			local inc = 1
 			local j = 0 + .5 * (iFrame & 3)
 			while j < 350 do
 				j = j + inc
@@ -121,17 +131,15 @@ FxTerrain = function()
 				local u = x / 200 + .5 + ox
 				local v = z / 200 + t * .3
 
-				local l = self:S(u, v)
+				local l = self:Surface(u, v)
 
 				local y = (l - self._h) * self.alt
 
 				-- TODO remplace by table from catmullrom curve
 				if l > 0.9 then
 					inc = remap(l, 0.9, 1, 1.5, 3)
-				elseif l > 0.3 then
-					inc = remap(l, 0.3, 0.9, 1, 1.5)
 				elseif l > 0.0 then
-					inc = remap(l, 0, 0.3, .5, 1)
+					inc = remap(l, 0, 0.9, .5, 1.5)
 				else
 					inc = 0.5
 				end
@@ -145,7 +153,7 @@ FxTerrain = function()
 				end
 
 				if (s_y < e_y) then
-					local I = l - 0.96*self:S(u + .01, v + .005) + .02
+					local I = l - 0.96*self:Surface(u + .01, v + .005) + .02
 					--					I = I * sign(I) * 30 + .2
 					--O=1.0-exp(-z*3e-4);
 					-- o_x = L(o_x,.6,2);
@@ -157,9 +165,9 @@ FxTerrain = function()
 					local color = clamp(I * 12 * 30 * clamp(6 / z, 0, 1), 0, 15)
 					local icolor = floor(color)
 					local fColorPart = mat_max * (color - icolor)
-					local bayer_x = (s_x & matrixMask) + 1
+					local bayer_x = Bayer8x8[(s_x & matrixMask) + 1]
 					for iy = s_y, e_y do
-						local threshold = Bayer8x8[bayer_x][(iy & matrixMask) + 1]
+						local threshold = bayer_x[(iy & matrixMask) + 1]
 						if fColorPart > threshold then
 							pix(s_x, iy, color + 1)
 						else

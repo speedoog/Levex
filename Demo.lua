@@ -1,5 +1,4 @@
 
-
 function mdKF(att, ...)
 	local out,keys={},{...}
 	out.call =function(self, fx)
@@ -25,6 +24,12 @@ pt5=40	-- cube
 pt6=50	-- greetz disolve
 pt7=80  -- terrain
 pt8=120 -- end
+
+gTime=0			--pt7	--+30
+gInfos=false
+gPlay=true
+gDeltaTime=0
+
 
 RunningFx = { }
 Sequence = 
@@ -81,10 +86,6 @@ function Stopfx(fx)
 end
 
 -- ############## Demo ##############
-gTime=0
-gInfos=false
-gPlay=true
-gDeltaTime=0
 
 function BOOT()
 	for k,v in pairs(Sequence) do
@@ -113,7 +114,7 @@ function main()
 
 	if keyp(60,20,1) then
 		if key(63) then
-			gTime=0
+			gTime=max(0,gTime-10)
 		else
 			if gPlay then
 			 	gTime=max(0,gTime-1)

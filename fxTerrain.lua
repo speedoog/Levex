@@ -10,6 +10,7 @@ FxTerrain = function()
 	GetMapValue = function(self, x, y) 		return self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] 	end,
 	SetMapValue = function(self, x, y, v)	self._map[(x & (self._Distance - 1)) + (y & (self._Distance - 1)) * self._Distance] = v		end,
 	S = function(self, u, v)				local I = self:GetMapValue(floor(u * self._Distance), floor(v * self._Distance)) return 1 - I * I * self.mul end,
+--	S = function(self, u, v)				return 1.5*sin(10*u)*cos(10*v)+(sin(20*u)*cos(20*v)) end,
 	Init = function(self)
 		seed(1)
 		local _Random = function()
@@ -54,6 +55,7 @@ FxTerrain = function()
 						 }
 		local pal = PaletteGradiant(gradiant)
 		PaletteApply(pal)
+		self._h = 0.5
 	end,
 	tic = function(self, t, dt)
 
@@ -123,17 +125,25 @@ FxTerrain = function()
 
 				local y = (l - self._h) * self.alt
 
+				-- TODO remplace by table from catmullrom curve
 				if l > 0.9 then
 					inc = remap(l, 0.9, 1, 1.5, 3)
 				elseif l > 0.3 then
 					inc = remap(l, 0.3, 0.9, 1, 1.5)
-				else
+				elseif l > 0.0 then
 					inc = remap(l, 0, 0.3, .5, 1)
+				else
+					inc = 0.5
 				end
 
 				-- if y<16 then inc = 0.5 else inc=4 end
 
-				s_y = a_y + size_y * (y / (z + .1) + .25)
+				s_y = floor(a_y + size_y * (y / (z + .1) + .25))
+
+				if s_y<a_y then
+					s_y=a_y
+				end
+
 				if (s_y < e_y) then
 					local I = l - 0.96*self:S(u + .01, v + .005) + .02
 					--					I = I * sign(I) * 30 + .2
@@ -147,8 +157,9 @@ FxTerrain = function()
 					local color = clamp(I * 12 * 30 * clamp(6 / z, 0, 1), 0, 15)
 					local icolor = floor(color)
 					local fColorPart = mat_max * (color - icolor)
-					for iy = floor(s_y), e_y do
-						local threshold = Bayer8x8[(s_x & matrixMask) + 1][(iy & matrixMask) + 1]
+					local bayer_x = (s_x & matrixMask) + 1
+					for iy = s_y, e_y do
+						local threshold = Bayer8x8[bayer_x][(iy & matrixMask) + 1]
 						if fColorPart > threshold then
 							pix(s_x, iy, color + 1)
 						else

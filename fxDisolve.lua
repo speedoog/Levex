@@ -4,9 +4,9 @@
 fxDisolve = function()
 	local fx = {
 		name = "Disolve",
-		scan = function(self,t)
-			for y=0,136 do
-				for x=0,240 do
+		scan = function(self,t,x0,x1,y0,y1)
+			for y=y0,y1 do
+				for x=x0,x1 do
 					local c=pix(x,y)
 					if c~=0 then 
 						table.insert(self.list, {x=x,y=y,c=c,r=0,t=t+2+3*invEase(rand())})
@@ -27,7 +27,7 @@ fxDisolve = function()
 			table.sort(txt)	-- sort ascending
 
 			cls()
-			self:scan(0)
+			self:scan(0,0,240,0,136)
 		end,
 		tic = function(self, t, dt)
 			local it=floor(t*1.3)
@@ -46,7 +46,7 @@ fxDisolve = function()
 					end
 				end
 				print(s, x, y, c, false, 1)
-				self:scan(t)
+				self:scan(t,x-1,x+w+1,y-1,y+8-1)
 			end
 
 --			local mx,my,ml,mm,mr=mouse()

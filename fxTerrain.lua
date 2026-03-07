@@ -55,16 +55,16 @@ FxTerrain = function()
 			end
 		end
 
+		-- local gradiant ={ 	 0, Hex2RGB(0x1a1c2c),	-- black
+		-- 					 4, Hex2RGB(0x5d275d),	-- violet
+		-- 					 7, Hex2RGB(0xb13e53),	-- Red
+		-- 					 11,Hex2RGB(0xef7d57),	-- orange
+		-- 					 15,Hex2RGB(0xffcd75)	-- yellow
+		-- 				 }
+		-- local pal = PaletteGradiant(gradiant)
+		-- PaletteApply(pal)
 	end,
 	start = function(self)
-		local gradiant ={ 	 0, Hex2RGB(0x1a1c2c),	-- black
-						  	 4, Hex2RGB(0x5d275d),	-- violet
-						  	 7, Hex2RGB(0xb13e53),	-- Red
-							 11,Hex2RGB(0xef7d57),	-- orange
-							 15,Hex2RGB(0xffcd75)	-- yellow
-						 }
-		local pal = PaletteGradiant(gradiant)
-		PaletteApply(pal)
 		self._h = 0.5
 	end,
 	tic = function(self, t, dt)

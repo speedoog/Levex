@@ -62,16 +62,13 @@ end
 
 function ComputeTotalPix(scene)
 	scene.npix=0
-
-	cls()
-	local bContinue
 	for k, item in pairs(scene.items) do
 		item:Init()
 		item.npix=0
-		bContinue=true
-		while bContinue do
-			item.npix=item.npix+1
-			bContinue = item:Draw(function(x,y,c) pix(x,y,c) end)
+		local iPix=1
+		while iPix>0 do
+			iPix = item:Draw()
+			item.npix=item.npix+iPix
 		end
 		scene.npix=scene.npix+item.npix
 	end
@@ -140,11 +137,13 @@ function CreateLine(x0,y0,x1,y1,c)
 		self.e2 = self.err
 	end
 
-	-- return "continue"
+	-- return pix drawn
 	function line:Draw(fnPix)
-		fnPix(self.x,self.y, c)
+		if fnPix~=nil then
+			fnPix(self.x,self.y, c)
+		end
 
-		if self.x==x1 and self.y==y1 then return false end
+		if self.x==x1 and self.y==y1 then return 0 end
 
 		self.e2 = 2*self.err
 
@@ -158,7 +157,7 @@ function CreateLine(x0,y0,x1,y1,c)
 			self.y =self.y+self.sy
 		end
 
-		return true
+		return 1
 	end
 
 	return line
@@ -186,7 +185,7 @@ FxDraw = function(file)
                 item:Init()
                 while bContinue do
                     iPix=iPix+1
-                    bContinue = item:Draw(function(x,y,c) pix(x,y,c) end)
+                    bContinue = (item:Draw(function(x,y,c) pix(x,y,c) end)>0)
                     if iPix>=PixTarget then bComplete=true bContinue=false end
                 end
                 if bComplete then break end

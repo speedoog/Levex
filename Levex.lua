@@ -24,16 +24,15 @@ require "fxBalls"
 require "fxPowerOff"
 require "fxSprite"
 require "fxDraw"
+require "fxBorder"
+require "FxColorRemplace"
+require "FxFadePal"
+require "FxPalette"
 require "Demo"
 
 t=0
 --music(0)
 
-function TIC()
-
-	main()
-
-end
 
 -- <TILES>
 -- 000:eccccccccc888888caaaaaaaca888888cacccccccacc0ccccacc0ccccacc0ccc

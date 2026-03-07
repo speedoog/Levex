@@ -18,6 +18,9 @@ gSizeY2	=gSizeY/2
 gBlack	=0
 gWhite	=12
 gGrey 	=15
+gAddPalette    = 0x3FC0
+gAddBorderCol  = 0x3FF8
+
 
 function DrawCrosshair(mx, my)
 	local min,max,c = 1,2,gWhite

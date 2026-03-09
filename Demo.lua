@@ -51,9 +51,9 @@ Sequence =
 --	{	s=pt1+4,	e=pt1+10, 	vb=0, 	fx=FxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2)},
 --	{	s=pt1+6,	e=pt1+10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
 
-	{	s=pt2+0,	e=pt2+10, 	vb=0, 	fx=FxDraw("Spectrals.txt") },
+	{	s=pt2+0,	e=pt2+20, 	vb=0, 	fx=FxDraw("Spectrals.txt") },
 
-	{	s=pt3+0,	e=pt3+5,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
+	{	s=pt3+0,	e=pt3+5,	vb=1,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
 	{	s=pt3+5,	e=pt3+10,	vb=1, 	fx=FxBeziers()		},
 
 	{	s=pt4+0,	e=pt5, 		fx=FxText(50,50,"PH logo Levex", gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
@@ -65,7 +65,7 @@ Sequence =
 
 	{	s=pt7+0,	e=pt7+1, 	vb=0, 	fx=FxPalette(gPalettes.black) },
 	{	s=pt7+0,	e=pt7+3, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
-	{	s=pt7+10,	e=pt7+13, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x1a1c2c), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
+	{	s=pt7+10,	e=pt7+13, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
 
 	{	s=pt7+0,	e=pt8,  	vb=0,	fx=FxTerrain(),		mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
 	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Code", gWhite), 		vb=1, mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },

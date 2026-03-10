@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Debug Custom Executable",
             "program": {
-                "command": "${fileWorkspaceFolder}/tic80.exe"
+                "command": "${fileWorkspaceFolder}/tic80_Hack.exe"
             },
             "args": [
                 " --skip --fs . --cmd \"load Levex.lua & run\""

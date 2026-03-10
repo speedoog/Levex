@@ -4,7 +4,7 @@
 		{
 			"label": "Run TIC80",
 			"type": "shell",
-			"command": "${fileWorkspaceFolder}/tic80.exe --skip --fs . --cmd \"load Editor.lua\"",
+			"command": "${fileWorkspaceFolder}/tic80_Hack.exe --skip --fs . --cmd \"load Editor.lua\"",
 			"options": {
 				"cwd": "${workspaceFolder}/"
 			},

@@ -1,7 +1,6 @@
 -- title:   Levex
--- author:  Speedman
--- desc:    demo for Revision
--- site:    website link
+-- author:  Speedman / Spectrals
+-- desc:    demo for Revision 2026
 -- license: MIT License
 -- version: 0.1
 -- script:  lua
@@ -16,7 +15,6 @@ require "Maths"
 require "fxDisolve"
 require "fxCube"
 require "fxBeziers"
-require "fxScrollText"
 require "fxText"
 require "fxBlower"
 require "fxTerrain"
@@ -31,7 +29,6 @@ require "FxPalette"
 require "FxTunnel"
 require "Demo"
 
-t=0
 --music(0)
 
 

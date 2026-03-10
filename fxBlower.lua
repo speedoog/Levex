@@ -1,8 +1,6 @@
 FxBlower = function()
 	local fx = {
 		name = "Blower",
-		start = function()
-		end,
 		tic = function(self, t, dt)
 			local s = t * .6
 			local t = (t / .15) % 10

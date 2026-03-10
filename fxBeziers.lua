@@ -75,8 +75,6 @@ end
 FxBeziers = function()
 	local fx = {
 		name = "Beziers",
-		start = function()
-		end,
 		tic = function(self, t, dt)
 			plotBeziers(t)
 

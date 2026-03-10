@@ -59,7 +59,7 @@ Sequence =
 
 	{	s=pt4+0,	e=pt5, 		fx=FxText(50,50,"PH logo Levex", gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
 
-	{	s=pt5+0,	e=pt6, 		vb=1,	fx=fxCube			},
+	{	s=pt5+0,	e=pt6, 		vb=1,	fx=FxCube()			},
 	{	s=pt5+1.8,	e=pt5+3,  	vb=0,	fx=FxBlower()		},
 	
 	{	s=pt6+0,	e=pt7,		vb=1,	fx=fxDisolve()		},

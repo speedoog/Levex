@@ -3,8 +3,6 @@ FxBalls = function()
 		name = "Balls",
 		cls = false,
 		scale = 1,
-		start = function()
-		end,
 		tic = function(self, t, dt)
 			for i = 0, 10000 do
 				x = rand(240) - 1

@@ -100,10 +100,38 @@ function rotate(x, y, angle)
 	return x*c-y*s, x*s+y*c
 end
 
+-- ---------------------------------------------------------------------
+-- 							Vector
+-- ---------------------------------------------------------------------
+
+-- dot product
+function dot(v1, v2)
+	return v1[1] * v2[1] + v1[2] * v2[2] + v1[3] * v2[3]
+end
+
+-- subtract 2 vectors
+function sub(v1, v2)
+	return {v1[1] - v2[1], v1[2] - v2[2], v1[3] - v2[3]}
+end
+
+-- cross product
+function cross(v1, v2)
+	x = (v1[2] * v2[3]) - (v1[3] * v2[2])
+	y = (v1[3] * v2[1]) - (v1[1] * v2[3])
+	z = (v1[1] * v2[2]) - (v1[2] * v2[1])
+	return {x,y,z}
+end
+
+-- 1 if a poly is dead-on, 0 if parallel with camera, negative if facing away
+function FaceOrient(v1, v2, v3)
+	local a = cross(sub(v2, v1), sub(v3, v1))
+	return a[3]
+end
 
 -- ---------------------------------------------------------------------
 -- 							Matrix
 -- ---------------------------------------------------------------------
+
 function matmul(a,b)
 	local dot = {}
 	local rr = #a
@@ -120,6 +148,36 @@ function matmul(a,b)
 	end
 	return dot
 end
+
+function rotatexyz(a,b,c)
+	local xrot,yrot,zrot
+	zrot = {
+		{cos(a),-sin(a),0},
+		{sin(a),cos(a),0},
+		{0,0,1}
+	}
+	yrot = {
+		{cos(b),0,sin(b)},
+		{0,1,0},
+		{-sin(b), 0, cos(b)}
+	}
+	xrot = {
+		{1,0,0},
+		{0,cos(c),-sin(c)},
+		{0,sin(c),cos(c)}
+	}
+	local pm = {{1,0,0},{0,1,0}, {0,0,1}}
+	return matmul(matmul(matmul(pm, xrot),yrot),zrot)
+end
+
+function ToScreen(ww,p)
+	local z = 5+p[3]
+	local w = ww*10/(z)
+	local x = (p[1]*w+1)*68+52
+	local y = (p[2]*w+1)*68
+	return {x,y,z}
+end
+
 
 -- ---------------------------------------------------------------------
 -- 							Dithering

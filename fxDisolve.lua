@@ -30,7 +30,7 @@ fxDisolve = function()
 			self:scan(0,0,240,0,136)
 		end,
 		tic = function(self, t, dt)
-			local it=floor(t*1.3)
+			local it=floor(t*1.7)
 			if it>iTxt and it<#txt then
 				iTxt=it
 				local c=iTxt%12+2

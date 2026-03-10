@@ -22,7 +22,7 @@ pt3=20	-- balls + beziers
 pt4=30	-- levex + moutain vector
 pt5=40	-- cube 
 pt6=50	-- greetz disolve
-pt7=80  -- terrain
+pt7=75  -- terrain
 pt8=120 -- end
 
 gTime=0	--pt7
@@ -42,7 +42,7 @@ Sequence =
 	{	s=5,	e=6, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
 
 	{	s=6,	e=7, 	vb=0, 	fx={start=function() poke(gAddBorderCol,0) end }  },
-	{	s=6,	e=7, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
+	{	s=6,	e=7, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 
 	{	s=pt1+0,	e=pt1+10,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
 	{	s=pt1+1,	e=pt1+3, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
@@ -51,10 +51,11 @@ Sequence =
 --	{	s=pt1+4,	e=pt1+10, 	vb=0, 	fx=FxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2)},
 --	{	s=pt1+6,	e=pt1+10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
 
-	{	s=pt2+0,	e=pt2+20, 	vb=0, 	fx=FxDraw("Spectrals.txt") },
+	{	s=pt2+0,	e=pt2+15, 	vb=1, 	fx=FxDraw("Spectrals.txt") },
+	{	s=pt2+0,	e=pt2+15, 	vb=0, 	fx=FxTunnel() },
 
-	{	s=pt3+0,	e=pt3+5,	vb=1,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
-	{	s=pt3+5,	e=pt3+10,	vb=1, 	fx=FxBeziers()		},
+	{	s=pt3+0,	e=pt3+5,	vb=1, 	fx=FxBeziers()		},
+	{	s=pt3+5,	e=pt3+10,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
 
 	{	s=pt4+0,	e=pt5, 		fx=FxText(50,50,"PH logo Levex", gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
 

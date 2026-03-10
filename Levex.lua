@@ -28,6 +28,7 @@ require "fxBorder"
 require "FxColorRemplace"
 require "FxFadePal"
 require "FxPalette"
+require "FxTunnel"
 require "Demo"
 
 t=0

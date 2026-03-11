@@ -1,7 +1,8 @@
-FxFadepal = function(paldest)
+FxFadepal = function(paldest,cls)
+	if cls==nil then cls = false end
 	local fx = {
 		name = "Fadepal",
-		cls=false,
+		cls=cls,
 		start = function(self)
 			self.pal = PaletteCapture()
 		end,

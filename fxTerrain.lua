@@ -6,23 +6,23 @@ FxTerrain = function()
     cls = false,
 	alt = 32.0,
 	mul = 9,
-	_h = 0.5,
-	_map = {},
-	GetMapValue = function(self, x, y) 		return self._map[(x & _DistanceMask) + (y & _DistanceMask) * _Distance + 1] 	end,
-	SetMapValue = function(self, x, y, v)	self._map[(x & _DistanceMask) + (y & _DistanceMask) * _Distance + 1] = v		end,
-	Surface = function(self, u, v)			return 1-self:GetMapValue(floor(u * _Distance), floor(v * _Distance)) * self.mul end,
---	SurfaceOG = function(self, u, v)			local I = self:GetMapValue(floor(u * _Distance), floor(v * _Distance)) return 1 - I * I * self.mul end,
---	Surface = function(self, u, v)			return (1.2*sin(19*u)*cos(19*v)+(sin(11*u)*cos(11*v)))* self.mul/9 end,
---	Surface = function(self, u, v)			return u*v end,
-	Init = function(self)
+	hi = 0.5,
+	map = {},
+	GetMapValue = function(_, x, y) 	return _.map[(x & _DistanceMask) + (y & _DistanceMask) * _Distance + 1] 	end,
+	SetMapValue = function(_, x, y, v)	_.map[(x & _DistanceMask) + (y & _DistanceMask) * _Distance + 1] = v		end,
+	Surface = function(_, u, v)			return 1-_:GetMapValue(floor(u * _Distance), floor(v * _Distance)) * _.mul end,
+--	SurfaceOG = function(_, u, v)		local I = _:GetMapValue(floor(u * _Distance), floor(v * _Distance)) return 1 - I * I * _.mul end,
+--	Surface = function(_, u, v)			return (1.2*sin(19*u)*cos(19*v)+(sin(11*u)*cos(11*v)))* _.mul/9 end,
+--	Surface = function(_, u, v)			return u*v end,
+	Init = function(_)
 		seed(1)
 		local _Random = function()
 			return (2 * rand() - 1)
 		end
 	
-		self._map = {}
+		_.map = {}
 		for i = 0, _Distance * _Distance do
-			self._map[i+1] = 0
+			_.map[i+1] = 0
 		end
 	
 		local l,T = .5,_Distance
@@ -35,23 +35,23 @@ FxTerrain = function()
 			end
 			for j = 0, _Distance-1, T do
 				for i = 0, _Distance-1, T do
-					local w = self:GetMapValue(i, j)
-					local x = self:GetMapValue(i + T, j)
-					local y = self:GetMapValue(i, j + T)
-					local z = self:GetMapValue(i + T, j + T)
-					self:SetMapValue(i + M, j, (w + x) / 2 + _Random() * l)
-					self:SetMapValue(i + M, j + T, (y + z) / 2 + _Random() * l)
-					self:SetMapValue(i, j + M, (w + y) / 2 + _Random() * l)
-					self:SetMapValue(i + T, j + M, (x + z) / 2 + _Random() * l)
-					self:SetMapValue(i + M, j + M, (w + x + y + z) / 4 + _Random() * l)
+					local w = _:GetMapValue(i, j)
+					local x = _:GetMapValue(i + T, j)
+					local y = _:GetMapValue(i, j + T)
+					local z = _:GetMapValue(i + T, j + T)
+					_:SetMapValue(i + M, j, (w + x) / 2 + _Random() * l)
+					_:SetMapValue(i + M, j + T, (y + z) / 2 + _Random() * l)
+					_:SetMapValue(i, j + M, (w + y) / 2 + _Random() * l)
+					_:SetMapValue(i + T, j + M, (x + z) / 2 + _Random() * l)
+					_:SetMapValue(i + M, j + M, (w + x + y + z) / 4 + _Random() * l)
 				end
 			end
 		end
 			
 		for j = 0, _Distance-1 do
 			for i = 0, _Distance-1 do
-				local x = self:GetMapValue(i, j)
-				self:SetMapValue(i, j, x*x)
+				local x = _:GetMapValue(i, j)
+				_:SetMapValue(i, j, x*x)
 			end
 		end
 
@@ -64,10 +64,10 @@ FxTerrain = function()
 		-- local pal = PaletteGradiant(gradiant)
 		-- PaletteApply(pal)
 	end,
-	start = function(self)
-		self._h = 0.5
+	start = function(_)
+		_.hi = 0.5
 	end,
-	tic = function(self, t, dt)
+	tic = function(_, t, dt)
 
 --		local border=max(0,floor((136/2)-10*t))
 		local border=0
@@ -100,10 +100,10 @@ FxTerrain = function()
 
 		h = 10
 		for d = 0, 1.5, 0.05 do
-			h = min(h, self:Surface(.5 + ox + .05 * sin(30 * d), (t + d) * .3) - .25 + .15 * cos(5 + t * 1.33))
+			h = min(h, _:Surface(.5 + ox + .05 * sin(30 * d), (t + d) * .3) - .25 + .15 * cos(5 + t * 1.33))
 		end
 
-		self._h = lerp2(self._h, h, 0.2, max(0,dt))
+		_.hi = lerp2(_.hi, h, 0.2, max(0,dt))
 
 		local matrixSize = 8
 		local matrixMask = 7
@@ -131,9 +131,9 @@ FxTerrain = function()
 				local u = x / 200 + .5 + ox
 				local v = z / 200 + t * .3
 
-				local l = self:Surface(u, v)
+				local l = _:Surface(u, v)
 
-				local y = (l - self._h) * self.alt
+				local y = (l - _.hi) * _.alt
 
 				-- TODO remplace by table from catmullrom curve
 				if l > 0.9 then
@@ -153,7 +153,7 @@ FxTerrain = function()
 				end
 
 				if (s_y < e_y) then
-					local I = l - 0.96*self:Surface(u + .01, v + .005) + .02
+					local I = l - 0.96*_:Surface(u + .01, v + .005) + .02
 					--					I = I * sign(I) * 30 + .2
 					--O=1.0-exp(-z*3e-4);
 					-- o_x = L(o_x,.6,2);
@@ -190,12 +190,12 @@ end
 --[[
 _Distance 2048
 
-float _map[_Distance*_Distance],I,O,w,x,y,z,h,u,v,l;
+float map[_Distance*_Distance],I,O,w,x,y,z,h,u,v,l;
 
 int q,i,j,T,M;
 float& GetMapValue(int x,int y)
 {
-    return _map[(x&(_Distance-1))+(y&(_Distance-1))*_Distance];
+    return map[(x&(_Distance-1))+(y&(_Distance-1))*_Distance];
 }
 
 float S(float x,float y)
@@ -216,7 +216,7 @@ void FX(ImDrawList*d,Vector2 a,Vector2 b,Vector2 size,ImVec4 o,float t)
     if(!q)
     {
         q=1;
-        _map[0]=0;
+        map[0]=0;
         l=.5;
         for(T=_Distance;T>1;l=l/2,T=T/2)
         {

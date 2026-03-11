@@ -1,7 +1,7 @@
 
 -- ############## MATHS ##############
 
-sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp,pow=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp,math.pow
+sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp
 rand,seed=math.random,math.randomseed
 
 function square(x)
@@ -81,7 +81,6 @@ function easeInOutCubic(x)
 	if x < 0.5 then
 		return 4 * x * x * x
 	else
---		return 1 - Math.pow(-2 * x + 2, 3) / 2
 		return 1 - ((-2*x+2)^3) / 2
 	end
 end
@@ -264,6 +263,18 @@ end
 -- 						COLOR / Palette
 -- ---------------------------------------------------------------------
 
+-- Palette: Build palette here then add palette setter, ex pico8:
+-- call PaletteApply(PaletteLoadString(gPalettes.blueish))
+gPalettes = {
+	sweetie16     = "1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57",
+	sweetie16mod  = "0000005d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57",
+	classic_tic80 = "140c1c44243430346d4e4a4f854c30346524d04648757161597dced27d2c8595a16daa2cd2aa996dc2cadad45edeeed6",
+	pico8         = "0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8",
+	grayscale     = "000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff",
+	blueish       = "0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff",
+	black         = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+}
+
 function rgbToHsv(r, g, b)
 	r, g, b = r / 255, g / 255, b / 255
 	local max, min = math.max(r, g, b), math.min(r, g, b)
@@ -396,9 +407,10 @@ function PaletteGradiant(keys)
 end
 
 function PaletteCapture()
-	pal={}
-	local p,r,g,b = gAddPalette
+	local pal={}
+	local p = gAddPalette
 	for i=0,15 do
+		local r,g,b
 		r=peek(p)
 		g=peek(p+1)
 		b=peek(p+2)
@@ -415,14 +427,3 @@ function Hex2RGB(Hex)
 	return {r,g,b}
 end
 
--- Palette: Build palette here then add palette setter, ex pico8:
--- call PaletteApply(PaletteLoadString(gPalettes.blueish))
-gPalettes = {
-		sweetie16 		= "1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57",
-		sweetie16mod 	= "0000005d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57",
-		classic_tic80 	= "140c1c44243430346d4e4a4f854c30346524d04648757161597dced27d2c8595a16daa2cd2aa996dc2cadad45edeeed6",
-		pico8 			= "0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8",
-		grayscale 		= "000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff",
-		blueish 		= "0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff",
-		black			= "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-}

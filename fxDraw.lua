@@ -97,12 +97,12 @@ function FS_LoadScene(file)
 		cmd = string.char(b)
 		if cmd == "l" then
 			ptr, item = CreateLineMem(ptr)
-		elseif cmd == "e" then
-			ptr, item = CreateEllipseMem(ptr)
-		elseif cmd == "c" then
-			ptr, item = CreateCircleMem(ptr)
-		elseif cmd == "f" then
-			ptr, item = CreateFillMem(ptr)
+		-- elseif cmd == "e" then
+		-- 	ptr, item = CreateEllipseMem(ptr)
+		-- elseif cmd == "c" then
+		-- 	ptr, item = CreateCircleMem(ptr)
+		-- elseif cmd == "f" then
+		-- 	ptr, item = CreateFillMem(ptr)
 		end
 
 		if item ~= nil then

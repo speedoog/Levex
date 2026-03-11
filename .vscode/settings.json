@@ -1,0 +1,19 @@
+{
+    "Lua.diagnostics.globals": [
+        "vbank",
+        "circ",
+        "line",
+        "pix",
+        "poke",
+        "keyp",
+        "key",
+        "time",
+        "cls",
+        "tri",
+        "peek",
+        "spr",
+        "font",
+        "clip",
+        "trace"
+    ]
+}

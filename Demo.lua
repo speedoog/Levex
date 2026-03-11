@@ -35,6 +35,9 @@ RunningFx = { }
 Sequence = 
 {
 	-- Boot sequence
+	{	s=0,	e=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
+	{	s=0,	e=1, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
+
 	{	s=0,	e=1, 	vb=0, 	fx=FxColorRemplace(11,10) },
 	{	s=0,	e=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,20, false, false) },
 	{	s=1,	e=5, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,4, false, false) },
@@ -52,11 +55,16 @@ Sequence =
 --	{	s=pt1+6,	e=pt1+10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
 
 	{	s=pt2+0,	e=pt2+15, 	vb=1, 	fx=FxDraw("Spectrals.txt") },
-	{	s=pt2+0,	e=pt2+15, 	vb=0, 	fx=FxTunnel() },
+	{	s=pt2+12,	e=pt2+15, 	vb=1, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
+	{	s=pt2+8,	e=pt3+5,	vb=1, 	fx=FxBeziers()		},
 
-	{	s=pt3+0,	e=pt3+5,	vb=1, 	fx=FxBeziers()		},
+	{	s=pt2+0,	e=pt2+15, 	vb=0, 	fx=FxTunnel() },
+	{	s=pt2+13,	e=pt2+15, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
+
+	{	s=pt3+5,	e=pt3+6, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.sweetie16mod),true) },
 	{	s=pt3+5,	e=pt3+10,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
 
+	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=pt4+0,	e=pt5, 		fx=FxText(50,50,"PH logo Levex", gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
 
 	{	s=pt5+0,	e=pt6, 		vb=1,	fx=FxCube()			},
@@ -112,7 +120,7 @@ function BOOT()
 	end
 end
 
-function PlaybackControl(tStart, tEnd)
+function PlaybackControl(tStart)
 	if keyp(61,20,1) then
 	   if key(63) then
 		   gTime=gTime+10
@@ -211,7 +219,7 @@ function TIC()
 		i=i+1
 	end
 
-	PlaybackControl(tStart, tEnd)
+	PlaybackControl(tStart)
 
 	if gPlay then gTime=gTime+1/60 end
 

@@ -1,8 +1,4 @@
 function plotCubicBezier(x0, y0, x1, y1, x2, y2, x3, y3)
-	--	DrawCrosshair(x0,y0)
-	--	DrawCrosshair(x1,y1)
-	--	DrawCrosshair(x2,y2)
-	--	DrawCrosshair(x3,y3)
 	local xa, ya = cubicBezier2(0, x0, y0, x1, y1, x2, y2, x3, y3)
 	local c = 0
 	local t = 0
@@ -16,6 +12,13 @@ function plotCubicBezier(x0, y0, x1, y1, x2, y2, x3, y3)
 	end
 end
 
+function plotCubicBezierMirror(x0, y0, x1, y1, x2, y2, x3, y3)
+	plotCubicBezier(gSizeX-x0,y0,
+					gSizeX-x1,y1,
+					gSizeX-x2,y2,
+					gSizeX-x3,y3)
+end
+
 function plotbidule(t, l)
 	local x0, x1, x2, x3, y0, y1, y2, y3
 	x0 = -20 + t * sin(t * 1.23)
@@ -26,7 +29,8 @@ function plotbidule(t, l)
 	y2 = 70 + 60 * cos(t * 1.63)
 	x3 = gSizeX - 20 + 60 * sin(t * 1.44)
 	y3 = 70 + 60 * cos(t * 1.33)
-	plotCubicBezier(x0, y0, x1 * l, y1, x2 * l, y2, x3 * l, y3)
+	plotCubicBezier(x0,y0,x1*l,y1,x2*l,y2,x3*l,y3)
+	plotCubicBezierMirror(x0,y0,x1*l,y1,x2*l,y2,x3*l,y3)
 end
 
 function plotBeziers(t)

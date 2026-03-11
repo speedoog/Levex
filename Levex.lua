@@ -27,6 +27,7 @@ require "fxColorRemplace"
 require "fxFadePal"
 require "fxPalette"
 require "fxTunnel"
+require "fxSplit"
 
 require "Demo"
 

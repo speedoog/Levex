@@ -34,6 +34,8 @@ gDeltaTime=0
 RunningFx = { }
 Sequence = 
 {
+----->	{ s = 0,e = 10,vb = 0,fx = FxSplit() },
+
 	-- Boot sequence
 	{	s=0,	e=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
 	{	s=0,	e=1, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
@@ -44,15 +46,12 @@ Sequence =
 	{	s=2,	e=5, 	vb=0, 	fx=FxBorder(11) },
 	{	s=5,	e=6, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
 
-	{	s=6,	e=7, 	vb=0, 	fx={start=function() poke(gAddBorderCol,0) end }  },
+	{	s=6,	e=7, 	vb=0, 	fx={name="border reset", start=function() poke(gAddBorderCol,0) end }  },
 	{	s=6,	e=7, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 
 	{	s=pt1+0,	e=pt1+10,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
 	{	s=pt1+1,	e=pt1+3, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
 	{	s=pt1+1.2,	e=pt1+3, 	vb=0, 	fx=FxText(80,90,"tiny computer",gWhite)},
-
---	{	s=pt1+4,	e=pt1+10, 	vb=0, 	fx=FxText(10,10,"TIC-80 tiny computer\nLua Version 5.3.6\n\nReady",4,30,2)},
---	{	s=pt1+6,	e=pt1+10, 	vb=0, 	fx=FxText(10,50,'Load "LEVEX"',13,5)},
 
 	{	s=pt2+0,	e=pt2+15, 	vb=1, 	fx=FxDraw("Spectrals.txt") },
 	{	s=pt2+12,	e=pt2+15, 	vb=1, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
@@ -81,8 +80,6 @@ Sequence =
 	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Speedman", gWhite), 	vb=1, mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
 
 	{	s=pt8+0,	e=pt8+2.5,  vb=0,	fx=FxPowerOff()		},
-
---	{	s=0,	e=600, 	fx=FxText(50,10,"Demo mode",gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
 }
 
 function Startfx(fx,sh)
@@ -133,7 +130,7 @@ function PlaybackControl(tStart)
 		   end
 	   end
 	end
-	
+
 	if keyp(60,20,1) then
 	   if key(63) then
 		   gTime=max(0,gTime-10)
@@ -151,26 +148,26 @@ function PlaybackControl(tStart)
 	end
 
 	if gInfos then
-		print(string.format("%.2f",gTime), 0, 130, gWhite)
+		vbank(1)
+		printoutline(string.format("%.1f",gTime), 0, 130, gWhite,gBlack)
 		local tEnd=time()
 		local tElapse=(tEnd-tStart)
 		gDeltaTime=lerp(gDeltaTime,tElapse,.1)
-		print(string.format("%.f %%",100*gDeltaTime/(1000/60) ), 215, 130, gWhite)
+		printoutline(string.format("%.f %%",100*gDeltaTime/(1000/60)),215,130,gWhite,gBlack)
 		
 		local i=0
 		for k,fh in pairs(RunningFx) do 
 			local fx=fh.fx
-			print(string.format("%.1f %s",fx.t,fx.name), 0, i*7, gWhite,true)
+			printoutline(string.format("%.1f %s",fx.t,fx.name),0,i*7,gWhite,gBlack)
 			i=i+1
 		end
+		vbank(0)
 	end
 end
 
 function TIC()
-
-
 	local tStart=time()
-	
+
 	-- Stop old
 	for k,sh in pairs(Sequence) do 
 		local shouldrun = inrange(gTime, sh.s, sh.e)
@@ -194,11 +191,10 @@ function TIC()
 			end
 		end
 	end
-	
+
 	if vclear[1] then vbank(0) cls() end
 	if vclear[2] then vbank(1) cls() end
 
-	local i=0
 	for k,fh in pairs(RunningFx) do 
 		vbank(fh.vbank)
 		local fx=fh.fx
@@ -215,9 +211,6 @@ function TIC()
 		end
 
 		if fx.tic then fx:tic(fx.t,fx.dt) end
-		
-		if gInfos then print(string.format("%.1f %s",fx.t,fx.name), 0, i*7, gWhite,true)  end
-		i=i+1
 	end
 
 	PlaybackControl(tStart)

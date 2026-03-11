@@ -31,9 +31,10 @@ function DrawCrosshair(mx, my)
 end
 
 function printoutline(t, x, y, c, c2)
-	for dx = -1, 1 do
-		for dy = -1, 1 do
-			print(t, x + dx, y + dy, c2)
+	local s=2
+	for dx=-s,s do
+		for dy=-s,s do
+			print(t, x+dx, y+dy, c2)
 		end
 	end
 	print(t, x, y, c)

@@ -102,7 +102,8 @@ function Stopfx(fx)
 	if fx.started~=true then return end
 	for k,it in pairs(RunningFx) do 
 		if it.fx==fx  then 
-			RunningFx[k]=nil
+			if fx.stop then fx:stop() end
+			RunningFx[k] = nil
 			fx.started=false
 		end
 	end

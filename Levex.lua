@@ -23,10 +23,11 @@ require "fxPowerOff"
 require "fxSprite"
 require "fxDraw"
 require "fxBorder"
-require "FxColorRemplace"
-require "FxFadePal"
-require "FxPalette"
-require "FxTunnel"
+require "fxColorRemplace"
+require "fxFadePal"
+require "fxPalette"
+require "fxTunnel"
+
 require "Demo"
 
 --music(0)

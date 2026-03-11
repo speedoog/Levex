@@ -2,7 +2,7 @@ FxColorRemplace = function(c1, c2)
 	local fx = {
 		name = "ColorRemplace",
 		cls=false,
-		start = function()
+		start = function(_)
 			for y=0,gSizeY do
 				for x=0,gSizeX do
 					if pix(x,y)==c1

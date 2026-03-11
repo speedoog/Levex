@@ -3,13 +3,13 @@ FxFadepal = function(paldest,cls)
 	local fx = {
 		name = "Fadepal",
 		cls=cls,
-		start = function(self)
-			self.pal = PaletteCapture()
+		start = function(_)
+			_.pal = PaletteCapture()
 		end,
-		tic = function(self, t, dt)
-			pal={}
-			local f=t/self.dur
-			for k,v in pairs(self.pal) do
+		tic = function(_, t)
+			local f=t/_.dur
+			local pal={}
+			for k,v in pairs(_.pal) do
 				pal[k]={}
 				pal[k][1] = lerp(v[1],paldest[k][1],f)
 				pal[k][2] = lerp(v[2],paldest[k][2],f)

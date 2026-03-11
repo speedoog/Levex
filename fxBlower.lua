@@ -1,16 +1,16 @@
 FxBlower = function()
 	local fx = {
 		name = "Blower",
-		tic = function(self, t, dt)
+		tic = function(_, t)
 			local s = t * .6
-			local t = (t / .15) % 10
+			local t2 = (t / .15) % 10
 			local a = 0
-			for z = 0, 100, .1 do
+			for i = 0, 100, .1 do
 				a = a + 2.5
-				local z_ = (z + 20 * t)
-				local x = s * sin(a + t) * z_
-				local y = s * cos(a + t) * z_
-				circ(x + gSizeX / 2, y + gSizeY / 2, z / 40, z)
+				local z2 = (i + 20 * t2)
+				local x = s * sin(a + t2) * z2
+				local y = s * cos(a + t2) * z2
+				circ(x + gSizeX2, y + gSizeY2, i / 40, i)
 			end
 		end
 	}

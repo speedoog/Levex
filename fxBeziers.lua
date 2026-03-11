@@ -79,7 +79,7 @@ end
 FxBeziers = function()
 	local fx = {
 		name = "Beziers",
-		tic = function(self, t, dt)
+		tic = function(_, t)
 			plotBeziers(t)
 
 			-- for tt=0,3,0.1 do

@@ -53,10 +53,3 @@ function printstripes(t, x, y)
 	end
 	clip()
 end
-
--- function TIC()
--- 	cls(15)
--- 	printoutline("Outline!", 50, 50, 0, 10)
--- 	printshadow("Shadow!", 50, 70, 3, 0)
--- 	printstripes("Stripes!", 50, 90, 3)
--- end

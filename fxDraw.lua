@@ -190,15 +190,13 @@ FxDraw = function(file)
 		end,
 		start = function()
 		end,
-		tic = function(self, t, dt)
-			local pixcount = t * self.speed
-			self:DrawItems(pixcount)
-		end,
-		DrawItems = function(self, PixTarget)
+		tic = function(_, t)
+			local PixTarget = t*_.speed
+
 			local iPix = 0
 			local bComplete = false
 			local bContinue
-			for k, item in pairs(self.scene.items) do
+			for k, item in pairs(_.scene.items) do
 				bContinue = true
 				item:Init()
 				while bContinue do

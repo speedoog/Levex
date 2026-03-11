@@ -18,7 +18,6 @@ function clamp(x, l, h)
 end
 
 function lerp(a,b,r)
---	return a*(1-r)+b*r
 	return a+(b-a)*r
 end
 
@@ -61,12 +60,12 @@ function distance(x0,y0,x1,y1)
 	return sqrt(dx*dx+dy*dy)
 end
 
-function rad2deg( r )
-	return r/math.pi*180
+function rad2deg(a)
+	return a/pi*180
 end
 
-function deg2rad( d )
-	return d/180*math.pi
+function deg2rad(a)
+	return a/180*pi
 end
 
 function cubicBezier(t, p0, p1, p2, p3)
@@ -86,16 +85,16 @@ function easeInOutCubic(x)
 end
 
 function invEase(x)
-	x2=x*x
-	x3=x2*x
-	m0=2
-	m1=2
+	local x2=x*x
+	local x3=x2*x
+	local m0=2
+	local m1=2
 	return(x3-2*x2+x)*m0 + (-2*x3+3*x2) + (x3-x2)*m1
 end
 
-function rotate(x, y, angle)
-	c=cos(angle)
-	s=sin(angle)
+function rotate(x, y, a)
+	local c=cos(a)
+	local s=sin(a)
 	return x*c-y*s, x*s+y*c
 end
 
@@ -115,23 +114,19 @@ end
 
 -- cross product
 function cross(v1, v2)
-	x = (v1[2] * v2[3]) - (v1[3] * v2[2])
-	y = (v1[3] * v2[1]) - (v1[1] * v2[3])
-	z = (v1[1] * v2[2]) - (v1[2] * v2[1])
-	return {x,y,z}
+	return { v1[2]*v2[3]-v1[3]*v2[2], v1[3]*v2[1]-v1[1]*v2[3], v1[1]*v2[2]-v1[2]*v2[1] }
 end
 
 -- 1 if a poly is dead-on, 0 if parallel with camera, negative if facing away
 function FaceOrient(v1, v2, v3)
-	local a = cross(sub(v2, v1), sub(v3, v1))
-	return a[3]
+	return cross(sub(v2, v1), sub(v3, v1))[3]
 end
 
 -- ---------------------------------------------------------------------
 -- 							Matrix
 -- ---------------------------------------------------------------------
 
-function matmul(a,b)
+function matrixMul(a,b)
 	local dot = {}
 	local rr = #a
 	local rc = #b[1]
@@ -148,28 +143,28 @@ function matmul(a,b)
 	return dot
 end
 
-function rotatexyz(a,b,c)
+function rotatexyz(x,y,z)
 	local xrot,yrot,zrot
 	zrot = {
-		{cos(a),-sin(a),0},
-		{sin(a),cos(a),0},
+		{cos(x),-sin(x),0},
+		{sin(x),cos(x),0},
 		{0,0,1}
 	}
 	yrot = {
-		{cos(b),0,sin(b)},
+		{cos(y),0,sin(y)},
 		{0,1,0},
-		{-sin(b), 0, cos(b)}
+		{-sin(y), 0, cos(y)}
 	}
 	xrot = {
 		{1,0,0},
-		{0,cos(c),-sin(c)},
-		{0,sin(c),cos(c)}
+		{0,cos(z),-sin(z)},
+		{0,sin(z),cos(z)}
 	}
 	local pm = {{1,0,0},{0,1,0}, {0,0,1}}
-	return matmul(matmul(matmul(pm, xrot),yrot),zrot)
+	return matrixMul(matrixMul(matrixMul(pm, xrot),yrot),zrot)
 end
 
-function ToScreen(ww,p)
+function projScreen(ww,p)
 	local z = 5+p[3]
 	local w = ww*10/(z)
 	local x = (p[1]*w+1)*68+52
@@ -184,21 +179,20 @@ end
 
 Bayer4x4 = {
 	{0, 8, 2, 10},
-	{12, 4, 14, 6},
-	{3, 11, 1, 9},
-	{15, 7, 13, 5},
-	}
+	{12,4, 14,6},
+	{3, 11,1, 9},
+	{15,7, 13,5},
+}
 
-	
 Bayer8x8 = {
-	{0, 32, 8, 40, 2, 34, 10, 42},
-	{48, 16, 56, 24, 50, 18, 58, 26},
-	{12, 44, 4, 36, 14, 46, 6, 38},
-	{60, 28, 52, 20, 62, 30, 54, 22},
-	{3, 35, 11, 43, 1, 33, 9, 41},
-	{51, 19, 59, 27, 49, 17, 57, 25},
-	{15, 47, 7, 39, 13, 45, 5, 37},
-	{63, 31, 55, 23, 61, 29, 53, 21},
+	{0, 32,8, 40,2, 34,10,42},
+	{48,16,56,24,50,18,58,26},
+	{12,44,4, 36,14,46,6, 38},
+	{60,28,52,20,62,30,54,22},
+	{3, 35,11,43,1, 33,9, 41},
+	{51,19,59,27,49,17,57,25},
+	{15,47,7, 39,13,45,5, 37},
+	{63,31,55,23,61,29,53,21},
 }
 
 -- ---------------------------------------------------------------------

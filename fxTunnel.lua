@@ -1,7 +1,7 @@
 FxTunnel = function()
 	local fx = {
 		name = "Tunnel",
-		tic = function(self, t, dt)
+		tic = function(_, t)
 			local w2=gSizeX2
 			local h2=gSizeY2
 			local inc=2

@@ -2,11 +2,9 @@ FxPowerOff = function()
 	local fx = {
 		name = "PowerOff",
 		cls = false,
-		start = function()
-		end,
-		tic = function(self, t, dt)
+		tic = function(_, t)
 			local w,h=gSizeX,gSizeY
-			mx = min(40 * t * t * t, h / 2)
+			local mx = min(40 * t * t * t, h / 2)
 			for i = 0, mx do
 				line(0, i, w, i, 0)
 				line(0, h - i, w, h - i, 0)

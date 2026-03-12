@@ -119,8 +119,8 @@ function BOOT()
 end
 
 function PlaybackControl(tStart)
-	if keyp(61,20,1) then
-	   if key(63) then
+	if keyp(gKeyRight,20,1) then
+		if key(gKeyCtrl) then
 		   gTime=gTime+10
 	   else
 		   if gPlay then
@@ -131,8 +131,8 @@ function PlaybackControl(tStart)
 	   end
 	end
 
-	if keyp(60,20,1) then
-	   if key(63) then
+	if keyp(gKeyLeft,20,1) then
+		if key(gKeyCtrl) then
 		   gTime=max(0,gTime-10)
 	   else
 		   if gPlay then
@@ -142,10 +142,9 @@ function PlaybackControl(tStart)
 		   end
 	   end
 	end
-	if keyp(49) then gInfos=not gInfos end
-	if keyp(48) then 
-	   gPlay=not gPlay
-	end
+
+	if keyp(gKeyTab) 	then gInfos = not gInfos end
+	if keyp(gKeySpace) 	then gPlay  = not gPlay	 end
 
 	if gInfos then
 		vbank(1)
@@ -154,7 +153,7 @@ function PlaybackControl(tStart)
 		local tElapse=(tEnd-tStart)
 		gDeltaTime=lerp(gDeltaTime,tElapse,.1)
 		printoutline(string.format("%.f %%",100*gDeltaTime/(1000/60)),215,130,gWhite,gBlack)
-		
+
 		local i=0
 		for k,fh in pairs(RunningFx) do 
 			local fx=fh.fx

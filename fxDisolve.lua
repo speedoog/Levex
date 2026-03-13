@@ -27,7 +27,7 @@ fxDisolve = function()
 			table.sort(_.txt)	-- sort ascending
 
 			cls()
-			_:scan(0,0,240,0,136)
+			_:scan(0,0,gSizeX-1,0,gSizeY-1)
 		end,
 		tic = function(_, t, dt)
 			local it=floor(t*1.7)

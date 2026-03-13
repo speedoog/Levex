@@ -1,10 +1,7 @@
 FxPalette = function(str)
-	local fx = {
-		name = "Palette",
-		start = function(_)
-			local pal=PaletteLoadString(str)
-			PaletteApply(pal)
-		end
-	}
+	local fx = {name = "Palette"}
+	fx.start = function(_)
+		PaletteApply(PaletteLoadString(str))
+	end
 	return fx
 end

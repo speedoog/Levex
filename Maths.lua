@@ -4,6 +4,10 @@
 sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp
 rand,seed=math.random,math.randomseed
 
+function round(a)
+	return floor(a+0.5)
+end
+
 function square(x)
 	return x*x
 end
@@ -420,4 +424,3 @@ function Hex2RGB(Hex)
 	local b=Hex&0xFF
 	return {r,g,b}
 end
-

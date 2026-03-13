@@ -11,7 +11,9 @@ if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
 end
 
 require "Helpers"
+require "FileSystem"
 require "Maths"
+require "DrawCommon"
 require "fxDisolve"
 require "fxCube"
 require "fxBeziers"

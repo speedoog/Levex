@@ -1,7 +1,7 @@
 
 
 -- ############## Part 1 ##############
-fxDisolve = function()
+FxDisolve = function()
 	local fx = {
 		name = "Disolve",
 		scan = function(_,t,x0,x1,y0,y1)

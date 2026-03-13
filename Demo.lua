@@ -74,7 +74,7 @@ Sequence =
 	{	s=pt5+0,	e=pt6, 		vb=1,	fx=FxCube()			},
 	{	s=pt5+1.8,	e=pt5+3,  	vb=0,	fx=FxBlower()		},
 	
-	{	s=pt6+0,	e=pt7,		vb=1,	fx=fxDisolve()		},
+	{	s=pt6+0,	e=pt7,		vb=1,	fx=FxDisolve()		},
 
 	{	s=pt7+0,	e=pt7+1, 	vb=0, 	fx=FxPalette(gPalettes.black) },
 	{	s=pt7+0,	e=pt7+3, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },

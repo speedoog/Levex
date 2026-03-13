@@ -3,7 +3,6 @@ FxSprite = function(x,y)
 		name = "Sprite",
 		x = x,
 		y = y,
-		c = c,
 		tic = function(_,t)
 			local isp = 0
 			if wrap(t,0,1) > 0.5 then isp = 2 end

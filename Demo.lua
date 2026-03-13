@@ -7,6 +7,11 @@ function mdKF(att, ...)
 	return out
 end
 
+function mdConst(att,v)
+	local out = {call = function(self,fx) fx[att] = v end }
+	return out
+end
+
 function mdSin(att,a,f,o,p)
 	local out={}
 	if not p then p=0 end
@@ -64,7 +69,7 @@ Sequence =
 	{	s=pt3+5,	e=pt3+10,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
 
 	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=pt4+0,	e=pt5, 		fx=FxText(50,50,"PH logo Levex", gWhite), vb=1, mod={mdSin("x",40,0.5,120), mdKF("y",0,0,1,30,2,40,3,45) } },
+	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxDraw("Levex.txt"), mod={mdConst("speed", 50) } },
 
 	{	s=pt5+0,	e=pt6, 		vb=1,	fx=FxCube()			},
 	{	s=pt5+1.8,	e=pt5+3,  	vb=0,	fx=FxBlower()		},
@@ -75,9 +80,9 @@ Sequence =
 	{	s=pt7+0,	e=pt7+3, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
 	{	s=pt7+10,	e=pt7+13, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
 
-	{	s=pt7+0,	e=pt8,  	vb=0,	fx=FxTerrain(),		mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
-	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Code", gWhite), 		vb=1, mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
-	{	s=pt8-5,	e=pt8, 		fx=FxText(50,50,"Speedman", gWhite), 	vb=1, mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+	{	s=pt7+0,	e=pt8,  	vb=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
+	{	s=pt8-5,	e=pt8, 		vb=1, 	fx=FxText(50,50,"Code", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+	{	s=pt8-5,	e=pt8, 		vb=1, 	fx=FxText(50,50,"Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
 
 	{	s=pt8+0,	e=pt8+2.5,  vb=0,	fx=FxPowerOff()		},
 }

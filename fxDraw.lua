@@ -51,19 +51,6 @@ end
 
 FS_Load(FS)
 
-function Pop(address, count)
-	if count==nil then
-		local data=peek(address)
-		return address+1, data
-	else
-		local params = {}
-		for i = 0, count - 1 do
-			table.insert(params, peek(address + i))
-		end
-		return address + count, params
-	end
-end
-
 function FS_Open(fn)
 	for k,f in pairs(FS) do
 		if f.name == fn then
@@ -82,11 +69,6 @@ function FS_LoadScene(file)
 		return scene
 	end
 
-	local Factory = {
-		["l"] = CreatePolyLine,
-		["s"] = CreateSpline,
-	}
-
 	while true do
 		local b = f:Read()
 		if b == 0 then		-- EOF
@@ -96,10 +78,7 @@ function FS_LoadScene(file)
 		local item
 		local cmd = string.char(b)
 
-		local fnCreate = Factory[cmd]
-		if fnCreate then
-			item = fnCreate()
-		end
+		item = CreateItem(cmd)
 
 		if item then
 			local count = f:Read()
@@ -130,6 +109,29 @@ end
 -- -----------------------------------------------
 --                      Line
 -- -----------------------------------------------
+
+function CreateItemBase(t,c)
+	return {nPix = 0,type = t,c = c,pts = {}}
+end
+
+function CreateItem(cmd)
+	if gItemFactory == nil then
+		gItemFactory = {
+			["l"] = CreatePolyLine,
+			-- ["e"] = true,
+			-- ["c"] = true,
+			-- ["f"] = true,
+			["s"] = CreateSpline,
+		}
+	end
+	local item
+	local fnCreate = gItemFactory[cmd]
+	if fnCreate then
+		item = CreateItemBase(cmd)
+		fnCreate(item)
+	end
+	return item
+end
 
 function PlotLine(x0,y0,x1,y1,c,fn)
 	if fn == nil then fn = pix end
@@ -163,17 +165,8 @@ function PlotLine(x0,y0,x1,y1,c,fn)
 	return iPix
 end
 
-function CreatePolyLine(c)
-	if c == nil then c = 10 end
-
-	local item =
-	{
-		nPix = 0,
-		type = "l",
-		c = c,
-		pts = {},
-		i = 1
-	}
+function CreatePolyLine(item)
+	item.i = 1
 
 	function item.Load(_,p)
 		_.c = p[1]
@@ -250,20 +243,11 @@ function CreatePolyLine(c)
 	return item
 end
 
-function CreateSpline(c)
-	if c == nil then c = 10 end
-
-	local item =
-	{
-		nPix = 0,
-		c = c,
-		pts = {},
-		type = "s",
-		t = 0,
-		i = 0,
-		tend = 0,
-		keys = {},
-	}
+function CreateSpline(item)
+	item.t = 0
+	item.i = 0
+	item.tend = 0
+	item.keys = {}
 
 	function item.Load(_,p)
 		_.c = p[1]

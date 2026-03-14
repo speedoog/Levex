@@ -378,13 +378,16 @@ function PaletteLoadString(s)
 	return ret
 end
 
+function PaletteSetColor(idx,r,g,b)
+	local p = gAddPalette+idx*3
+	poke(p,r)
+	poke(p+1,g)
+	poke(p+2,b)
+end
+
 function PaletteApply(pal)
-	local p = gAddPalette
 	for k,v in pairs(pal) do
-		poke(p,   v[1])
-		poke(p+1, v[2])
-		poke(p+2, v[3])
-		p=p+3
+		PaletteSetColor(k-1,v[1],v[2],v[3])
 	end
 end
 

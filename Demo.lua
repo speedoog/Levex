@@ -59,6 +59,8 @@ Sequence =
 	{	s=pt1+1.2,	e=pt1+3, 	vb=0, 	fx=FxText(80,90,"tiny computer",gWhite)},
 
 	{	s=pt2+0,	e=pt2+15, 	vb=1, 	fx=FxDraw("Spectrals.txt") },
+	{	s=pt2+0,	e=pt2+15,	vb=1,	fx={start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+
 	{	s=pt2+12,	e=pt2+15, 	vb=1, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
 	{	s=pt2+8,	e=pt3+5,	vb=1, 	fx=FxBeziers()		},
 
@@ -69,11 +71,11 @@ Sequence =
 	{	s=pt3+5,	e=pt3+10,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
 
 	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxDraw("Levex.txt"), mod={mdConst("speed", 50) } },
+	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxDraw("Levex.txt"), mod={mdConst("speed", 30), mdConst("Hack", true) } },
 
 	{	s=pt5+0,	e=pt6, 		vb=1,	fx=FxCube()			},
 	{	s=pt5+1.8,	e=pt5+3,  	vb=0,	fx=FxBlower()		},
-	
+
 	{	s=pt6+0,	e=pt7,		vb=1,	fx=FxDisolve()		},
 
 	{	s=pt7+0,	e=pt7+1, 	vb=0, 	fx=FxPalette(gPalettes.black) },

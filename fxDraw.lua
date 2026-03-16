@@ -18,8 +18,8 @@ end
 FxDraw = function(file)
 	local fx = { name = "Draw", speed = 100}
 
-	fx.Init = function(self)
-		self.scene = FS_LoadScene(file)
+	fx.Init = function(_)
+		_.scene = FS_LoadScene(file)
 	end
 
 	fx.tic = function(_, t)

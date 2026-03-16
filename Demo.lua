@@ -30,7 +30,7 @@ pt6=50	-- greetz disolve
 pt7=75  -- terrain
 pt8=120 -- end
 
-gTime=0	--pt7
+gTime=-10	--pt7
 gInfos=false
 gPlay=true
 gDeltaTime=0
@@ -40,6 +40,7 @@ RunningFx = { }
 Sequence = 
 {
 ----->	{ s = 0,e = 10,vb = 0,fx = FxSplit() },
+	{ s = -10, e = 10, vb=0, fx = FxImage() },
 
 	-- Boot sequence
 	{	s=0,	e=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },

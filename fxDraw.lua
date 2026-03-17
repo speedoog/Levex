@@ -25,7 +25,7 @@ FxDraw = function(file)
 	fx.tic = function(_, t)
 
 		local PixTarget = t*_.speed
-		local timeRatio=t/_.dur
+		local timeRatio=t/_.d
 
 		local iPix = 0
 		local bComplete = false

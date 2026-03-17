@@ -7,7 +7,7 @@ FxFadepal = function(paldest,cls)
 	end
 
 	fx.tic = function(_, t)
-		local f=t/_.dur
+		local f=t/_.d
 		local pal={}
 		for k,v in pairs(_.pal) do
 			pal[k]={}

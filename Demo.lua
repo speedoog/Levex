@@ -21,74 +21,130 @@ function mdSin(att,a,f,o,p)
 	return out
 end
 
-pt1=6	-- boot
-pt2=10	-- mountain draw + spectrals
-pt3=20	-- balls + beziers
-pt4=30	-- levex + moutain vector
-pt5=40	-- cube 
-pt6=50	-- greetz disolve
-pt7=75  -- terrain
-pt8=120 -- end
-
-gTime=-12	--pt7
+gTime=0
 gInfos=false
 gPlay=true
 gDeltaTime=0
 
 
 RunningFx = { }
-Sequence = 
-{
------>	{ s = 0,e = 10,vb = 0,fx = FxSplit() },
-	{ s = -10, e = 10, vb=1, fx = FxImage() },
+Sequence = {
+	data = {},
+	e=0,
+	Add=function(_, part, offset)
+		local maxtime=0
+		if offset==nil then
+			offset=0
+		end
+		offset = _.e+offset
 
-	-- Boot sequence
-	{	s=0,	e=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
-	{	s=0,	e=1, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
-
-	{	s=0,	e=1, 	vb=0, 	fx=FxColorRemplace(11,10) },
-	{	s=0,	e=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,20, false, false) },
-	{	s=1,	e=5, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,4, false, false) },
-	{	s=2,	e=5, 	vb=0, 	fx=FxBorder(11) },
-	{	s=5,	e=6, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
-
-	{	s=6,	e=7, 	vb=0, 	fx={name="border reset", start=function() poke(gAddBorderCol,0) end }  },
-	{	s=6,	e=7, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
-
-	{	s=pt1+0,	e=pt1+10,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
-	{	s=pt1+1,	e=pt1+3, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
-	{	s=pt1+1.2,	e=pt1+3, 	vb=0, 	fx=FxText(80,90,"tiny computer",gWhite)},
-
-	{	s=pt2+0,	e=pt2+15, 	vb=1, 	fx=FxDraw("Spectrals.txt") },
-	{	s=pt2+0,	e=pt2+15,	vb=1,	fx={start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
-
-	{	s=pt2+12,	e=pt2+15, 	vb=1, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
-	{	s=pt2+8,	e=pt3+5,	vb=1, 	fx=FxBeziers()		},
-
-	{	s=pt2+0,	e=pt2+15, 	vb=0, 	fx=FxTunnel() },
-	{	s=pt2+13,	e=pt2+15, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
-
-	{	s=pt3+5,	e=pt3+6, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.sweetie16mod),true) },
-	{	s=pt3+5,	e=pt3+10,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
-
-	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=pt4+0,	e=pt5, 		vb=1, 	fx=FxDraw("Levex.txt"), mod={mdConst("speed", 30), mdConst("Hack", true) } },
-
-	{	s=pt5+0,	e=pt6, 		vb=1,	fx=FxCube()			},
-	{	s=pt5+1.8,	e=pt5+3,  	vb=0,	fx=FxBlower()		},
-
-	{	s=pt6+0,	e=pt7,		vb=1,	fx=FxDisolve()		},
-
-	{	s=pt7+0,	e=pt7+1, 	vb=0, 	fx=FxPalette(gPalettes.black) },
-	{	s=pt7+0,	e=pt7+3, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
-	{	s=pt7+10,	e=pt7+13, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
-
-	{	s=pt7+0,	e=pt8,  	vb=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
-	{	s=pt8-5,	e=pt8, 		vb=1, 	fx=FxText(50,50,"Code", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
-	{	s=pt8-5,	e=pt8, 		vb=1, 	fx=FxText(50,50,"Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
-
-	{	s=pt8+0,	e=pt8+2.5,  vb=0,	fx=FxPowerOff()		},
+		for k,v in pairs(part) do
+			if v.d then
+				v.s = v.s+offset
+				v.e = v.s+v.d
+			end
+			maxtime = max(maxtime,v.e)
+			table.insert(_.data, v)
+		end
+		part.e=maxtime
+		_.e=maxtime
+	end
 }
+
+-- Boot
+P0_Boot =
+{
+	{	s=0,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
+	{	s=0,	d=1, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
+
+	{	s=0,	d=1, 	vb=0, 	fx=FxColorRemplace(11,10) },
+	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,20, false, false) },
+	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,4, false, false) },
+	{	s=2,	d=3, 	vb=0, 	fx=FxBorder(11) },
+	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
+
+	{	s=6,	d=1, 	vb=0, 	fx={name="border reset", start=function() poke(gAddBorderCol,0) end }  },
+	{	s=6,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
+}
+
+-- Tic logo
+P1_TicLogo =
+{
+	{	s=0,	d=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
+	{	s=1,	d=2, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
+	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",gWhite)},
+	{	s=4, 	d=2,	vb=1, 	fx=FxImage("test.tga") },
+}
+
+-- spectrals + tunnel
+P2_Spectrals =
+{
+	{	s=0,	d=15, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
+	{	s=0,	d=15, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
+	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.txt") },
+	{	s=0,	d=15,	vb=1,	fx={start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+
+	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
+	{	s=8,	d=7,	vb=1, 	fx=FxBeziers()		},
+
+	{	s=0,	d=15, 	vb=0, 	fx=FxTunnel() },
+	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
+}
+
+-- balls
+P3_Balls =
+{
+	{	s=0,	d=1, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.sweetie16mod),true) },
+	{	s=0,	d=5,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
+}
+
+-- Levex
+P4_Levex =
+{
+	{	s=0,	d=10, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
+	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.txt"), mod={mdConst("speed", 30), mdConst("Hack", true) } },
+}
+
+-- Cube
+P5_Cube =
+{
+	{	s=0,	d=10, 	vb=1,	fx=FxCube()			},
+	{	s=1.8,	d=3,  	vb=0,	fx=FxBlower()		},
+}
+
+-- Disolve
+P6_Disolve =
+{
+	{	s=0,	d=25,		vb=1,	fx=FxDisolve()	},
+}
+
+-- Terrain
+P7_Terrain =
+{
+	{	s=0,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.black) },
+	{	s=0,	d=3, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
+	{	s=10,	d=13, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
+
+	{	s=0,	d=45,  	vb=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
+	{	s=40,	d=5, 	vb=1, 	fx=FxText(50,50,"Code", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+	{	s=40,	d=5, 	vb=1, 	fx=FxText(50,50,"Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+}
+
+-- End
+P8_End =
+{
+	{	s=0,	d=2.5,  vb=0,	fx=FxPowerOff()	},
+}
+
+Sequence:Add(P0_Boot)
+Sequence:Add(P1_TicLogo)
+Sequence:Add(P2_Spectrals)
+Sequence:Add(P3_Balls)
+Sequence:Add(P4_Levex)
+Sequence:Add(P5_Cube)
+Sequence:Add(P6_Disolve)
+Sequence:Add(P7_Terrain)
+Sequence:Add(P8_End,-1)
 
 function Startfx(fx,sh)
 	if fx.started then return end
@@ -117,9 +173,9 @@ end
 -- ############## Demo ##############
 
 function BOOT()
-	for k,v in pairs(Sequence) do
+	for k,v in pairs(Sequence.data) do
 		v.fx.fh=v
-		v.fx.dur=v.e-v.s
+		v.fx.d=v.e-v.s
 		if v.fx.Init then
 			v.fx:Init()
 		end
@@ -176,7 +232,7 @@ function TIC()
 	local tStart=time()
 
 	-- Stop old
-	for k,sh in pairs(Sequence) do 
+	for k,sh in pairs(Sequence.data) do 
 		local shouldrun = inrange(gTime, sh.s, sh.e)
 		local fx=sh.fx
 		if not shouldrun and fx.started then
@@ -185,28 +241,27 @@ function TIC()
 	end
 
 	-- start new
-	local vclear={0,0}
-	for k,sh in pairs(Sequence) do 
-		local shouldrun = inrange(gTime, sh.s, sh.e)
-		local fx=sh.fx
+	local vclear = {true,true}
+	for k,sh in pairs(Sequence.data) do
+		local shouldrun = inrange(gTime,sh.s,sh.e)
+		local fx = sh.fx
 		if shouldrun then
-			if fx.started~=true then
-				Startfx(fx, sh)
+			if fx.started ~= true then
+				Startfx(fx,sh)
 			end
-
-			if fx.cls == false then
-				vclear[sh.vb+1]=-1
-			elseif vclear[sh.vb+1]~=-1 then
-				vclear[sh.vb+1]=vclear[sh.vb+1]+1
+			if (fx.cls == false) then
+				vclear[sh.vb+1] = false
 			end
 		end
 	end
 
-	if vclear[1]>0 then
-		vbank(0) cls()
+	if vclear[1] then
+		vbank(0)
+		cls()
 	end
-	if vclear[2]>0 then
-		vbank(1) cls()
+	if vclear[2] then
+		vbank(1)
+		cls()
 	end
 
 	for k,fh in pairs(RunningFx) do 

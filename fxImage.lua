@@ -1,7 +1,7 @@
-FxImage = function()
+FxImage = function(filename)
 	local fx = { name = "Image", cls=false, img={} }
 	fx.Init = function(_)
-		local f = FS_Open("test.tga")
+		local f = FS_Open(filename)
 		if f==nil then return end
 
 		local nColors = f:Read()

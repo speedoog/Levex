@@ -1,13 +1,26 @@
 FxImage = function()
-	local fx = { name = "Image", img={} }
+	local fx = { name = "Image", cls=false, img={} }
 	fx.Init = function(_)
 		local f = FS_Open("test.tga")
 
-		local nPix=240*136
+		local nColors = f:Read()
+		_.pal0 = {}
+		_.pal1 = {}
+--		_.pal1[1]={0,0,0}
+		for i = 1,nColors,1 do
+			local rgb = {f:Read(),f:Read(),f:Read()}
+			if i<=16 then
+				_.pal0[i] = rgb
+			else
+				_.pal1[(i&0xF)+1] = rgb
+			end
+		end
+		_.width =f:Read()
+		_.height =f:Read()
+		local nPix=_.width*_.height
 		local bytes=floor((nPix*8)/5)
 		local iPix=0
 		for i=0,f.size,5 do
-
 			local a=0
 			for k = 1,5 do
 				local a1 = f:Read()
@@ -19,7 +32,6 @@ FxImage = function()
 				local c=a&31
 				a = a>>5
 				table.insert(tmp, c)
---				poke(i,c)
 				iPix = iPix+1
 			end
 
@@ -30,9 +42,31 @@ FxImage = function()
 		end
 
 	end
+	fx.start = function(_,t)
+		vbank(0)
+		PaletteApply(_.pal0)
+		vbank(1)
+		PaletteApply(_.pal1)
+	end
 	fx.tic = function(_,t)
-		for k,v in pairs(_.img) do
-			poke4(k,v)
+		vbank(0)
+		cls()
+		vbank(1)
+		cls()
+
+		local ipix=1
+		for y=0,_.height-1 do
+			for x=0,_.width-1 do
+				local v = _.img[ipix]
+				if v<=15 then
+					vbank(0)
+					pix(x,y,v)
+				else
+					vbank(1)
+					pix(x,y,v+1)
+				end
+				ipix = ipix+1
+			end
 		end
 	end
 	return fx

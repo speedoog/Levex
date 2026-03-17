@@ -2,6 +2,7 @@ FxImage = function()
 	local fx = { name = "Image", cls=false, img={} }
 	fx.Init = function(_)
 		local f = FS_Open("test.tga")
+		if f==nil then return end
 
 		local nColors = f:Read()
 		_.pal0 = {}
@@ -49,8 +50,6 @@ FxImage = function()
 		PaletteApply(_.pal1)
 	end
 	fx.tic = function(_,t)
-		vbank(0)
-		cls()
 		vbank(1)
 		cls()
 
@@ -58,12 +57,14 @@ FxImage = function()
 		for y=0,_.height-1 do
 			for x=0,_.width-1 do
 				local v = _.img[ipix]
-				if v<=15 then
-					vbank(0)
-					pix(x,y,v)
-				else
-					vbank(1)
-					pix(x,y,v+1)
+				if y<136*t and x<240*t then 
+					if v<=15 then
+						vbank(0)
+						pix(x,y,v)
+					else
+						vbank(1)
+						pix(x,y,v+1)
+					end
 				end
 				ipix = ipix+1
 			end

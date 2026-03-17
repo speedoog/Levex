@@ -1,7 +1,7 @@
 
 FxDisolve = function()
 	local fx = { name = "Disolve" }
-	
+
 	fx.scan = function(_,t,x0,x1,y0,y1)
 		for y=y0,y1 do
 			for x=x0,x1 do

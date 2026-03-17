@@ -30,7 +30,7 @@ pt6=50	-- greetz disolve
 pt7=75  -- terrain
 pt8=120 -- end
 
-gTime=-10	--pt7
+gTime=-12	--pt7
 gInfos=false
 gPlay=true
 gDeltaTime=0
@@ -40,7 +40,7 @@ RunningFx = { }
 Sequence = 
 {
 ----->	{ s = 0,e = 10,vb = 0,fx = FxSplit() },
-	{ s = -10, e = 10, vb=0, fx = FxImage() },
+	{ s = -10, e = 10, vb=1, fx = FxImage() },
 
 	-- Boot sequence
 	{	s=0,	e=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
@@ -185,7 +185,7 @@ function TIC()
 	end
 
 	-- start new
-	local vclear={true,true}
+	local vclear={0,0}
 	for k,sh in pairs(Sequence) do 
 		local shouldrun = inrange(gTime, sh.s, sh.e)
 		local fx=sh.fx
@@ -193,14 +193,21 @@ function TIC()
 			if fx.started~=true then
 				Startfx(fx, sh)
 			end
-			if (fx.cls==false) then
-				vclear[sh.vb+1]=false
+
+			if fx.cls == false then
+				vclear[sh.vb+1]=-1
+			elseif vclear[sh.vb+1]~=-1 then
+				vclear[sh.vb+1]=vclear[sh.vb+1]+1
 			end
 		end
 	end
 
-	if vclear[1] then vbank(0) cls() end
-	if vclear[2] then vbank(1) cls() end
+	if vclear[1]>0 then
+		vbank(0) cls()
+	end
+	if vclear[2]>0 then
+		vbank(1) cls()
+	end
 
 	for k,fh in pairs(RunningFx) do 
 		vbank(fh.vbank)

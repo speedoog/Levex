@@ -115,7 +115,7 @@ P5_Cube =
 -- Disolve
 P6_Disolve =
 {
-	{	s=0,	d=25,		vb=1,	fx=FxDisolve()	},
+	{	s=0,	d=25,	vb=1,	fx=FxDisolve()	},
 }
 
 -- Terrain

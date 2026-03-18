@@ -71,7 +71,6 @@ FxDisolve = function()
 				_.list[k]=nil
 			end
 		end
-
 		return t>20
 	end
 

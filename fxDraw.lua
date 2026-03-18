@@ -35,29 +35,29 @@ FxDraw = function(file)
 			bContinue = true
 			item:Init()
 			while bContinue do
-				iPix = iPix+1
-				local f = iPix/PixTarget
-
-				local fnPixHack=function(x,y,c)
-					local x1 = gSizeX2+gSizeX2*sin(4.121*(t+2*f))
-					local y1 = gSizeX2+gSizeY2*cos(3.171*(t+2*f))
-					local k2=min(timeRatio+(0.5-f*0.2),1)
-					c=2
-					if f > 0.90 then c = c+1 end
-					if f > 0.95 then c = c+1 end
-					if f > 0.98 then c = c+1 end
-					pix(round(lerp(x1,x,k2)),round(lerp(y1,y,k2)),c)
-			 	end
-
-				if _.Hack then 
-					bContinue = item:Draw(fnPixHack) > 0
-				else
-					bContinue = item:Draw(pix) > 0
-				end
-
 				if iPix >= PixTarget then
 					bComplete = true
 					bContinue = false
+				else
+					iPix = iPix+1
+					local f = iPix/PixTarget
+
+					local fnPixHack=function(x,y,c)
+						local x1 = gSizeX2+gSizeX2*sin(4.121*(t+2*f))
+						local y1 = gSizeX2+gSizeY2*cos(3.171*(t+2*f))
+						local k2=min(timeRatio+(0.5-f*0.2),1)
+						c=2
+						if f > 0.90 then c = c+1 end
+						if f > 0.95 then c = c+1 end
+						if f > 0.98 then c = c+1 end
+						pix(round(lerp(x1,x,k2)),round(lerp(y1,y,k2)),c)
+					end
+
+					if _.Hack then 
+						bContinue = item:Draw(fnPixHack) > 0
+					else
+						bContinue = item:Draw(pix) > 0
+					end
 				end
 			end
 			if bComplete then

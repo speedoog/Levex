@@ -109,7 +109,7 @@ P4_Levex =
 P5_Cube =
 {
 	{	s=0,	d=10, 	vb=1,	fx=FxCube()			},
-	{	s=1.8,	d=3,  	vb=0,	fx=FxBlower()		},
+	{	s=1.8,	d=1.4, 	vb=0,	fx=FxBlower()		},
 }
 
 -- Disolve

@@ -112,7 +112,7 @@ function dot(v1, v2)
 end
 
 -- subtract 2 vectors
-function sub(v1, v2)
+function V3Sub(v1, v2)
 	return {v1[1] - v2[1], v1[2] - v2[2], v1[3] - v2[3]}
 end
 
@@ -123,7 +123,7 @@ end
 
 -- 1 if a poly is dead-on, 0 if parallel with camera, negative if facing away
 function FaceOrient(v1, v2, v3)
-	return cross(sub(v2, v1), sub(v3, v1))[3]
+	return cross(V3Sub(v2,v1),V3Sub(v3,v1))[3]
 end
 
 -- ---------------------------------------------------------------------

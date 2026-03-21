@@ -73,7 +73,7 @@ P1_TicLogo =
 	{	s=0,	d=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
 	{	s=1,	d=2, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
 	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",gWhite)},
-	{	s=4, 	d=2,	vb=1, 	fx=FxImage("test.tga") },
+	{	s=4, 	d=2,	vb=1, 	fx=FxImage("test.c31") },
 }
 
 -- spectrals + tunnel
@@ -81,7 +81,7 @@ P2_Spectrals =
 {
 	{	s=0,	d=15, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,	d=15, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
-	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.txt") },
+	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.draw") },
 	{	s=0,	d=15,	vb=1,	fx={start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
 	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
@@ -102,7 +102,7 @@ P3_Balls =
 P4_Levex =
 {
 	{	s=0,	d=10, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.txt"), mod={mdConst("speed", 30), mdConst("Hack", true) } },
+	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw"), mod={mdConst("speed", 30), mdConst("Hack", true) } },
 }
 
 -- Cube

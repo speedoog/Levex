@@ -1,5 +1,5 @@
 FxPowerOff = function()
-	local fx = { name = "PowerOff", cls = false}
+	local fx = { name = "PowerOff"}
 
 	fx.tic = function(_, t)
 		local w,h=gSizeX,gSizeY

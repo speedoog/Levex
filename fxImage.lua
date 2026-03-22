@@ -1,5 +1,5 @@
 FxImage = function(filename)
-	local fx = { name = "Image", cls=false, img={} }
+	local fx = { name = "Image", img={} }
 	fx.Init = function(_)
 		local f = FS_Open(filename)
 		if f==nil then return end

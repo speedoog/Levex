@@ -3,7 +3,6 @@ FxTerrain = function()
 	local _DistanceMask = 1024-1
 	local fx = {
 		name = "Terrain",
-		cls = false,
 		alt = 32,
 		mul = 9,
 		hi = 0.5,

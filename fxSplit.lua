@@ -1,5 +1,5 @@
 FxSplit = function()
-	local fx = { name = "Split", cls = false }
+	local fx = { name = "Split" }
 
 	fx.tic = function(_,t)
 		t = floor(t*60)

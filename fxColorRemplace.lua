@@ -1,5 +1,5 @@
 FxColorRemplace = function(c1, c2)
-	local fx = { name = "ColorRemplace", cls=false }
+	local fx = { name = "ColorRemplace" }
 	fx.start = function(_)
 		for y=0,gSizeY do
 			for x=0,gSizeX do

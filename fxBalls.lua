@@ -1,5 +1,5 @@
 FxBalls = function()
-	local fx = { name = "Balls", cls = false, scale = 1 }
+	local fx = { name = "Balls", scale = 1 }
 
 	fx.tic = function(_, t)
 		local x,y,c,r

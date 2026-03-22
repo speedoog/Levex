@@ -32,6 +32,7 @@ require "fxPalette"
 require "fxTunnel"
 require "fxSplit"
 require "fxImage"
+require "fxCls"
 
 require "Demo"
 

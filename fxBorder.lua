@@ -1,5 +1,5 @@
 FxBorder = function(c)
-	local fx = { name = "Border", cls=false}
+	local fx = { name = "Border"}
 
 	fx.start = function(_)
 		poke(gAddBorderCol,c)		-- set border color

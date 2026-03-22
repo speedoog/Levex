@@ -1,7 +1,6 @@
-FxText = function(x, y, txt, c, speed, fnt, cls)
-	if cls==nil then cls=true end
+FxText = function(x, y, txt, c, speed, fnt)
 	if fnt==nil then fnt=true end
-	local fx = { name = "Text", x = x, y = y, text = txt, c = c, cls=cls}
+	local fx = { name = "Text", x = x, y = y, text = txt, c = c}
 
 	fx.tic = function(_, t)
 		local e=#_.text

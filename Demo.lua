@@ -7,10 +7,10 @@ function mdKF(att, ...)
 	return out
 end
 
-function mdConst(att,v)
-	local out = {call = function(self,fx) fx[att] = v end }
-	return out
-end
+-- function mdConst(att,v)
+-- 	local out = {call = function(self,fx) fx[att] = v end }
+-- 	return out
+-- end
 
 function mdSin(att,a,f,o,p)
 	local out={}
@@ -28,6 +28,7 @@ gDeltaTime=0
 
 
 RunningFx = { }
+
 Sequence = {
 	data = {},
 	e=0,
@@ -76,6 +77,16 @@ P1_TicLogo =
 	{	s=4, 	d=2,	vb=1, 	fx=FxImage("test.c31") },
 }
 
+-- Tibet
+P11_Tibet =
+{
+	{	s=0,	d=15, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
+	{	s=0,	d=15, 	vb=0, 	fx=FxDraw("Tibet.draw"), set={speed=30} },
+
+	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black),true) },
+}
+
+
 -- spectrals + tunnel
 P2_Spectrals =
 {
@@ -102,7 +113,7 @@ P3_Balls =
 P4_Levex =
 {
 	{	s=0,	d=10, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw"), mod={mdConst("speed", 30), mdConst("Hack", true) } },
+	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw"), set={speed=30, Hack=true} },
 }
 
 -- Cube
@@ -136,8 +147,9 @@ P8_End =
 	{	s=0,	d=2.5,  vb=0,	fx=FxPowerOff()	},
 }
 
-Sequence:Add(P0_Boot)
-Sequence:Add(P1_TicLogo)
+--Sequence:Add(P0_Boot)
+--Sequence:Add(P1_TicLogo)
+Sequence:Add(P11_Tibet)
 Sequence:Add(P2_Spectrals)
 Sequence:Add(P3_Balls)
 Sequence:Add(P4_Levex)
@@ -149,9 +161,15 @@ Sequence:Add(P8_End,-1)
 function Startfx(fx,sh)
 	if fx.started then return end
 
+	if sh.set then
+		for k,v in pairs(sh.set) do
+			fx[k]=v
+		end
+	end
+
 	local vb,start=sh.vb,sh.s
 	if vb==nil then vb=0 end
-	vbank(vb)
+	vbank(vb)							-- ??? useless
 	if fx.start then fx:start() end
 	table.insert(RunningFx, {fx=fx, start=start, vbank=vb, sh=sh})
 	fx.started=true

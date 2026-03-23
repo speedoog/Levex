@@ -1,30 +1,30 @@
 FxImage = function(filename)
 	local fx = { name = "Image", img={} }
 	fx.Init = function(_)
-		local f = FS_Open(filename)
-		if f==nil then return end
+		local fStream = FS_Open(filename)
+		if fStream==nil then return end
 
-		local nColors = f:Read()
+		local nColors = fStream:Read()
 		_.pal0 = {}
 		_.pal1 = {}
 --		_.pal1[1]={0,0,0}
 		for i = 1,nColors,1 do
-			local rgb = {f:Read(),f:Read(),f:Read()}
+			local rgb = {fStream:Read(),fStream:Read(),fStream:Read()}
 			if i<=16 then
 				_.pal0[i] = rgb
 			else
 				_.pal1[(i&0xF)+1] = rgb
 			end
 		end
-		_.width =f:Read()
-		_.height =f:Read()
+		_.width =fStream:Read()
+		_.height =fStream:Read()
 		local nPix=_.width*_.height
 		local bytes=floor((nPix*5)/8)
 		local iPix=0
 		for i = 0,bytes-1,5 do
 			local a=0
 			for k = 1,5 do
-				local a1 = f:Read()
+				local a1 = fStream:Read()
 				a = (a<<8)|a1
 			end
 

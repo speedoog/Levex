@@ -23,14 +23,6 @@ gKeyLeft = 60
 gKeyRight = 61
 gKeyCtrl = 63
 
-function DrawCrosshair(mx, my)
-	local min, max, c = 1, 2, gWhite
-	line(mx - max, my, mx - min, my, c)
-	line(mx + min, my, mx + max, my, c)
-	line(mx, my - max, mx, my - min, c)
-	line(mx, my + min, mx, my + max, c)
-end
-
 function printoutline(t, x, y, c, c2)
 	local s=2
 	for dx=-s,s do

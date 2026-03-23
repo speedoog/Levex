@@ -2,12 +2,9 @@ FS = {}
 
 function MemStream(ptr)
 	local ms = {add = ptr,offset = 0}
-
-	ms.Ptr = function(_) return _.add+_.offset end
-	ms.Inc = function(_) _.offset = _.offset+1 end
 	ms.Read = function(_)
-		local data = peek(_:Ptr())
-		_:Inc()
+		local data = peek(_.add+_.offset)
+		_.offset = _.offset+1
 		return data
 	end
 	ms.ReadTable = function(_,n)
@@ -22,11 +19,9 @@ end
 
 function StringStream(str)
 	local ss = {str = str,offset = 1, size=#str}
-
-	ss.Inc = function(_) _.offset = _.offset+1 end
 	ss.Read = function(_)
-		local data = string.byte(_.str:sub(_.offset,_.offset))
-		_:Inc()
+		local data = string.byte(_.str, _.offset)
+		_.offset = _.offset+1
 		return data
 	end
 	ss.ReadTable = function(_,n)
@@ -79,12 +74,7 @@ function FS_Load()
 	local ms = MemStream(gAddMap)
 	local Zipsize = ms:Read()<<8|ms:Read()
 
-	local data =""
-	for i=1,Zipsize do
-		data=data..string.char(ms:Read())
-	end
-
-	trace(string.format("in=%d",string.len(data)))
+	local data = string.char(table.unpack(ms:ReadTable(Zipsize)))
 
 	return inflate.new(data)
 end
@@ -96,9 +86,7 @@ function FS_Open(fn)
 		if name==fn then
 			local content
 			if packed then
-				-- perform checksum verification
 				content = FS:inflate(offset,crc)
---				trace(string.format("in=%d, out=%d",string.len(data),string.len(content)))
 			else
 				content = FS:extract(offset,size)
 			end
@@ -108,18 +96,16 @@ function FS_Open(fn)
 	return nil
 end
 
-
-
-function FS_LoadScene(file)
+function FS_LoadScene(filename)
 	local scene = {npix = 0,items = {}}
 
-	local f = FS_Open(file)
-	if f == nil then
+	local fStream = FS_Open(filename)
+	if fStream == nil then
 		return scene
 	end
 
 	while true do
-		local b = f:Read()
+		local b = fStream:Read()
 		if b == 0 then -- EOF
 			break
 		end
@@ -130,8 +116,8 @@ function FS_LoadScene(file)
 		item = CreateItem(cmd)
 
 		if item then
-			local count = f:Read()
-			local params = f:ReadTable(count)
+			local count = fStream:Read()
+			local params = fStream:ReadTable(count)
 			item:Load(params)
 			table.insert(scene.items,item)
 		end

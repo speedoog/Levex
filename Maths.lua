@@ -64,13 +64,13 @@ function distance(x0,y0,x1,y1)
 	return sqrt(dx*dx+dy*dy)
 end
 
-function rad2deg(a)
-	return a/pi*180
-end
+-- function rad2deg(a)
+-- 	return a/pi*180
+-- end
 
-function deg2rad(a)
-	return a/180*pi
-end
+-- function deg2rad(a)
+-- 	return a/180*pi
+-- end
 
 function cubicBezier(t, p0, p1, p2, p3)
 	return (1 - t)^3*p0 + 3*(1 - t)^2*t*p1 + 3*(1 - t)*t^2*p2 + t^3*p3
@@ -107,9 +107,9 @@ end
 -- ---------------------------------------------------------------------
 
 -- dot product
-function dot(v1, v2)
-	return v1[1] * v2[1] + v1[2] * v2[2] + v1[3] * v2[3]
-end
+-- function V3Dot(v1, v2)
+-- 	return v1[1] * v2[1] + v1[2] * v2[2] + v1[3] * v2[3]
+-- end
 
 -- subtract 2 vectors
 function V3Sub(v1, v2)
@@ -117,13 +117,13 @@ function V3Sub(v1, v2)
 end
 
 -- cross product
-function cross(v1, v2)
+function V3Cross(v1, v2)
 	return { v1[2]*v2[3]-v1[3]*v2[2], v1[3]*v2[1]-v1[1]*v2[3], v1[1]*v2[2]-v1[2]*v2[1] }
 end
 
 -- 1 if a poly is dead-on, 0 if parallel with camera, negative if facing away
 function FaceOrient(v1, v2, v3)
-	return cross(V3Sub(v2,v1),V3Sub(v3,v1))[3]
+	return V3Cross(V3Sub(v2,v1),V3Sub(v3,v1))[3]
 end
 
 -- ---------------------------------------------------------------------
@@ -275,18 +275,6 @@ end
 -- 						COLOR / Palette
 -- ---------------------------------------------------------------------
 
--- Palette: Build palette here then add palette setter, ex pico8:
--- call PaletteApply(PaletteLoadString(gPalettes.blueish))
-gPalettes = {
-	sweetie16     = "1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57",
-	sweetie16mod  = "0000005d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57",
-	classic_tic80 = "140c1c44243430346d4e4a4f854c30346524d04648757161597dced27d2c8595a16daa2cd2aa996dc2cadad45edeeed6",
-	pico8         = "0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8",
-	grayscale     = "000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff",
-	blueish       = "0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff",
-	black         = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-}
-
 function rgbToHsv(r, g, b)
 	r, g, b = r / 255, g / 255, b / 255
 	local max, min = math.max(r, g, b), math.min(r, g, b)
@@ -380,17 +368,29 @@ function make_gradient_direct(r1, g1, b1, r2, g2, b2, steps)
 	return out
 end
 
-function PaletteLoadString(s)
-	local ret={}
+function PaletteLoad(s)
+	local pal={}
 	local i=1
 	while i<s:len() do
 		local r = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
 		local g = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
 		local b = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
-		table.insert(ret, {r,g,b})
+		table.insert(pal, {r,g,b})
 	end
-	return ret
+	return pal
 end
+
+-- Palette: Build palette here then add palette setter, ex pico8:
+gPalettes = {
+	sweetie16     = PaletteLoad("1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
+	sweetie16mod  = PaletteLoad("0000005d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
+	classic_tic80 = PaletteLoad("140c1c44243430346d4e4a4f854c30346524d04648757161597dced27d2c8595a16daa2cd2aa996dc2cadad45edeeed6"),
+	pico8         = PaletteLoad("0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8"),
+	grayscale     = PaletteLoad("000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff"),
+	blueish       = PaletteLoad("0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff"),
+	black         = PaletteLoad("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
+}
+
 
 function PaletteSetColor(idx,r,g,b)
 	local p = gAddPalette+idx*3

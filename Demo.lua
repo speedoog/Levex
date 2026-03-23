@@ -64,7 +64,7 @@ P0_Boot =
 	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,20, false) },
 	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,4, false) },
 	{	s=2,	d=3, 	vb=0, 	fx=FxBorder(11) },
-	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
+	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 
 	{	s=6,			vb=0, 	fx=FxClsStart() },
 	{	s=6,	d=1, 	vb=0, 	fx={name="border reset", start=function() poke(gAddBorderCol,0) end }  },
@@ -83,8 +83,8 @@ P1_TicLogo =
 P_Imagec31 =
 {
 	{	s=0, 	d=2,	vb=1, 	fx=FxImage("test.c31") },
+	{	s=0,			vb=0, 	fx=FxClsStop() },
 	{	s=0,			vb=1, 	fx=FxClsStop() },
-	
 }
 
 -- Tibet
@@ -94,7 +94,7 @@ P11_Tibet =
 	{	s=0,	d=15, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,	d=15, 	vb=0, 	fx=FxDraw("Tibet.draw"), set={speed=200} },
 
-	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
+	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 }
 
 
@@ -109,18 +109,18 @@ P2_Spectrals =
 	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.draw") },
 	{	s=0,	d=15,	vb=1,	fx={start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
-	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
+	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
 	{	s=8,	d=7,	vb=1, 	fx=FxBeziers()		},
 
 	{	s=0,	d=15, 	vb=0, 	fx=FxTunnel() },
-	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.black)) },
+	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 }
 
 -- balls
 P3_Balls =
 {
 	{	s=0,			vb=1, 	fx=FxClsStart() },
-	{	s=0,	d=1, 	vb=0, 	fx=FxFadepal(PaletteLoadString(gPalettes.sweetie16mod)) },
+	{	s=0,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.sweetie16mod) },
 	{	s=0,	d=5,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
 }
 

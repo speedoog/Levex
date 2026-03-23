@@ -82,11 +82,6 @@ FxBeziers = function()
 			ya = yb
 			c = c+1
 		end
-
-		DrawCrosshair(x0,y0)
-		DrawCrosshair(x1,y1)
-		DrawCrosshair(x2,y2)
-		DrawCrosshair(x3,y3)
 	end
 
 	return fx

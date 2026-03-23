@@ -61,8 +61,8 @@ P0_Boot =
 	{	s=0,	d=1, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
 
 	{	s=0,	d=1, 	vb=0, 	fx=FxColorRemplace(11,10) },
-	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,20, false) },
-	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,4, false) },
+	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,false), 		set={speed=20} },
+	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,false), 	set={speed=4} },
 	{	s=2,	d=3, 	vb=0, 	fx=FxBorder(11) },
 	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 
@@ -77,7 +77,7 @@ P1_TicLogo =
 	{	s=0,	d=4,	vb=0, 	fx=FxCls() },
 	{	s=0,	d=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
 	{	s=1,	d=2, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
-	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",gWhite)},
+	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",gRed)},
 }
 
 P_Imagec31 =
@@ -107,7 +107,7 @@ P2_Spectrals =
 	{	s=0,			vb=1, 	fx=FxCls() },
 
 	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.draw") },
-	{	s=0,	d=15,	vb=1,	fx={start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+	{	s=0,	d=15,	vb=1,	fx={name="black logo", start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
 	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
 	{	s=8,	d=7,	vb=1, 	fx=FxBeziers()		},
@@ -119,6 +119,7 @@ P2_Spectrals =
 -- balls
 P3_Balls =
 {
+	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,			vb=1, 	fx=FxClsStart() },
 	{	s=0,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.sweetie16mod) },
 	{	s=0,	d=5,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
@@ -230,6 +231,8 @@ function BOOT()
 	end
 end
 
+
+RectInfo1,RectInfo2,RectInfo3 = {0,0},{0,0},{0,0}
 function PlaybackControl(tStart)
 	if keyp(gKeyRight,20,1) then
 		if key(gKeyCtrl) then
@@ -258,25 +261,36 @@ function PlaybackControl(tStart)
 	if keyp(gKeyTab) 	then gInfos = not gInfos end
 	if keyp(gKeySpace) 	then gPlay  = not gPlay	 end
 
+	local function Info(t,x,y,r)
+		return Outline(t,x,y,gWhite,gGrey,print,false,1,true)
+	end
+
 	if gInfos then
 		vbank(1)
-		-- global time
-		printoutline(string.format("%.1f",gTime), 0, 130, gWhite,gBlack)
 
-		local i=0
+		-- global time
+		rect(2,129,RectInfo1[1],RectInfo1[2], gBlack)
+		RectInfo1=Info(string.format("%.1f",gTime),2,129)
+
+		-- Fx
+		local h=7
+		rect(0,0,RectInfo2[1],RectInfo2[2],gBlack)
+		local y=1
 		for k,sh in pairs(RunningFx) do 
 			local fx=sh.fx
-			printoutline(string.format("%.1f",fx.t),0,i*7,gWhite,gBlack)
-			printoutline(string.format("-%.1f",fx.d-fx.t),25,i*7,gWhite,gBlack)
-			printoutline(fx.name,50,i*7,gWhite,gBlack)
-			i=i+1
+			Info(string.format("%.1f",fx.t),2,y)
+			Info(string.format("-%.1f",fx.d-fx.t),20,y)
+			Info(string.format("%s %d", fx.name, sh.vb),40,y)
+			y=y+h
 		end
+		RectInfo2={100, h*#RunningFx}
 
 		-- CPU usage
 		local tEnd=time()
 		local tElapse=(tEnd-tStart)
 		gDeltaTime=lerp(gDeltaTime,tElapse,.1)
-		printoutline(string.format("%.f %%",100*gDeltaTime/(1000/60)),215,130,gWhite,gBlack)
+		rect(225,128,RectInfo3[1],RectInfo3[2],gBlack)
+		RectInfo3=Info(string.format("%.f %%",100*gDeltaTime/(1000/60)),225,129)
 	end
 end
 

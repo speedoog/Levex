@@ -391,6 +391,9 @@ gPalettes = {
 	black         = PaletteLoad("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
 }
 
+function PaletteMap(c1,c2)
+	poke4(gAddPalMap*2+c1,c2)
+end
 
 function PaletteSetColor(idx,r,g,b)
 	local p = gAddPalette+idx*3

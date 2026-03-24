@@ -1,3 +1,3 @@
 FxPalette = function(pal)
-	return { name = "Palette", start = function() PaletteApply(pal) end }
+	return { name = "Palette", Start = function() PaletteApply(pal) end }
 end

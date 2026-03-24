@@ -57,7 +57,7 @@ FxTerrain = function()
 		end
 	end
 
-	fx.start = function(_)
+	fx.Start = function(_)
 		_.hi = 0.5
 	end
 

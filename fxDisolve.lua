@@ -13,7 +13,7 @@ FxDisolve = function()
 		end
 	end
 
-	fx.start = function(_)
+	fx.Start = function(_)
 		_.list={}
 		_.txt={
 			"Tpolm", "Abyss", "Desire", "Nah-Kolor", "Fairlight", "Razor1911", "Hoffman", 

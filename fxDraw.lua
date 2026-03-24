@@ -22,6 +22,15 @@ FxDraw = function(file)
 		_.scene = FS_LoadScene(file)
 	end
 
+	fx.Start = function(_)
+		_.ps = CreateParticleSystem()
+		_.ps.rate = 200
+		_.ps.spread = 2*pi
+		_.ps.spd1 = 20
+		_.ps.spd2 = 40
+		_.ps.rad = 2
+	end
+
 	fx.tic = function(_, t)
 
 		local PixTarget = t*_.speed
@@ -50,13 +59,21 @@ FxDraw = function(file)
 						if f > 0.90 then c = c+1 end
 						if f > 0.95 then c = c+1 end
 						if f > 0.98 then c = c+1 end
-						pix(round(lerp(x1,x,k2)),round(lerp(y1,y,k2)),c)
+						local xf=lerp(x1,x,k2)
+						local yf=lerp(y1,y,k2)
+						_.ext = {xf,yf}
+						pix(round(xf),round(yf),c)
+					end
+
+					local fnPixBase = function(x,y,c)
+						_.ext = {x,y}
+						pix(x,y,c)
 					end
 
 					if _.Hack then 
 						bContinue = item:Draw(fnPixHack) > 0
 					else
-						bContinue = item:Draw(pix) > 0
+						bContinue = item:Draw(fnPixBase) > 0
 					end
 				end
 			end
@@ -64,6 +81,19 @@ FxDraw = function(file)
 				break
 			end
 		end
+
+		if _.ext then 
+			_.ps.x = _.ext[1]
+			_.ps.y = _.ext[2]
+		end
+
+		if PixTarget>=iTotalPix then
+			_.ps.rate=0
+		else
+			_.ps.rate = 200
+		end
+
+		_.ps:tic(_.dt)
 
 	end
 

@@ -52,8 +52,8 @@ function printstripes(t, x, y)
 	clip()
 end
 
-function CreatePart()
-	local ps={x=50,y=70,parts={},rate=500,rad=1,rot=-1,spread=0.2,tt=0,life1=4,life2=6,spd1=2,spd2=4,gx=0,gy=5}
+function CreateParticleSystem()
+	local ps = {x=50, y=70, parts={}, rate=500, rad=1, rot=-1, spread=0.2, tt=0, life1=0.7, life2=1.5, spd1=50, spd2=100, gx=0, gy=200 }
 	ps.Spawn=function(_)
 		local p = {}
 
@@ -70,39 +70,56 @@ function CreatePart()
 		local rndSpd=rand2(_.spd1,_.spd2)
 		p.vx = cos(dir)*rndSpd;
 		p.vy = sin(dir)*rndSpd;
+		p.tidx = rand(0,3)
 
 		-- life
 		p.life = rand2(_.life1,_.life2)
 		p.age=0
+		p.trail={}
 		table.insert(_.parts, p)
 	end
 	ps.tic=function(_,dt)
+		--[[
 		local ml,mr
 		_.x,_.y,ml,mr=mouse()
 		if ml then _.rot=_.rot+dt*4 end
+		]]--
 
-		if mr then 
-			_.tt = _.tt+dt
-			while _.tt>0 do
+		_.tt = clamp(_.tt+dt,0,1)
+		if _.tt>0 then
+			local nbnew = floor(_.rate*_.tt)
+			for i=1,nbnew do
 				_:Spawn()
-				_.tt = _.tt-(1/_.rate)
+				_.tt = _.tt - 1/_.rate
 			end
 		end
 
 		for k,p in pairs(_.parts) do
 			p.age = p.age+dt
-			if p.age>=p.life then
+			if p.age>=p.life or p.age<0 then
 				table.remove(_.parts, k)
 			else
-				p.xo = p.x
-				p.yo = p.y
+				if dt~=0 then
+					table.insert(p.trail,{p.x,p.y})
+					if #p.trail>3 then 
+						table.remove(p.trail, 1)
+					end
 
-				p.vx = p.vx+_.gx*dt
-				p.vy = p.vy+_.gy*dt
-				p.x = p.x+p.vx
-				p.y = p.y+p.vy
+					p.vx = p.vx+_.gx*dt
+					p.vy = p.vy+_.gy*dt
+					p.x = p.x+p.vx*dt
+					p.y = p.y+p.vy*dt
+				end
+				local c = remap(p.age/p.life,0,1,4.9,1)
 
-				line(p.xo,p.yo,p.x,p.y, lerp(1,15,p.age/p.life) )
+				local idx = min(#p.trail,p.tidx)
+				if idx<=0 then 
+					pix(p.x,p.y,c)
+				else
+					local xo = p.trail[idx][1]
+					local yo = p.trail[idx][2]
+					line(xo,yo,p.x,p.y, c)
+				end
 			end
 		end
 	end

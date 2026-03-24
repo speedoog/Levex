@@ -1,7 +1,7 @@
 FxFadepal = function(paldest)
 	local fx = { name = "Fadepal"}
 
-	fx.start = function(_)
+	fx.Start = function(_)
 		_.pal = PaletteCapture()
 	end
 

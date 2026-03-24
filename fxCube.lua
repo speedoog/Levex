@@ -1,7 +1,7 @@
 
 FxCube = function()
 	local fx = {name = "Cube" }
-	fx.start = function(_)
+	fx.Start = function(_)
 		local v3 = function(x,y,z) return {{x},{y},{z}} end
 		_.points = {v3(-1,-1,-1),v3(-1,1,-1),v3(1,1,-1),v3(1,-1,-1),v3(-1,-1,1),v3(-1,1,1),v3(1,1,1),v3(1,-1,1)}
 		_.lines = {{1,2},{2,3},{3,4},{4,1}, -- bot

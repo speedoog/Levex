@@ -43,7 +43,7 @@ FxImage = function(filename)
 		end
 
 	end
-	fx.start = function(_,t)
+	fx.Start = function(_,t)
 		vbank(0)
 		PaletteApply(_.pal0)
 		vbank(1)

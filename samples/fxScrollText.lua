@@ -23,7 +23,7 @@
 -- seizures of any kind,
 -- consult your physician before playing.
 -- ]],
--- 	start = function() end,
+-- 	Start = function() end,
 -- 	tic = function(self, t)
 -- 		local y = max(136 - (t*10), 0)
 -- 		print(self.Warning, 0, y, 15)

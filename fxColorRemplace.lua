@@ -1,6 +1,6 @@
 FxColorRemplace = function(c1, c2)
 	local fx = { name = "ColorRemplace" }
-	fx.start = function(_)
+	fx.Start = function(_)
 		for y=0,gSizeY do
 			for x=0,gSizeX do
 				if pix(x,y)==c1

@@ -67,7 +67,7 @@ P0_Boot =
 	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 
 	{	s=6,			vb=0, 	fx=FxClsStart() },
-	{	s=6,	d=1, 	vb=0, 	fx={name="border reset", start=function() poke(gAddBorderCol,0) end }  },
+	{	s=6,	d=1, 	vb=0, 	fx={name="border reset", Start=function() poke(gAddBorderCol,0) end }  },
 	{	s=6,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 }
 
@@ -107,7 +107,7 @@ P2_Spectrals =
 	{	s=0,			vb=1, 	fx=FxCls() },
 
 	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.draw") },
-	{	s=0,	d=15,	vb=1,	fx={name="black logo", start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+	{	s=0,	d=15,	vb=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
 	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
 	{	s=8,	d=7,	vb=1, 	fx=FxBeziers()		},
@@ -172,26 +172,33 @@ P8_End =
 	{	s=0,			vb=0, 	fx=FxClsStop() 	},
 }
 
--- Sequence:Add(P0_Boot)
--- Sequence:Add(P1_TicLogo)
--- Sequence:Add(P_Imagec31)
--- Sequence:Add(P11_Tibet)
--- Sequence:Add(P2_Spectrals)
--- Sequence:Add(P3_Balls)
--- Sequence:Add(P4_Levex)
--- Sequence:Add(P5_Cube)
--- Sequence:Add(P6_Disolve)
--- Sequence:Add(P7_Terrain)
--- Sequence:Add(P8_End,-1.5)
+Sequence:Add(P0_Boot)
+Sequence:Add(P1_TicLogo)
+Sequence:Add(P_Imagec31)
+Sequence:Add(P11_Tibet)
+Sequence:Add(P2_Spectrals)
+Sequence:Add(P3_Balls)
+Sequence:Add(P4_Levex)
+Sequence:Add(P5_Cube)
+Sequence:Add(P6_Disolve)
+Sequence:Add(P7_Terrain)
+Sequence:Add(P8_End,-1.5)
 
+-- Sequence:Add({
+-- 	{s = 0, vb = 0,fx = FxCls()},
+-- 	{s = 0, d = 600, vb = 0,
+-- 		fx = {
+-- 			name = "parts",
+-- 			Start = function(_) _.ps = CreateParticleSystem() end,
+-- 			tic = function(
+-- 				_)
+-- 				_.ps:tic(_.dt)
+-- 			end
+-- 		}
+-- 	},
+-- }
+-- )
 
--- Levex
-PartSys =
-{
-	{	s=0,			vb=0, 	fx=FxCls() 	},
-	{	s=0,	d=600,	vb=0,	fx={name="parts", start = function(_) _.ps=CreatePart() end, tic=function(_) _.ps:tic(_.dt) end}},
-}
-Sequence:Add(PartSys)
 
 function Startfx(sh)
 	local fx=sh.fx
@@ -205,7 +212,7 @@ function Startfx(sh)
 
 	vbank(sh.vb)
 
-	if fx.start then fx:start() end
+	if fx.Start then fx:Start() end
 
 	table.insert(RunningFx, sh)
 
@@ -221,7 +228,7 @@ function Stopfx(sh)
 	for k,it in pairs(RunningFx) do 
 		if it==sh  then 
 			vbank(sh.vb)
-			if fx.stop then fx:stop() end
+			if fx.Stop then fx:Stop() end
 			RunningFx[k] = nil
 			fx.started=false
 			break
@@ -316,27 +323,15 @@ function TIC()
 		end
 	end
 
-	-- start new
+	-- Start new
 	local vclear = {true,true}
 	for k,sh in pairs(Sequence.data) do
 		local shouldrun = inrange(gTime,sh.s,sh.e)
 		local fx = sh.fx
 		if shouldrun then
 			Startfx(sh)
-			-- if (fx.cls == false) then
-			-- 	vclear[sh.vb+1] = false
-			-- end
 		end
 	end
-
-	-- if vclear[1] then
-	-- 	vbank(0)
-	-- 	cls()
-	-- end
-	-- if vclear[2] then
-	-- 	vbank(1)
-	-- 	cls()
-	-- end
 
 	for k,sh in pairs(RunningFx) do 
 		vbank(sh.vb)

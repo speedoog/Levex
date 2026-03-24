@@ -172,17 +172,26 @@ P8_End =
 	{	s=0,			vb=0, 	fx=FxClsStop() 	},
 }
 
-Sequence:Add(P0_Boot)
-Sequence:Add(P1_TicLogo)
-Sequence:Add(P_Imagec31)
-Sequence:Add(P11_Tibet)
-Sequence:Add(P2_Spectrals)
-Sequence:Add(P3_Balls)
-Sequence:Add(P4_Levex)
-Sequence:Add(P5_Cube)
-Sequence:Add(P6_Disolve)
-Sequence:Add(P7_Terrain)
-Sequence:Add(P8_End,-1.5)
+-- Sequence:Add(P0_Boot)
+-- Sequence:Add(P1_TicLogo)
+-- Sequence:Add(P_Imagec31)
+-- Sequence:Add(P11_Tibet)
+-- Sequence:Add(P2_Spectrals)
+-- Sequence:Add(P3_Balls)
+-- Sequence:Add(P4_Levex)
+-- Sequence:Add(P5_Cube)
+-- Sequence:Add(P6_Disolve)
+-- Sequence:Add(P7_Terrain)
+-- Sequence:Add(P8_End,-1.5)
+
+
+-- Levex
+PartSys =
+{
+	{	s=0,			vb=0, 	fx=FxCls() 	},
+	{	s=0,	d=600,	vb=0,	fx={name="parts", start = function(_) _.ps=CreatePart() end, tic=function(_) _.ps:tic(_.dt) end}},
+}
+Sequence:Add(PartSys)
 
 function Startfx(sh)
 	local fx=sh.fx

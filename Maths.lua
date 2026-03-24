@@ -4,6 +4,10 @@
 sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp
 rand,seed=math.random,math.randomseed
 
+function rand2(a,b)
+	return lerp(a,b,rand())
+end
+
 function round(a)
 	return floor(a+0.5)
 end

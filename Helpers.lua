@@ -26,8 +26,20 @@ gKeyLeft = 60
 gKeyRight = 61
 gKeyCtrl = 63
 
-function Outline(t,x,y,c,c2,fn,...)
-	local w = print(t,500,500,c,...)
+function FontWrap(t,x,y,c)
+	local d = gWhite
+	PaletteMap(d,c) -- swaps white color with wanted color
+	local w=font(t,x,y,0,6,8,true,1)
+	PaletteMap(d,d) -- change it back
+	return w
+end
+
+function StyleNone(t,x,y,c,fn,...)
+	fn(t,x,y,c,...)
+end
+
+function StyleOutline(t,x,y,c,fn,c2,...)
+	local w = fn(t,500,500,c,...)
 	for dx = -1,1 do
 		for dy = -1,1 do
 			fn(t,x+dx,y+dy,c2,...)
@@ -37,20 +49,30 @@ function Outline(t,x,y,c,c2,fn,...)
 	return {w+2,10}
 end
 
-function printshadow(t, x, y, c, c2)
+function StyleStripes(t,x,y,c,fn,...)
+	for dy=0,8 do
+		clip(0, y+dy, 240, 1)
+		fn(t, x, y, c+dy, ...)
+	end
+	clip()
+end
+
+function StyleItalic(t,x,y,c,fn,...)
+	for dy = 0,8 do
+		clip(0,y+dy,240,1)
+		fn(t,x+4-dy/2,y,c,...)
+	end
+	clip()
+end
+
+function StyleShadow(t, x, y, c, c2)
 	dx = 2
 	dy = 2
 	print(t, x + dx, y + dy, c2)
 	print(t, x, y, c)
 end
 
-function printstripes(t, x, y)
-	for dy = 0, 8 do
-		clip(0, y + dy, 240, 1)
-		print(t, x, y, dy + 2)
-	end
-	clip()
-end
+
 
 function CreateParticleSystem()
 	local ps = {x=50, y=70, parts={}, rate=500, rad=1, rot=-1, spread=0.2, tt=0, life1=0.7, life2=1.5, spd1=50, spd2=100, gx=0, gy=200 }

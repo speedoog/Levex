@@ -61,8 +61,8 @@ P0_Boot =
 	{	s=0,	d=1, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
 
 	{	s=0,	d=1, 	vb=0, 	fx=FxColorRemplace(11,10) },
-	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,false), 		set={speed=20} },
-	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,false), 	set={speed=4} },
+	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,print), 		set={speed=20} },
+	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,print), 	set={speed=4} },
 	{	s=2,	d=3, 	vb=0, 	fx=FxBorder(11) },
 	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 
@@ -77,29 +77,51 @@ P1_TicLogo =
 	{	s=0,	d=4,	vb=0, 	fx=FxCls() },
 	{	s=0,	d=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
 	{	s=1,	d=2, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
-	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",gRed)},
+	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",10)},
 }
 
-P_Imagec31 =
+P2_ImageC31 =
 {
 	{	s=0, 	d=2,	vb=1, 	fx=FxImage("test.c31") },
+	{	s=0,			vb=1, 	fx=FxText(80,55,"31 Colors Test",1), set={fnStyle=StyleOutline, c2=9} },
 	{	s=0,			vb=0, 	fx=FxClsStop() },
 	{	s=0,			vb=1, 	fx=FxClsStop() },
 }
 
--- Tibet
-P11_Tibet =
+P2_TxtMorning =
 {
-	{	s=0,			vb=0, 	fx=FxCls() },
-	{	s=0,	d=15, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=15, 	vb=0, 	fx=FxDraw("Tibet.draw"), set={speed=200} },
+	{	s=0,			vb=1,	fx=FxCls()},
+	{	s=0,			vb=0,	fx=FxCls()},
+	{	s=0,			vb=0,	fx=FxPalette(gPalettes.black)},
+	{	s=0,	d=4, 	vb=0, 	fx=FxFadepal(gPalettes.blueish) },
+	{	s=0,			vb=0,   fx=FxText(30,30,"Every morning",2), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
+	{	s=2,			vb=0,   fx=FxText(40,40,"you have two choices:",4), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
+	{	s=4,			vb=0,   fx=FxText(20,55,"Continue to sleep",gWhite),mod={mdKF("x",0,-102,1,-12,2,18)} },
+	{	s=6,			vb=0,   fx=FxText(125,55,"with your dreams",gWhite),mod={mdKF("x",0,245,1,155,2,125)} },
+	{	s=8,			vb=0,   fx=FxText(110,65,"or",gWhite)},
+	{	s=8,			vb=0,   fx=FxText(55,75,"wake up and chase them",14),mod={mdKF("y",0,140,2,75)} },
+	{	s=10,			vb=0,	fx={name = "col", tic=function(_) PaletteSetColor(15,0xFF*_.k,0xCD*_.k,0x75*_.k) end},mod={mdKF("k",0,0,1.5,1)} },
+	{	s=10,	d=2,	vb=0,   fx=FxText(63,100,"- Carmelo Anthony -",15), set={fnStyle=StyleItalic}},
+}
 
-	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
+P2_TxtMorning_ =
+{
+	{	s=0,	d=5.5,	vb=0,   fx=FxSplit() },
+}
+
+P3_Tibet =
+{
+	{	s=0,	d=12,	vb=0, 	fx=FxCls() },
+	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
+	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
+	{	s=0,	d=12,	vb=0, 	fx=FxDraw("Tibet.draw", true), set={speed=200} },
+	{	s=10,			vb=1,	fx=FxBalls(),		mod={mdKF("scale",0,0,3,1,5,1,8,0)} },
+	{	s=16,	d=2, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
+	{	s=16,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 }
 
 
--- spectrals + tunnel
-P2_Spectrals =
+P4_Spectrals =
 {
 	{	s=0,	d=15, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,	d=15, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
@@ -116,26 +138,16 @@ P2_Spectrals =
 	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 }
 
--- balls
-P3_Balls =
-{
-	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,			vb=1, 	fx=FxClsStart() },
-	{	s=0,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.sweetie16mod) },
-	{	s=0,	d=5,	vb=0,	fx=FxBalls(),		mod={mdKF("scale",0,0.5,4,1)} },
-}
-
--- Levex
-P4_Levex =
+P6_Levex =
 {
 	{	s=0,			vb=0, 	fx=FxClsStart() },
 	{	s=0,			vb=1, 	fx=FxCls() },
 	{	s=0,	d=10, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw"), set={speed=30, Hack=true} },
+	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw", true), set={speed=30, Hack=true} },
 }
 
 -- Cube
-P5_Cube =
+P7_Cube =
 {
 	{	s=0,			vb=0, 	fx=FxCls() 	},
 	{	s=0,			vb=1, 	fx=FxCls() 	},
@@ -144,14 +156,14 @@ P5_Cube =
 }
 
 -- Disolve
-P6_Disolve =
+P8_Disolve =
 {
 	{	s=0,			vb=1, 	fx=FxCls() 	},
 	{	s=0,	d=25,	vb=1,	fx=FxDisolve()	},
 }
 
 -- Terrain
-P7_Terrain =
+P9_Terrain =
 {
 	{	s=0,			vb=1, 	fx=FxClsStart() 	},
 	{	s=0,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.black) },
@@ -166,7 +178,7 @@ P7_Terrain =
 }
 
 -- End
-P8_End =
+P_End =
 {
 	{	s=0,	d=2.5,  vb=0,	fx=FxPowerOff()	},
 	{	s=0,			vb=0, 	fx=FxClsStop() 	},
@@ -174,15 +186,16 @@ P8_End =
 
 Sequence:Add(P0_Boot)
 Sequence:Add(P1_TicLogo)
-Sequence:Add(P_Imagec31)
-Sequence:Add(P11_Tibet)
-Sequence:Add(P2_Spectrals)
-Sequence:Add(P3_Balls)
-Sequence:Add(P4_Levex)
-Sequence:Add(P5_Cube)
-Sequence:Add(P6_Disolve)
-Sequence:Add(P7_Terrain)
-Sequence:Add(P8_End,-1.5)
+Sequence:Add(P2_ImageC31)
+Sequence:Add(P2_TxtMorning)
+Sequence:Add(P2_TxtMorning_)
+Sequence:Add(P3_Tibet)
+Sequence:Add(P4_Spectrals)
+Sequence:Add(P6_Levex)
+Sequence:Add(P7_Cube)
+Sequence:Add(P8_Disolve)
+Sequence:Add(P9_Terrain)
+Sequence:Add(P_End,-1.5)
 
 -- Sequence:Add({
 -- 	{s = 0, vb = 0,fx = FxCls()},
@@ -278,7 +291,7 @@ function PlaybackControl(tStart)
 	if keyp(gKeySpace) 	then gPlay  = not gPlay	 end
 
 	local function Info(t,x,y,r)
-		return Outline(t,x,y,gWhite,gGrey,print,false,1,true)
+		return StyleOutline(t,x,y,gWhite,print,gGrey,false,1,true)
 	end
 
 	if gInfos then

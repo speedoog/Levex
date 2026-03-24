@@ -15,20 +15,22 @@ function ComputeTotalPix(scene)
 	cls()
 end
 
-FxDraw = function(file)
-	local fx = { name = "Draw", speed = 100}
+FxDraw = function(file,parts)
+	local fx = { name = "Draw", speed = 100, parts=parts}
 
 	fx.Init = function(_)
 		_.scene = FS_LoadScene(file)
 	end
 
 	fx.Start = function(_)
-		_.ps = CreateParticleSystem()
-		_.ps.rate = 200
-		_.ps.spread = 2*pi
-		_.ps.spd1 = 20
-		_.ps.spd2 = 40
-		_.ps.rad = 2
+		if parts then
+			_.ps = CreateParticleSystem()
+			_.ps.rate = 200
+			_.ps.spread = 2*pi
+			_.ps.spd1 = 20
+			_.ps.spd2 = 40
+			_.ps.rad = 2
+		end
 	end
 
 	fx.tic = function(_, t)
@@ -82,18 +84,19 @@ FxDraw = function(file)
 			end
 		end
 
-		if _.ext then 
-			_.ps.x = _.ext[1]
-			_.ps.y = _.ext[2]
+		-- particles
+		if _.ps then
+			if _.ext then 
+				_.ps.x = _.ext[1]
+				_.ps.y = _.ext[2]
+			end
+			if PixTarget>=iTotalPix then
+				_.ps.rate=0
+			else
+				_.ps.rate = 200
+			end
+			_.ps:tic(_.dt)
 		end
-
-		if PixTarget>=iTotalPix then
-			_.ps.rate=0
-		else
-			_.ps.rate = 200
-		end
-
-		_.ps:tic(_.dt)
 
 	end
 

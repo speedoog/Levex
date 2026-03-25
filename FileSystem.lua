@@ -1,4 +1,3 @@
-FS = {}
 
 function MemStream(ptr)
 	local ms = {add = ptr,offset = 0}

@@ -63,11 +63,11 @@ P0_Boot =
 	{	s=0,	d=1, 	vb=0, 	fx=FxColorRemplace(11,10) },
 	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,print), 		set={speed=20} },
 	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,print), 	set={speed=4} },
-	{	s=2,	d=3, 	vb=0, 	fx=FxBorder(11) },
+	{	s=2,	d=3, 	vb=0, 	fx=FxBorderLoading(11) },
 	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 
 	{	s=6,			vb=0, 	fx=FxClsStart() },
-	{	s=6,	d=1, 	vb=0, 	fx={name="border reset", Start=function() poke(gAddBorderCol,0) end }  },
+	{	s=0,	d=6, 	vb=0, 	fx=FxBorderStop(0)  },
 	{	s=6,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 }
 
@@ -82,10 +82,12 @@ P1_TicLogo =
 
 P2_ImageC31 =
 {
-	{	s=0, 	d=2,	vb=1, 	fx=FxImage("test.c31") },
-	{	s=0,			vb=1, 	fx=FxText(80,55,"31 Colors Test",1), set={fnStyle=StyleOutline, c2=9} },
-	{	s=0,			vb=0, 	fx=FxClsStop() },
-	{	s=0,			vb=1, 	fx=FxClsStop() },
+	{	s=0, 	d=5,	vb=1, 	fx=FxImage("test.c31") },
+	{	s=0,	d=5,	vb=1, 	fx=FxText(80,55,"31 Colors Test",1), set={fnStyle=StyleOutline, c2=9} },
+	{	s=0,	d=3,	vb=0, 	fx=FxRoll() },
+	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
+	{	s=5,	d=1, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
+	{	s=0,		 	vb=0, 	fx=FxBorderStop(0)  },
 }
 
 P2_TxtMorning =
@@ -156,6 +158,7 @@ P6_Levex =
 -- Cube
 P7_Cube =
 {
+	{	s=0,		 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,			vb=0, 	fx=FxCls() 	},
 	{	s=0,			vb=1, 	fx=FxCls() 	},
 	{	s=0,	d=10, 	vb=1,	fx=FxCube()	},

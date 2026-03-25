@@ -1,4 +1,19 @@
 
+function DeepCopy(orig)
+	local orig_type = type(orig)
+	local copy
+	if orig_type == 'table' then
+		copy = {}
+		for orig_key,orig_value in next,orig,nil do
+			copy[DeepCopy(orig_key)] = DeepCopy(orig_value)
+		end
+		setmetatable(copy,DeepCopy(getmetatable(orig)))
+	else -- number, string, boolean, etc
+		copy = orig
+	end
+	return copy
+end
+
 -- ############## MATHS ##############
 
 sqrt,abs,sin,cos,tan,atan,pi,min,max,floor,exp=math.sqrt,math.abs,math.sin,math.cos,math.tan,math.atan,math.pi,math.min,math.max,math.floor,math.exp
@@ -438,6 +453,14 @@ function PaletteCapture()
 		b=peek(p+2)
 		table.insert(pal, {r,g,b})
 		p=p+3
+	end
+	return pal
+end
+
+function PaletteBlend(pal1, pal2, k)
+	local pal = {}
+	for i = 1,16 do
+		pal[i] = {lerp(pal1[i][1],pal2[i][1],k),lerp(pal1[i][2],pal2[i][2],k),lerp(pal1[i][3],pal2[i][3],k)}
 	end
 	return pal
 end

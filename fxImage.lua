@@ -7,7 +7,6 @@ FxImage = function(filename)
 		local nColors = fStream:Read()
 		_.pal0 = {}
 		_.pal1 = {}
---		_.pal1[1]={0,0,0}
 		for i = 1,nColors,1 do
 			local rgb = {fStream:Read(),fStream:Read(),fStream:Read()}
 			if i<=16 then
@@ -50,13 +49,20 @@ FxImage = function(filename)
 		PaletteApply(_.pal1)
 	end
 	fx.tic = function(_,t)
+		vbank(0)
+		local bk=14
+		poke(gAddBorderCol,bk)
+		cls(bk)
 		vbank(1)
 		cls()
 
+		t=10	-- hack
+
 		local ipix=1
 		for y=0,_.height-1 do
-			for x=0,_.width-1 do
-				local v = _.img[ipix]
+			local yst=y*_.width
+			for x=15,_.width-1 do
+				local v = _.img[yst+x+1]
 				if y<136*t and x<240*t then 
 					if v<=15 then
 						vbank(0)

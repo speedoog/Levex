@@ -1,9 +1,5 @@
-FxBorder = function(c)
-	local fx = { name = "Border"}
-
-	fx.Start = function(_)
-		poke(gAddBorderCol,c)		-- set border color
-	end
+FxBorderLoading = function(c)
+	local fx = { name = "Border", Start = function(_) poke(gAddBorderCol,c) end }
 	fx.bdr = function(_, row)
 		if row%2==0 then 
 			poke(gAddPalette+(c*3), rand(256))
@@ -12,4 +8,8 @@ FxBorder = function(c)
 		end
 	end
 	return fx
+end
+
+FxBorderStop = function(c)
+	return { name = "Border", Stop = function(_) poke(gAddBorderCol,c) end }
 end

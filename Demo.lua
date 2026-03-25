@@ -114,12 +114,19 @@ P3_Tibet =
 	{	s=0,	d=12,	vb=0, 	fx=FxCls() },
 	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=12,	vb=0, 	fx=FxDraw("Tibet.draw", true), set={speed=200} },
+	{	s=0,	d=12,	vb=0, 	fx=FxDraw("Tibet.draw", true,true), set={speed=200} },
 	{	s=10,			vb=1,	fx=FxBalls(),		mod={mdKF("scale",0,0,3,1,5,1,8,0)} },
 	{	s=16,	d=2, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
 	{	s=16,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 }
 
+P4_Dear =
+{
+	{	s=0,			vb=0, 	fx=FxClsStart() },
+	{	s=0,			vb=1, 	fx=FxClsStart() },
+	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
+	{	s=0,	d=20,	vb=0, 	fx=FxDraw("Dear.draw",false,false), set={speed=300} },
+}
 
 P4_Spectrals =
 {
@@ -128,7 +135,7 @@ P4_Spectrals =
 	{	s=0,			vb=0, 	fx=FxCls() },
 	{	s=0,			vb=1, 	fx=FxCls() },
 
-	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.draw") },
+	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.draw",false,true) },
 	{	s=0,	d=15,	vb=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
 	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
@@ -143,7 +150,7 @@ P6_Levex =
 	{	s=0,			vb=0, 	fx=FxClsStart() },
 	{	s=0,			vb=1, 	fx=FxCls() },
 	{	s=0,	d=10, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw", true), set={speed=30, Hack=true} },
+	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw", true, true), set={speed=30, Hack=true} },
 }
 
 -- Cube
@@ -190,6 +197,7 @@ Sequence:Add(P2_ImageC31)
 Sequence:Add(P2_TxtMorning)
 Sequence:Add(P2_TxtMorning_)
 Sequence:Add(P3_Tibet)
+Sequence:Add(P4_Dear)
 Sequence:Add(P4_Spectrals)
 Sequence:Add(P6_Levex)
 Sequence:Add(P7_Cube)

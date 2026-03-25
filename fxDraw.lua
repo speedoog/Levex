@@ -15,7 +15,7 @@ function ComputeTotalPix(scene)
 	cls()
 end
 
-FxDraw = function(file,parts)
+FxDraw = function(file,parts,full)
 	local fx = { name = "Draw", speed = 100, parts=parts}
 
 	fx.Init = function(_)
@@ -31,27 +31,46 @@ FxDraw = function(file,parts)
 			_.ps.spd2 = 40
 			_.ps.rad = 2
 		end
+		_:reset()
+	end
+
+	fx.reset=function(_)
+		_.iCurItem=0
+		_:next()
+		_.iPix = 0
+	end
+
+	fx.next=function(_)
+		_.iCurItem = _.iCurItem+1
+		if _.iCurItem <= #_.scene.items then
+			_.scene.items[_.iCurItem]:Init()
+		end
 	end
 
 	fx.tic = function(_, t)
 
+		if full then
+			_:reset()
+		end
+
 		local PixTarget = t*_.speed
 		local timeRatio=t/_.d
 
-		local iPix = 0
 		local bComplete = false
 		local bContinue
 		local iTotalPix=_.scene.nPix
-		for k,item in pairs(_.scene.items) do
+		--for k,item in pairs(_.scene.items) do
+		while _.iCurItem<=#_.scene.items do
+			local item = _.scene.items[_.iCurItem]
 			bContinue = true
-			item:Init()
+
 			while bContinue do
-				if iPix >= PixTarget then
+				if _.iPix >= PixTarget then
 					bComplete = true
 					bContinue = false
 				else
-					iPix = iPix+1
-					local f = iPix/PixTarget
+					_.iPix = _.iPix+1
+					local f = _.iPix/PixTarget
 
 					local fnPixHack=function(x,y,c)
 						local x1 = gSizeX2+gSizeX2*sin(4.121*(t+2*f))
@@ -82,6 +101,8 @@ FxDraw = function(file,parts)
 			if bComplete then
 				break
 			end
+
+			_:next()
 		end
 
 		-- particles

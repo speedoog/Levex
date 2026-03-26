@@ -23,11 +23,12 @@ FxRoll = function()
 	fx.tic = function(_,t)
 
 		t=t+sin(t*2.5)
+--		t=4*sin(t)
 
 		_.r=remap(t,0,3,12,4)
 
 		_.center = 50
-		_.center = t*45-_.r
+		_.center = t*45-_.r-5
 
 		_.liney = {}
 		_.linex = {}

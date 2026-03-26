@@ -124,6 +124,8 @@ P3_Tibet =
 
 P4_Dear =
 {
+	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
+	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,			vb=0, 	fx=FxClsStart() },
 	{	s=0,			vb=1, 	fx=FxClsStart() },
 	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
@@ -274,6 +276,13 @@ end
 
 RectInfo1,RectInfo2,RectInfo3 = {0,0},{0,0},{0,0}
 function PlaybackControl(tStart)
+
+	-- CPU usage
+	local tEnd = time()
+	local tElapse = (tEnd-tStart)
+	gDeltaTime = lerp(gDeltaTime,tElapse,.1)
+	local CpuUsage=100*gDeltaTime/(1000/60)
+
 	if keyp(gKeyRight,20,1) then
 		if key(gKeyCtrl) then
 		   gTime=gTime+10
@@ -305,9 +314,20 @@ function PlaybackControl(tStart)
 		return StyleOutline(t,x,y,gWhite,print,gGrey,false,1,true)
 	end
 
-	if gInfos then
-		vbank(1)
+	-- CPU Warning
+	vbank(0)
+	if gBorderWarning then
+		poke(gAddBorderCol,0)
+		gBorderWarning=false
+	end
+	if CpuUsage >= 95 then
+		poke(gAddBorderCol,gTime*60)
+		gBorderWarning=true
+	end
 
+	-- infos
+	vbank(1)
+	if gInfos then
 		-- global time
 		rect(2,129,RectInfo1[1],RectInfo1[2], gBlack)
 		RectInfo1=Info(string.format("%.1f",gTime),2,129)
@@ -326,12 +346,11 @@ function PlaybackControl(tStart)
 		RectInfo2={100, h*#RunningFx}
 
 		-- CPU usage
-		local tEnd=time()
-		local tElapse=(tEnd-tStart)
-		gDeltaTime=lerp(gDeltaTime,tElapse,.1)
 		rect(225,128,RectInfo3[1],RectInfo3[2],gBlack)
-		RectInfo3=Info(string.format("%.f %%",100*gDeltaTime/(1000/60)),225,129)
+		RectInfo3=Info(string.format("%.f %%",CpuUsage),225,129)
 	end
+
+
 end
 
 function TIC()

@@ -1,12 +1,10 @@
 FxImage = function(filename)
-	local fx = { name = "Image", img={} }
+	local fx = { name="Image", pal0={}, l0={}, l1={}, pal1={}}
 	fx.Init = function(_)
 		local fStream = FS_Open(filename)
 		if fStream==nil then return end
 
 		local nColors = fStream:Read()
-		_.pal0 = {}
-		_.pal1 = {}
 		for i = 1,nColors,1 do
 			local rgb = {fStream:Read(),fStream:Read(),fStream:Read()}
 			if i<=16 then
@@ -32,13 +30,17 @@ FxImage = function(filename)
 				local c=a&31
 				a = a>>5
 				table.insert(tmp, c)
-				iPix = iPix+1
 			end
 
 			for i=#tmp,1,-1 do
-				table.insert(_.img,tmp[i])
+				local v = tmp[i]
+				if v<=15 then
+					_.l0[iPix]=v
+				else
+					_.l1[iPix] = (v+1)&0xFF
+				end
+				iPix = iPix+1
 			end
-
 		end
 
 	end
@@ -56,25 +58,30 @@ FxImage = function(filename)
 		vbank(1)
 		cls()
 
-		t=10	-- hack
-
-		local ipix=1
+		vbank(0)
 		for y=0,_.height-1 do
 			local yst=y*_.width
 			for x=15,_.width-1 do
-				local v = _.img[yst+x+1]
-				if y<136*t and x<240*t then 
-					if v<=15 then
-						vbank(0)
-						pix(x,y,v)
-					else
-						vbank(1)
-						pix(x,y,v+1)
-					end
+				local ipix = yst+x
+				local v = _.l0[ipix]
+				if v then
+					poke4(ipix, v)
 				end
-				ipix = ipix+1
 			end
 		end
+
+		vbank(1)
+		for y = 0,_.height-1 do
+			local yst = y*_.width
+			for x = 15,_.width-1 do
+				local ipix = yst+x
+				local v = _.l1[ipix]
+				if v then
+					poke4(ipix,v)
+				end
+			end
+		end
+
 	end
 	return fx
 end

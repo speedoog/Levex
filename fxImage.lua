@@ -52,7 +52,7 @@ FxImage = function(filename)
 	end
 	fx.tic = function(_,t)
 		vbank(0)
-		local bk=14
+		local bk=0
 		poke(gAddBorderCol,bk)
 		cls(bk)
 		vbank(1)
@@ -61,7 +61,7 @@ FxImage = function(filename)
 		vbank(0)
 		for y=0,_.height-1 do
 			local yst=y*_.width
-			for x=15,_.width-1 do
+			for x=5,_.width-1 do
 				local ipix = yst+x
 				local v = _.l0[ipix]
 				if v then
@@ -73,7 +73,7 @@ FxImage = function(filename)
 		vbank(1)
 		for y = 0,_.height-1 do
 			local yst = y*_.width
-			for x = 15,_.width-1 do
+			for x = 5,_.width-1 do
 				local ipix = yst+x
 				local v = _.l1[ipix]
 				if v then

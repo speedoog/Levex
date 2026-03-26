@@ -82,8 +82,9 @@ P1_TicLogo =
 
 P2_ImageC31 =
 {
-	{	s=0, 	d=5,	vb=1, 	fx=FxImage("test.c31") },
-	{	s=0,	d=5,	vb=1, 	fx=FxText(80,55,"31 Colors Test",1), set={fnStyle=StyleOutline, c2=9} },
+	{	s=0, 	d=5,	vb=1, 	fx=FxImage("Made.c31") },
+	-- {	s=0,	d=5,	vb=0, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
+	-- {	s=0,	d=5,	vb=1, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
 	{	s=0,	d=3,	vb=0, 	fx=FxRoll() },
 	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
 	{	s=5,	d=1, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
@@ -196,8 +197,8 @@ P_End =
 	{	s=0,			vb=0, 	fx=FxClsStop() 	},
 }
 
-Sequence:Add(P0_Boot)
-Sequence:Add(P1_TicLogo)
+-- Sequence:Add(P0_Boot)
+-- Sequence:Add(P1_TicLogo)
 Sequence:Add(P2_ImageC31)
 Sequence:Add(P2_TxtMorning)
 Sequence:Add(P2_TxtMorning_)
@@ -207,7 +208,7 @@ Sequence:Add(P4_Spectrals)
 Sequence:Add(P6_Levex)
 Sequence:Add(P7_Cube)
 Sequence:Add(P8_Disolve)
-Sequence:Add(P9_Terrain)
+--Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
 
 -- Sequence:Add({

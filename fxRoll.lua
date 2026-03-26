@@ -4,7 +4,6 @@ FxRoll = function()
 	fx.Start = function(_)
 		vbank(0)
 		_.pal0 = PaletteCapture()
-		_.pal0[15]={0,0,0}
 		vbank(1)
 		_.pal1 = PaletteCapture()
 	end
@@ -25,7 +24,7 @@ FxRoll = function()
 		t=t+sin(t*2.5)
 --		t=4*sin(t)
 
-		_.r=remap(t,0,3,12,4)
+		_.r=remap(t,0,3,10,3)
 
 		_.center = 50
 		_.center = t*45-_.r-5
@@ -47,7 +46,8 @@ FxRoll = function()
 				local oy = _.r*sin(a)
 				local l=round(oy+_.center)
 				_.liney[l] = row
-				_.linex[l] = -(_.r/1.8)*(cos(a)-1)
+				local dx = clamp(0.35*_.r,-5,5)
+				_.linex[l] = clamp(-(dx)*(cos(a)-1),-5,5)
 				_.linek[l] = abs(cos(a-pi/2))
 			end
 		end

@@ -1,5 +1,5 @@
 FxImage = function(filename)
-	local fx = { name="Image", pal0={}, l0={}, l1={}, pal1={}}
+	local fx = { name="Image", pal0={}, l0={}, l1={}, pal1={}, x0=0, y0=0, x1=gSizeX-1, y1=gSizeY-1}
 	fx.Init = function(_)
 		local fStream = FS_Open(filename)
 		if fStream==nil then return end
@@ -43,6 +43,9 @@ FxImage = function(filename)
 			end
 		end
 
+		-- temp hack
+		_.x0 = 6
+
 	end
 	fx.Start = function(_,t)
 		vbank(0)
@@ -59,9 +62,9 @@ FxImage = function(filename)
 		cls()
 
 		vbank(0)
-		for y=0,_.height-1 do
+		for y=_.y0,_.y1 do
 			local yst=y*_.width
-			for x=5,_.width-1 do
+			for x=_.x0,_.x1 do
 				local ipix = yst+x
 				local v = _.l0[ipix]
 				if v then
@@ -71,9 +74,9 @@ FxImage = function(filename)
 		end
 
 		vbank(1)
-		for y = 0,_.height-1 do
+		for y=_.y0,_.y1 do
 			local yst = y*_.width
-			for x = 5,_.width-1 do
+			for x=_.x0,_.x1 do
 				local ipix = yst+x
 				local v = _.l1[ipix]
 				if v then

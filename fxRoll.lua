@@ -1,5 +1,5 @@
 FxRoll = function()
-	local fx = {name = "Roll" }
+	local fx = {name = "Roll", r0=10,r1=3 }
 
 	fx.Start = function(_)
 		vbank(0)
@@ -21,34 +21,64 @@ FxRoll = function()
 
 	fx.tic = function(_,t)
 
-		t=t+sin(t*2.5)
---		t=4*sin(t)
+--		t=t+sin(t*2.5)
 
-		_.r=remap(t,0,3,10,3)
+--		_.k=remap(t,0,10,-1,1)
 
-		_.center = 50
-		_.center = t*45-_.r-5
+		local unroll=false
+		if _.k<0 then
+			unroll = true
+			_.r=remap(_.k,-1,0,_.r0,_.r1)
+			_.center = remap(_.k,-1,0,-_.r-5, gSizeY+_.r+5)
+		else
+			unroll = false
+			_.r = remap(_.k,0,1,_.r1,_.r0)
+			_.center = remap(_.k,0,1,-_.r-5, gSizeY+_.r+5)
+		end
+
+--		_.center = t*45-_.r-5
+--		_.center = 50 _.r=_.r0
 
 		_.liney = {}
 		_.linex = {}
 		_.linek = {}
 
-		local rollfull = 2*pi*_.r
-		local rollpart = 0.75*rollfull
-		for row = 0,gSizeY-1 do
+		_.rollfull = 2*pi*_.r
+		local rollpart = 0.75*_.rollfull
+		local maxx=6
+		_.dx = min(0.4*_.r,maxx/2)
 
-			if row < _.center then
-				_.linek[row] = 0
-				_.liney[row] = row
-			elseif row<=(_.center+rollpart) then
-				local f = ((row-_.center)/rollfull)
-				local a = f*2*pi
-				local oy = _.r*sin(a)
-				local l=round(oy+_.center)
-				_.liney[l] = row
-				local dx = clamp(0.35*_.r,-5,5)
-				_.linex[l] = clamp(-(dx)*(cos(a)-1),-5,5)
-				_.linek[l] = abs(cos(a-pi/2))
+		if unroll then
+			for row = 0,gSizeY-1 do
+				if row < _.center then
+					_.linek[row] = 1
+				elseif row <= (_.center+rollpart) then
+					_:FillLine(row)
+				end
+			end
+		else
+			for row = gSizeY-1,0,-1 do
+				if row >= _.center then
+					_.linek[row] = 1
+				elseif row >= (_.center-rollpart) then
+					_:FillLine(row)
+				end
+			end
+		end
+	end
+
+	fx.FillLine=function(_,row)
+		local f = ((row-_.center)/_.rollfull)
+		local a = f*2*pi
+		local oy = _.r*sin(a)
+		local l = round(_.center+oy)
+		if l >= 0 then
+			_.liney[l] = row
+			_.linex[l] = round(-_.dx*(cos(a)-1))
+			if abs(f)<0.2 then
+				_.linek[l] = 1
+			else
+				_.linek[l] = 1.5-abs(1.4*cos(a-pi/2))
 			end
 		end
 	end
@@ -64,10 +94,10 @@ FxRoll = function()
 			ox = ix
 		end
 
-		local oy = 135-row
+		local oy = 0
 		local iy=_.liney[row]
 		if iy then
-			oy = clamp(iy-row,0,135)
+			oy = iy-row
 		end
 
 		local ok = 0
@@ -76,26 +106,35 @@ FxRoll = function()
 			ok = ik
 		end
 
-		local pal0 = PaletteBlend(_.pal0,gPalettes.black,ok*0.85)
-		local pal1 = PaletteBlend(_.pal1,gPalettes.black,ok*0.85)
-
+		
 		vbank(0)
 		poke(gAddScreenOffX,ox)
 		poke(gAddScreenOffY,oy)
-		if ik then
-			PaletteApply(pal0)
-		else
-			PaletteApply(gPalettes.black)
-		end
 
+		local pal0
+		if ok==0 then
+			pal0=gPalettes.black
+		elseif ok<=1 then
+			pal0 = PaletteBlend(gPalettes.black,_.pal0,ok)
+		else
+			pal0 = PaletteBlend(_.pal0,gPalettes.white,ok-1)
+			pal0[1]={0,0,0}
+		end
+		PaletteApply(pal0)
+		
 		vbank(1)
 		poke(gAddScreenOffX,ox)
 		poke(gAddScreenOffY,oy)
-		if ik then
-			PaletteApply(pal1)
+
+		local pal1
+		if ok==0 then
+			pal1=gPalettes.black
+		elseif ok<=1 then
+			pal1 = PaletteBlend(gPalettes.black,_.pal1,ok)
 		else
-			PaletteApply(gPalettes.black)
+			pal1 = PaletteBlend(_.pal1,gPalettes.white,ok-1)
 		end
+		PaletteApply(pal1)
 	end
 
 	return fx

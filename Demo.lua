@@ -80,9 +80,9 @@ P1_TicLogo =
 	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",10)},
 }
 
-P2_ImageC31 =
+P_MountainVista =
 {
-	{	s=0, 	d=10,	vb=1, 	fx=FxImage("MountainVista.c31") },
+	{	s=0, 	d=1,	vb=1, 	fx=FxImage("MountainVista.c31") },
 	-- {	s=0,	d=5,	vb=0, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
 	-- {	s=0,	d=5,	vb=1, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
 	{	s=0,	d=10,	vb=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 7,0, 8,0.1, 9,0.45, 10,1)}  },
@@ -115,6 +115,7 @@ P2_TxtMorning_ =
 P3_Tibet =
 {
 	{	s=0,	d=12,	vb=0, 	fx=FxCls() },
+	{	s=0,			vb=1, 	fx=FxClsStart() },
 	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
 	{	s=0,	d=12,	vb=0, 	fx=FxDraw("Tibet.draw", true,true), set={speed=200} },
@@ -199,9 +200,9 @@ P_End =
 
 Sequence:Add(P0_Boot)
 Sequence:Add(P1_TicLogo)
-Sequence:Add(P2_ImageC31)
 Sequence:Add(P2_TxtMorning)
 Sequence:Add(P2_TxtMorning_)
+Sequence:Add(P_MountainVista)
 Sequence:Add(P3_Tibet)
 Sequence:Add(P4_Dear)
 Sequence:Add(P4_Spectrals)

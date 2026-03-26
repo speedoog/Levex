@@ -16,30 +16,12 @@ FxImage = function(filename)
 		_.width =fStream:Read()
 		_.height =fStream:Read()
 		local nPix=_.width*_.height
-		local bytes=floor((nPix*5)/8)
-		local iPix=0
-		for i = 0,bytes-1,5 do
-			local a=0
-			for k = 1,5 do
-				local a1 = fStream:Read()
-				a = (a<<8)|a1
-			end
-
-			local tmp={}
-			for k = 1,8 do
-				local c=a&31
-				a = a>>5
-				table.insert(tmp, c)
-			end
-
-			for i=#tmp,1,-1 do
-				local v = tmp[i]
-				if v<=15 then
-					_.l0[iPix]=v
-				else
-					_.l1[iPix] = (v+1)&0xFF
-				end
-				iPix = iPix+1
+		for i = 0,nPix-1 do
+			local v = fStream:Read()
+			if v<=15 then
+				_.l0[i]=v
+			else
+				_.l1[i] = (v+1)&0xFF
 			end
 		end
 

@@ -8,3 +8,5 @@ del release.lua
 pause
 
 tic-tool.exe pack release.tic releasePack.tic
+
+pause

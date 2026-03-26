@@ -1,18 +1,5 @@
 
-function DeepCopy(orig)
-	local orig_type = type(orig)
-	local copy
-	if orig_type == 'table' then
-		copy = {}
-		for orig_key,orig_value in next,orig,nil do
-			copy[DeepCopy(orig_key)] = DeepCopy(orig_value)
-		end
-		setmetatable(copy,DeepCopy(getmetatable(orig)))
-	else -- number, string, boolean, etc
-		copy = orig
-	end
-	return copy
-end
+
 
 -- ############## MATHS ##############
 
@@ -294,122 +281,18 @@ end
 -- 						COLOR / Palette
 -- ---------------------------------------------------------------------
 
-function rgbToHsv(r, g, b)
-	r, g, b = r / 255, g / 255, b / 255
-	local max, min = math.max(r, g, b), math.min(r, g, b)
-	local h, s, v
-	v = max
-	local d = max - min
-	if max == 0 then
-		s = 0
-	else
-		s = d / max
-	end
-	if max == min then
-		h = 0
-	else
-		if max == r then
-			h = (g - b) / d
-			if g < b then
-				h = h + 6
-			end
-		elseif max == g then
-			h = (b - r) / d + 2
-		elseif max == b then
-			h = (r - g) / d + 4
-		end
-		h = h / 6
-	end
-	return h, s, v
+function Hex2RGB(h)
+	return {h>>16,(h>>8)&0xFF,h&0xFF}
 end
-
-function hsvToRgb(h, s, v)
-	local r, g, b
-	local i = math.floor(h * 6)
-	local f = h * 6 - i
-	local p = v * (1 - s)
-	local q = v * (1 - f * s)
-	local t = v * (1 - (1 - f) * s)
-	i = i % 6
-	if i == 0 then
-		r, g, b = v, t, p
-	elseif i == 1 then
-		r, g, b = q, v, p
-	elseif i == 2 then
-		r, g, b = p, v, t
-	elseif i == 3 then
-		r, g, b = p, q, v
-	elseif i == 4 then
-		r, g, b = t, p, v
-	elseif i == 5 then
-		r, g, b = v, p, q
-	end
-	return math.floor(r * 255), math.floor(g * 255), math.floor(b * 255)
-end
-
-function make_gradient(r1, g1, b1, r2, g2, b2, steps)
-	steps = math.abs(steps)
-	local out = {}
-	local h1 = 0
-	local s1 = 0
-	local v1 = 0
-	h1, s1, v1 = rgbToHsv(r1, g1, b1)
-	local h2 = 0
-	local s2 = 0
-	local v2 = 0
-	h2, s2, v2 = rgbToHsv(r2, g2, b2)
-	local stepamount = 1 / (steps-1)
-	local prog = 0
-	local i = 0
-	for i = 1, steps, 1 do
-		local temph = lerp(h1, h2, prog)
-		local temps = lerp(s1, s2, prog)
-		local tempv = lerp(v1, v2, prog)
-		out[i] = {}
-		out[i].r, out[i].g, out[i].b = hsvToRgb(temph, temps, tempv)
-		prog = prog + stepamount
-	end
-	return out
-end
-function make_gradient_direct(r1, g1, b1, r2, g2, b2, steps)
-	steps = math.abs(steps)
-	local out = {}
-	local stepamount = 1 / (steps-1)
-	local prog = 0
-	local i = 0
-	for i = 1, steps, 1 do
-		out[i] = {}
-		out[i].r = lerp(r1, r2, prog)
-		out[i].g = lerp(g1, g2, prog)
-		out[i].b = lerp(b1, b2, prog)
-		prog = prog + stepamount
-	end
-	return out
-end
-
 function PaletteLoad(s)
 	local pal={}
 	local i=1
 	while i<s:len() do
-		local r = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
-		local g = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
-		local b = tonumber("0x" .. s:sub(i, i) .. s:sub(i + 1, i + 1)) i=i+2
-		table.insert(pal, {r,g,b})
+		local v = tonumber("0x" .. s:sub(i, i+5)) i=i+6
+		table.insert(pal,Hex2RGB(v))
 	end
 	return pal
 end
-
--- Palette: Build palette here then add palette setter, ex pico8:
-gPalettes = {
-	sweetie16     = PaletteLoad("1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
-	sweetie16mod  = PaletteLoad("0000005d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
-	classic_tic80 = PaletteLoad("140c1c44243430346d4e4a4f854c30346524d04648757161597dced27d2c8595a16daa2cd2aa996dc2cadad45edeeed6"),
-	pico8         = PaletteLoad("0000001d2b537e255383769cab5236008751ff004d5f574fff77a8ffa300c2c3c700e436ffccaa29adffffec27fff1e8"),
-	grayscale     = PaletteLoad("000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff"),
-	blueish       = PaletteLoad("0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff"),
-	black         = PaletteLoad("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
-	white         = PaletteLoad("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"),
-}
 
 function PaletteMap(c1,c2)
 	poke4(gAddPalMap*2+c1,c2)
@@ -466,9 +349,14 @@ function PaletteBlend(pal1, pal2, k)
 	return pal
 end
 
-function Hex2RGB(Hex)
-	local r=Hex>>16
-	local g=(Hex>>8)&0xFF
-	local b=Hex&0xFF
-	return {r,g,b}
-end
+-- Palette: Build palette here then add palette setter, ex pico8:
+gPalettes = {
+	sweetie16     = PaletteLoad("1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
+	sweetie16mod  = PaletteLoad("0000005d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
+	grayscale     = PaletteLoad("000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff"),
+	blueish       = PaletteLoad("0000000000111111221111332222442222553333663333774444884444995555aa5555bb6666cc6666dd7777ee7777ff"),
+	black        = PaletteGradiant({0,Hex2RGB(0x000000)}),
+	white        = PaletteGradiant({0,Hex2RGB(0xFFFFFF)}),
+	-- black         = PaletteLoad("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
+	-- white         = PaletteLoad("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"),
+}

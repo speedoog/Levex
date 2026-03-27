@@ -57,145 +57,147 @@ Sequence = {
 -- Boot
 P0_Boot =
 {
-	{	s=0,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
-	{	s=0,	d=1, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
+	{	s=0,	d=1, 	v=0, 	fx=FxPalette(gPal.sweetie16) },
+	{	s=0,	d=1, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
 
-	{	s=0,	d=1, 	vb=0, 	fx=FxColorRemplace(11,10) },
-	{	s=0,	d=5, 	vb=0, 	fx=FxText(7,77,"Unpacking data",13,print), 		set={speed=20} },
-	{	s=1,	d=4, 	vb=0, 	fx=FxText(90,77,'. . . . . . . . .',13,print), 	set={speed=4} },
-	{	s=2,	d=3, 	vb=0, 	fx=FxBorderLoading(11) },
-	{	s=5,	d=1, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
+	{	s=0,	d=1, 	v=0, 	fx=FxColorRemplace(11,10) },
+	{	s=0,	d=5, 	v=0, 	fx=FxText(7,77,"Unpacking data",13,print), 		set={speed=20} },
+	{	s=1,	d=4, 	v=0, 	fx=FxText(90,77,'. . . . . . . . .',13,print), 	set={speed=4} },
+	{	s=2,	d=3, 	v=0, 	fx=FxBorderLoading(11) },
+	{	s=5,	d=1, 	v=0, 	fx=FxFadepal(gPal.black) },
 
-	{	s=6,			vb=0, 	fx=FxClsStart() },
-	{	s=0,	d=6, 	vb=0, 	fx=FxBorderStop(0)  },
-	{	s=6,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
+	{	s=6,			v=0, 	fx=FxClsStart() },
+	{	s=0,	d=6, 	v=0, 	fx=FxBorderStop(0)  },
+	{	s=6,	d=1, 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 }
 
 -- Tic logo
 P1_TicLogo =
 {
-	{	s=0,	d=4,	vb=0, 	fx=FxCls() },
-	{	s=0,	d=4,	vb=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
-	{	s=1,	d=2, 	vb=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
-	{	s=1.2,	d=1.8, 	vb=0, 	fx=FxText(80,90,"tiny computer",10)},
+	{	s=0,	d=4,	v=0, 	fx=FxCls() },
+	{	s=0,	d=4,	v=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
+	{	s=1,	d=2, 	v=0, 	fx=FxText(100,80,"TIC-80",gWhite)},
+	{	s=1.2,	d=1.8, 	v=0, 	fx=FxText(80,90,"tiny computer",10)},
 }
 
 P_MountainVista =
 {
-	{	s=0, 	d=1,	vb=1, 	fx=FxImage("MountainVista.c31") },
-	-- {	s=0,	d=5,	vb=0, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
-	-- {	s=0,	d=5,	vb=1, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
-	{	s=0,	d=10,	vb=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 7,0, 8,0.1, 9,0.45, 10,1)}  },
-	{	s=10,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.black) },
-	{	s=10,	d=1, 	vb=1, 	fx=FxPalette(gPalettes.black) },
-	{	s=0,		 	vb=0, 	fx=FxBorderStop(0)  },
+	{	s=0, 	d=1,	v=1, 	fx=FxImage("MountainVista.c31") },
+	-- {	s=0,	d=5,	v=0, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
+	-- {	s=0,	d=5,	v=1, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
+	{	s=0,	d=10,	v=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 7,0, 8,0.1, 9,0.45, 10,1)}  },
+	{	s=10,	d=1, 	v=0, 	fx=FxPalette(gPal.black) },
+	{	s=10,	d=1, 	v=1, 	fx=FxPalette(gPal.black) },
+	{	s=0,		 	v=0, 	fx=FxBorderStop(0)  },
 }
 
 P2_TxtMorning =
 {
-	{	s=0,			vb=1,	fx=FxCls()},
-	{	s=0,			vb=0,	fx=FxCls()},
-	{	s=0,			vb=0,	fx=FxPalette(gPalettes.black)},
-	{	s=0,	d=4, 	vb=0, 	fx=FxFadepal(gPalettes.blueish) },
-	{	s=0,			vb=0,   fx=FxText(30,30,"Every morning",2), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
-	{	s=2,			vb=0,   fx=FxText(40,40,"you have two choices:",4), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
-	{	s=4,			vb=0,   fx=FxText(20,55,"Continue to sleep",gWhite),mod={mdKF("x",0,-102,1,-12,2,18)} },
-	{	s=6,			vb=0,   fx=FxText(125,55,"with your dreams",gWhite),mod={mdKF("x",0,245,1,155,2,125)} },
-	{	s=8,			vb=0,   fx=FxText(110,65,"or",gWhite)},
-	{	s=8,			vb=0,   fx=FxText(55,75,"wake up and chase them",14),mod={mdKF("y",0,140,2,75)} },
-	{	s=10,			vb=0,	fx={name = "col", tic=function(_) PaletteSetColor(15,0xFF*_.k,0xCD*_.k,0x75*_.k) end},mod={mdKF("k",0,0,1.5,1)} },
-	{	s=10,	d=2,	vb=0,   fx=FxText(63,100,"- Carmelo Anthony -",15), set={fnStyle=StyleItalic}},
+	{	s=0,			v=1,	fx=FxCls()},
+	{	s=0,			v=0,	fx=FxCls()},
+	{	s=0,			v=0,	fx=FxPalette(gPal.black)},
+	{	s=0,	d=4, 	v=0, 	fx=FxFadepal(gPal.blueish) },
+	{	s=0,			v=0,   fx=FxText(30,30,"Every morning",2), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
+	{	s=2,			v=0,   fx=FxText(40,40,"you have two choices:",4), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
+	{	s=4,			v=0,   fx=FxText(20,55,"Continue to sleep",gWhite),mod={mdKF("x",0,-102,1,-12,2,18)} },
+	{	s=6,			v=0,   fx=FxText(125,55,"with your dreams",gWhite),mod={mdKF("x",0,245,1,155,2,125)} },
+	{	s=8,			v=0,   fx=FxText(110,65,"or",gWhite)},
+	{	s=8,			v=0,   fx=FxText(55,75,"wake up and chase them",14),mod={mdKF("y",0,140,2,75)} },
+	{	s=10,			v=0,	fx={name = "col", tic=function(_) PaletteSetColor(15,0xFF*_.k,0xCD*_.k,0x75*_.k) end},mod={mdKF("k",0,0,1.5,1)} },
+	{	s=10,	d=2,	v=0,   fx=FxText(63,100,"- Carmelo Anthony -",15), set={fnStyle=StyleItalic}},
 }
 
 P2_TxtMorning_ =
 {
-	{	s=0,	d=5.5,	vb=0,   fx=FxSplit() },
+	{	s=0,	d=5.5,	v=0,   fx=FxSplit() },
 }
 
 P3_Tibet =
 {
-	{	s=0,	d=12,	vb=0, 	fx=FxCls() },
-	{	s=0,			vb=1, 	fx=FxClsStart() },
-	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=12,	vb=0, 	fx=FxDraw("Tibet.draw", true,true), set={speed=200} },
-	{	s=10,			vb=1,	fx=FxBalls(),		mod={mdKF("scale",0,0,3,1,5,1,8,0)} },
-	{	s=16,	d=2, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
-	{	s=16,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
+	{	s=0,	d=12,	v=0, 	fx=FxCls() },
+	{	s=0,			v=1, 	fx=FxClsStart() },
+	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,	d=12,	v=0, 	fx=FxDraw("Tibet.draw", true,true), set={speed=200} },
+	{	s=10,			v=1,	fx=FxBalls(),		mod={mdKF("scale",0,0,3,1,5,1,8,0)} },
+	{	s=16,	d=2, 	v=1, 	fx=FxFadepal(gPal.black) },
+	{	s=16,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
 }
 
 P4_Dear =
 {
-	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,			vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,			vb=0, 	fx=FxClsStart() },
-	{	s=0,			vb=1, 	fx=FxClsStart() },
-	{	s=0,			vb=0, 	fx=FxPalette(gPalettes.sweetie16) },
-	{	s=0,	d=20,	vb=0, 	fx=FxDraw("Dear.draw",false,false), set={speed=300} },
+	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,			v=0, 	fx=FxClsStart() },
+	{	s=0,			v=1, 	fx=FxClsStart() },
+	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16) },
+	{	s=0,	d=20,	v=0, 	fx=FxDraw("Dear.draw",false,false), set={speed=300} },
 }
 
 P4_Spectrals =
 {
-	{	s=0,	d=15, 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=15, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16) },
-	{	s=0,			vb=0, 	fx=FxCls() },
-	{	s=0,			vb=1, 	fx=FxCls() },
+	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
+	{	s=0,			v=0, 	fx=FxCls() },
+	{	s=0,			v=1, 	fx=FxCls() },
 
-	{	s=0,	d=15, 	vb=1, 	fx=FxDraw("Spectrals.draw",false,true) },
-	{	s=0,	d=15,	vb=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+	{	s=0,	d=15, 	v=1, 	fx=FxDraw("Spectrals.draw",false,true) },
+	{	s=0,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
-	{	s=12,	d=3, 	vb=1, 	fx=FxFadepal(gPalettes.black) },
-	{	s=8,	d=7,	vb=1, 	fx=FxBeziers()		},
+	{	s=12,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
+	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
 
-	{	s=0,	d=15, 	vb=0, 	fx=FxTunnel() },
-	{	s=13,	d=2, 	vb=0, 	fx=FxFadepal(gPalettes.black) },
+	{	s=0,	d=15, 	v=0, 	fx=FxTunnel() },
+	{	s=13,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
 }
 
 P6_Levex =
 {
-	{	s=0,			vb=0, 	fx=FxClsStart() },
-	{	s=0,			vb=1, 	fx=FxCls() },
-	{	s=0,	d=10, 	vb=1, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,	d=10, 	vb=1, 	fx=FxDraw("Levex.draw", true, true), set={speed=30, Hack=true} },
+	{	s=0,			v=0, 	fx=FxClsStart() },
+	{	s=0,			v=1, 	fx=FxCls() },
+	{	s=0,	d=10, 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Levex.draw", true, true), set={speed=30, Hack=true} },
 }
 
 -- Cube
 P7_Cube =
 {
-	{	s=0,		 	vb=0, 	fx=FxPalette(gPalettes.sweetie16mod) },
-	{	s=0,			vb=0, 	fx=FxCls() 	},
-	{	s=0,			vb=1, 	fx=FxCls() 	},
-	{	s=0,	d=10, 	vb=1,	fx=FxCube()	},
-	{	s=1.8,	d=1.4, 	vb=0,	fx=FxBlower()},
+	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,			v=0, 	fx=FxCls() 	},
+	{	s=0,			v=1, 	fx=FxCls() 	},
+	{	s=0,	d=10, 	v=1,	fx=FxCube()	},
+	{	s=1.8,	d=1.4, 	v=0,	fx=FxBlower()},
 }
 
 -- Disolve
 P8_Disolve =
 {
-	{	s=0,			vb=1, 	fx=FxCls() 	},
-	{	s=0,	d=25,	vb=1,	fx=FxDisolve()	},
+	{	s=0,			v=1, 	fx=FxClsStart() 	},
+	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,			v=0, 	fx=FxCls() 	},
+	{	s=0,	d=25,	v=0,	fx=FxDisolve()	},
 }
 
 -- Terrain
 P9_Terrain =
 {
-	{	s=0,			vb=1, 	fx=FxClsStart() 	},
-	{	s=0,	d=1, 	vb=0, 	fx=FxPalette(gPalettes.black) },
-	{	s=0,	d=3, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
-	{	s=10,	d=13, 	vb=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
+	{	s=0,			v=1, 	fx=FxClsStart() 	},
+	{	s=0,	d=1, 	v=0, 	fx=FxPalette(gPal.black) },
+	{	s=0,	d=3, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
+	{	s=10,	d=13, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
 
-	{	s=0,	d=44,  	vb=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
+	{	s=0,	d=44,  	v=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
 
-	{	s=38,	d=5,	vb=1, 	fx=FxCls() 	},
-	{	s=38,	d=5, 	vb=1, 	fx=FxText(50,50,"Code", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
-	{	s=38,	d=5, 	vb=1, 	fx=FxText(50,50,"Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+	{	s=38,	d=5,	v=1, 	fx=FxCls() 	},
+	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Code", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
 }
 
 -- End
 P_End =
 {
-	{	s=0,	d=2.5,  vb=0,	fx=FxPowerOff()	},
-	{	s=0,			vb=0, 	fx=FxClsStop() 	},
+	{	s=0,	d=2.5,  v=0,	fx=FxPowerOff()	},
+	{	s=0,			v=0, 	fx=FxClsStop() 	},
 }
 
 Sequence:Add(P0_Boot)
@@ -213,8 +215,8 @@ Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
 
 -- Sequence:Add({
--- 	{s = 0, vb = 0,fx = FxCls()},
--- 	{s = 0, d = 600, vb = 0,
+-- 	{s = 0, v = 0,fx = FxCls()},
+-- 	{s = 0, d = 600, v = 0,
 -- 		fx = {
 -- 			name = "parts",
 -- 			Start = function(_) _.ps = CreateParticleSystem() end,
@@ -238,7 +240,7 @@ function Startfx(sh)
 		end
 	end
 
-	vbank(sh.vb)
+	vbank(sh.v)
 
 	if fx.Start then fx:Start() end
 
@@ -255,7 +257,7 @@ function Stopfx(sh)
 
 	for k,it in pairs(RunningFx) do 
 		if it==sh  then 
-			vbank(sh.vb)
+			vbank(sh.v)
 			if fx.Stop then fx:Stop() end
 			RunningFx[k] = nil
 			fx.started=false
@@ -342,7 +344,7 @@ function PlaybackControl(tStart)
 			local fx=sh.fx
 			Info(string.format("%.1f",fx.t),2,y)
 			Info(string.format("-%.1f",fx.d-fx.t),20,y)
-			Info(string.format("%s %d", fx.name, sh.vb),40,y)
+			Info(string.format("%s %d", fx.name, sh.v),40,y)
 			y=y+h
 		end
 		RectInfo2={100, h*#RunningFx}
@@ -379,7 +381,7 @@ function TIC()
 	end
 
 	for k,sh in pairs(RunningFx) do 
-		vbank(sh.vb)
+		vbank(sh.v)
 		local fx=sh.fx
 		local oldt=fx.t
 		fx.t=gTime-sh.s

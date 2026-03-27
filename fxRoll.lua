@@ -113,11 +113,11 @@ FxRoll = function()
 
 		local pal0
 		if ok==0 then
-			pal0=gPalettes.black
+			pal0=gPal.black
 		elseif ok<=1 then
-			pal0 = PaletteBlend(gPalettes.black,_.pal0,ok)
+			pal0 = PaletteBlend(gPal.black,_.pal0,ok)
 		else
-			pal0 = PaletteBlend(_.pal0,gPalettes.white,ok-1)
+			pal0 = PaletteBlend(_.pal0,gPal.white,ok-1)
 			pal0[1]={0,0,0}
 		end
 		PaletteApply(pal0)
@@ -128,11 +128,11 @@ FxRoll = function()
 
 		local pal1
 		if ok==0 then
-			pal1=gPalettes.black
+			pal1=gPal.black
 		elseif ok<=1 then
-			pal1 = PaletteBlend(gPalettes.black,_.pal1,ok)
+			pal1 = PaletteBlend(gPal.black,_.pal1,ok)
 		else
-			pal1 = PaletteBlend(_.pal1,gPalettes.white,ok-1)
+			pal1 = PaletteBlend(_.pal1,gPal.white,ok-1)
 		end
 		PaletteApply(pal1)
 	end

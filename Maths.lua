@@ -350,7 +350,7 @@ function PaletteBlend(pal1, pal2, k)
 end
 
 -- Palette: Build palette here then add palette setter, ex pico8:
-gPalettes = {
+gPal = {
 	sweetie16     = PaletteLoad("1a1c2c5d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
 	sweetie16mod  = PaletteLoad("0000005d275db13e53ef7d57ffcd75a7f07038b76425717929366f3b5dc941a6f673eff7f4f4f494b0c2566c86333c57"),
 	grayscale     = PaletteLoad("000000111111222222333333444444555555666666777777888888999999aaaaaabbbbbbccccccddddddeeeeeeffffff"),

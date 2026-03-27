@@ -30,22 +30,27 @@ FxDisolve = function()
 	end
 
 	fx.tic = function(_, t, dt)
+
+		local p0 = {3,4,5,11,12}
+		local p1 = {1,7,8,15}
+
 		local it=floor(t*1.7)
 		if it>_.iTxt and it<#_.txt then
 			_.iTxt=it
-			local c=_.iTxt%12+2
+			local c0 = p0[_.iTxt%#p0+1]
+			local c1 = p1[_.iTxt%#p1+1]
 			local s=_.txt[(_.iTxt%#_.txt)+1]
-			local w=print(s,-500,-500, c, false, 1)
+			local w=print(s,-500,-500, c0, false, 1)
 			local border=10
 			seed(_.iTxt)
 			local x=remap(rand(),0,1, border, gSizeX-w-border)
 			local y=remap(rand(),0,1, border, gSizeY-8-border)
 			for ix=-1,1 do
 				for iy=-1,1 do
-					print(s, x+ix, y+iy, c+6, false, 1)
+					print(s, x+ix, y+iy, c1, false, 1)
 				end
 			end
-			print(s, x, y, c, false, 1)
+			print(s, x, y, c0, false, 1)
 			_:scan(t,x-1,x+w+1,y-1,y+8-1)
 		end
 

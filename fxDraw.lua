@@ -1,6 +1,6 @@
-function ComputeTotalPix(scene)
+function ComputeTotalPix(scene,clrColor)
 	vbank(1)
-	cls()
+	cls(clrColor)
 	scene.nPix = 0
 	for k,item in pairs(scene.items) do
 		item:Init()
@@ -15,11 +15,12 @@ function ComputeTotalPix(scene)
 	cls()
 end
 
-FxDraw = function(file,speed,parts,full)
+FxDraw = function(file,speed,parts,full,clrColor)
+	if clrColor==nil then clrColor=0 end
 	local fx = { name = "Draw", speed = speed, parts=parts}
 
 	fx.Init = function(_)
-		_.scene = FS_LoadScene(file)
+		_.scene = FS_LoadScene(file,clrColor)
 	end
 
 	fx.Start = function(_)

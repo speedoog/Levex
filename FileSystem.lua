@@ -95,7 +95,7 @@ function FS_Open(fn)
 	return nil
 end
 
-function FS_LoadScene(filename)
+function FS_LoadScene(filename,clrColor)
 	local scene = {npix = 0,items = {}}
 
 	local fStream = FS_Open(filename)
@@ -122,6 +122,6 @@ function FS_LoadScene(filename)
 		end
 	end
 
-	ComputeTotalPix(scene)
+	ComputeTotalPix(scene,clrColor)
 	return scene
 end

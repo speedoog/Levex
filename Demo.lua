@@ -8,12 +8,31 @@ function mdKF(att, ...)
 end
 
 function mdSin(att,a,f,o,p)
-	local out={}
-	if not p then p=0 end
-	out.call =function(self, fx)
-		fx[att]=o+a*sin(f*2*pi*fx.t+p*2*pi)
+	return { call =function(self, fx) fx[att]=o+a*sin(f*2*pi*fx.t+p*2*pi) end }
+end
+
+function mdBounce(att,y0,y1,toff,tscale)
+	return {call = function(self,fx) fx[att] = y1-(y1-y0)*square(math.fmod(fx.t*tscale+toff,2)-1) end}
+end
+
+-- Source - https://stackoverflow.com/a/70096863
+-- Posted by Paul Hilliar
+-- Retrieved 2026-03-30, License - CC BY-SA 4.0
+
+local function pairsByKeys(t,f)
+	local a = {}
+	for n in pairs(t) do table.insert(a,n) end
+	table.sort(a,f)
+	local i = 0              -- iterator variable
+	local iter = function()  -- iterator function
+		i = i+1
+		if a[i] == nil then
+			return nil
+		else
+			return a[i],t[a[i]]
+		end
 	end
-	return out
+	return iter
 end
 
 gTime=0
@@ -126,12 +145,20 @@ P3_Tibet =
 
 P4_Dear =
 {
-	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+--	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+--	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxClsStart() },
 	{	s=0,			v=1, 	fx=FxClsStart() },
-	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16) },
-	{	s=0,	d=20,	v=0, 	fx=FxDraw("Dear.draw",300,false,false)},
+
+	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,	d=20,	v=1, 	fx=FxDraw("Dear.draw",300,false,false)},
+
+	{	s=20,	d=2,	v=1, 	fx=FxDraw("Tunnel.draw",30,false,false, 1)},
+
+	{	s=22,	d=2,	v=1, 	fx=FxZoom(), set={speed=2,ctx=111,cty=85} },
+
+--	{	s=21,			v=1, 	fx=FxCls() },
+--	{	s=21,	d=15, 	v=1, 	fx=FxTunnel() },
 }
 
 P4_Spectrals =
@@ -139,16 +166,16 @@ P4_Spectrals =
 	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
 	{	s=0,			v=0, 	fx=FxCls() },
-	{	s=0,			v=1, 	fx=FxCls() },
+	{	s=6,			v=1, 	fx=FxCls() },
 
-	{	s=0,	d=15, 	v=1, 	fx=FxDraw("Spectrals.draw",100,false,true) },
-	{	s=0,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+	{	s=6,	d=15, 	v=1, 	fx=FxDraw("Spectrals.draw",100,false,true) },
+	{	s=6,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
-	{	s=12,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
-	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
+	{	s=18,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
+--	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
 
-	{	s=0,	d=15, 	v=0, 	fx=FxTunnel() },
-	{	s=13,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
+	{	s=0,	d=21, 	v=0, 	fx=FxTunnel() },
+	{	s=19,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
 }
 
 P6_Levex =
@@ -159,31 +186,17 @@ P6_Levex =
 	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
 }
 
--- Cube
-CubeAnim = function()
-	local fnBounce = function(self,fx)
-		local t = fx.t
-		local _t = math.fmod(t*2+1.6,2)-1
-		fx.oy = 2-5*_t*_t
-	end
-	return { mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5),
-			 mdKF("rx",0,0, 10,-41),
-			 mdKF("rz",0,0, 10,61),
-			 mdKF("scale", 0,1, 7,1, 8,0),
-			 {call=fnBounce}
-			}
-end
-
 P7_Cube =
 {
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxCls() },
---	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",200,false,true)},
-	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",20000,false,true)},
+	--	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",200,false,true)},
+	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Rando.draw",20000,false,true)},
 
+	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
-	{	s=0,	d=10, 	v=0,	fx=FxCube(), mod=CubeAnim()	},
-	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
+	{	s=0,	d=10, 	v=0,	fx=FxCube(), mod={ mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 7,1, 8,0), mdBounce("oy",-3,2,1.6,2) } },
+--	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 
 -- Disolve
@@ -217,18 +230,18 @@ P_End =
 	{	s=0,			v=0, 	fx=FxClsStop() 	},
 }
 
--- Sequence:Add(P0_Boot)
--- Sequence:Add(P1_TicLogo)
--- Sequence:Add(P2_TxtMorning)
--- Sequence:Add(P2_TxtMorning_)
--- Sequence:Add(P_MountainVista)
--- Sequence:Add(P3_Tibet)
--- Sequence:Add(P4_Dear)
--- Sequence:Add(P4_Spectrals)
--- Sequence:Add(P6_Levex)
+Sequence:Add(P0_Boot)
+Sequence:Add(P1_TicLogo)
+Sequence:Add(P2_TxtMorning)
+Sequence:Add(P2_TxtMorning_)
+Sequence:Add(P4_Dear)
+Sequence:Add(P4_Spectrals,-3)
+Sequence:Add(P3_Tibet)
+Sequence:Add(P6_Levex)
 Sequence:Add(P7_Cube)
+Sequence:Add(P_MountainVista)
 Sequence:Add(P8_Disolve)
---Sequence:Add(P9_Terrain)
+Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
 
 -- Sequence:Add({
@@ -272,7 +285,7 @@ function Stopfx(sh)
 	local fx = sh.fx
 	if fx.started~=true then return end
 
-	for k,it in pairs(RunningFx) do 
+	for k,it in pairsByKeys(RunningFx) do
 		if it==sh  then 
 			vbank(sh.v)
 			if fx.Stop then fx:Stop() end
@@ -357,9 +370,9 @@ function PlaybackControl(tStart)
 		local h=7
 		rect(0,0,RectInfo2[1],RectInfo2[2],gBlack)
 		local y=1
-		for k,sh in pairs(RunningFx) do 
+		for k,sh in pairsByKeys(RunningFx) do
 			local fx=sh.fx
-			Info(string.format("%.1f",fx.t),2,y)
+			Info(string.format("%d %.1f",k,fx.t),2,y)
 			Info(string.format("-%.1f",fx.d-fx.t),20,y)
 			Info(string.format("%s %d", fx.name, sh.v),40,y)
 			y=y+h
@@ -379,7 +392,7 @@ function TIC()
 	vbank(1)
 
 	-- Stop old
-	for k,sh in pairs(RunningFx) do
+	for k,sh in pairsByKeys(RunningFx) do
 		local fx=sh.fx
 		local shouldrun = inrange(gTime, sh.s, sh.e)
 		if not shouldrun then
@@ -397,7 +410,7 @@ function TIC()
 		end
 	end
 
-	for k,sh in pairs(RunningFx) do 
+	for k,sh in pairsByKeys(RunningFx) do
 		vbank(sh.v)
 		local fx=sh.fx
 		local oldt=fx.t
@@ -420,7 +433,8 @@ end
 
 function BDR(row)
 	local i=0
-	for k,sh in pairs(RunningFx) do 
+	for k,sh in pairs(RunningFx) do
+--	for k,sh in pairsByKeys(RunningFx) do
 		local fx=sh.fx
 		if fx.bdr then
 			vbank(sh.vbank)

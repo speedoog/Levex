@@ -10,11 +10,13 @@ FxCube = function()
 		_.tris = {{3,7,8},{8,4,3},{1,5,6},{6,2,1},{7,3,2},{2,6,7},{4,8,5},{5,1,4},{8,7,6},{6,5,8},{3,4,1},{1,2,3}}
 		_.ox = 0 _.oy = 0 _.oz = 0
 		_.rx = 0 _.ry = 0 _.rz = 0
+		_.scale = 1
 	end
 
 	fx.tic = function(_,t,dt)
+		
+		--[[
 		local at = dt*3
-
 		if t < 2 then
 			_.ox = 0 _.oy = 0 _.oz = remap(t,0,2,10,0)^1.5
 			_.rx = 0 _.ry = 0 _.rz = 3*t
@@ -32,6 +34,7 @@ FxCube = function()
 			_.ry = _.ry+at*1.123
 			_.rz = _.rz+at*1.478
 		end
+		]]
 
 		local mRot = rotatexyz(_.rx,_.ry,_.rz)
 		local proj = _:Proj(mRot)
@@ -42,8 +45,8 @@ FxCube = function()
 		local proj = {}
 		for i = 1,#_.points do
 			local tmpxform = matrixMul(mRot,_.points[i])
-			local pp = {tmpxform[1][1]+_.ox,tmpxform[2][1]-_.oy,tmpxform[3][1]+_.oz}
-			proj[i] = projScreen(0.1,pp)
+			local pp = {tmpxform[1][1]*_.scale+_.ox,tmpxform[2][1]*_.scale-_.oy,tmpxform[3][1]*_.scale+_.oz}
+			proj[i] = projScreen(0.13,pp)	-- fov
 		end
 		return proj
 	end

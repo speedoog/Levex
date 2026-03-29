@@ -15,8 +15,8 @@ function ComputeTotalPix(scene)
 	cls()
 end
 
-FxDraw = function(file,parts,full)
-	local fx = { name = "Draw", speed = 100, parts=parts}
+FxDraw = function(file,speed,parts,full)
+	local fx = { name = "Draw", speed = speed, parts=parts}
 
 	fx.Init = function(_)
 		_.scene = FS_LoadScene(file)

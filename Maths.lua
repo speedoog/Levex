@@ -182,7 +182,7 @@ function rotatexyz(x,y,z)
 end
 
 function projScreen(ww,p)
-	local z = 5+p[3]
+	local z = 7+p[3]			-- camera Z
 	local w = ww*10/(z)
 	local x = (p[1]*w+1)*68+52
 	local y = (p[2]*w+1)*68

@@ -118,7 +118,7 @@ P3_Tibet =
 	{	s=0,			v=1, 	fx=FxClsStart() },
 	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=12,	v=0, 	fx=FxDraw("Tibet.draw", true,true), set={speed=200} },
+	{	s=0,	d=12,	v=0, 	fx=FxDraw("Tibet.draw",200,true,true)},
 	{	s=10,			v=1,	fx=FxBalls(),		mod={mdKF("scale",0,0,3,1,5,1,8,0)} },
 	{	s=16,	d=2, 	v=1, 	fx=FxFadepal(gPal.black) },
 	{	s=16,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
@@ -131,7 +131,7 @@ P4_Dear =
 	{	s=0,			v=0, 	fx=FxClsStart() },
 	{	s=0,			v=1, 	fx=FxClsStart() },
 	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16) },
-	{	s=0,	d=20,	v=0, 	fx=FxDraw("Dear.draw",false,false), set={speed=300} },
+	{	s=0,	d=20,	v=0, 	fx=FxDraw("Dear.draw",300,false,false)},
 }
 
 P4_Spectrals =
@@ -141,7 +141,7 @@ P4_Spectrals =
 	{	s=0,			v=0, 	fx=FxCls() },
 	{	s=0,			v=1, 	fx=FxCls() },
 
-	{	s=0,	d=15, 	v=1, 	fx=FxDraw("Spectrals.draw",false,true) },
+	{	s=0,	d=15, 	v=1, 	fx=FxDraw("Spectrals.draw",100,false,true) },
 	{	s=0,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
 	{	s=12,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
@@ -156,17 +156,34 @@ P6_Levex =
 	{	s=0,			v=0, 	fx=FxClsStart() },
 	{	s=0,			v=1, 	fx=FxCls() },
 	{	s=0,	d=10, 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Levex.draw", true, true), set={speed=30, Hack=true} },
+	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
 }
 
 -- Cube
+CubeAnim = function()
+	local fnBounce = function(self,fx)
+		local t = fx.t
+		local _t = math.fmod(t*2+1.6,2)-1
+		fx.oy = 2-5*_t*_t
+	end
+	return { mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5),
+			 mdKF("rx",0,0, 10,-41),
+			 mdKF("rz",0,0, 10,61),
+			 mdKF("scale", 0,1, 7,1, 8,0),
+			 {call=fnBounce}
+			}
+end
+
 P7_Cube =
 {
-	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,			v=1, 	fx=FxCls() },
+--	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",200,false,true)},
+	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",20000,false,true)},
+
 	{	s=0,			v=0, 	fx=FxCls() 	},
-	{	s=0,			v=1, 	fx=FxCls() 	},
-	{	s=0,	d=10, 	v=1,	fx=FxCube()	},
-	{	s=1.8,	d=1.4, 	v=0,	fx=FxBlower()},
+	{	s=0,	d=10, 	v=0,	fx=FxCube(), mod=CubeAnim()	},
+	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 
 -- Disolve
@@ -200,18 +217,18 @@ P_End =
 	{	s=0,			v=0, 	fx=FxClsStop() 	},
 }
 
-Sequence:Add(P0_Boot)
-Sequence:Add(P1_TicLogo)
-Sequence:Add(P2_TxtMorning)
-Sequence:Add(P2_TxtMorning_)
-Sequence:Add(P_MountainVista)
-Sequence:Add(P3_Tibet)
-Sequence:Add(P4_Dear)
-Sequence:Add(P4_Spectrals)
-Sequence:Add(P6_Levex)
+-- Sequence:Add(P0_Boot)
+-- Sequence:Add(P1_TicLogo)
+-- Sequence:Add(P2_TxtMorning)
+-- Sequence:Add(P2_TxtMorning_)
+-- Sequence:Add(P_MountainVista)
+-- Sequence:Add(P3_Tibet)
+-- Sequence:Add(P4_Dear)
+-- Sequence:Add(P4_Spectrals)
+-- Sequence:Add(P6_Levex)
 Sequence:Add(P7_Cube)
 Sequence:Add(P8_Disolve)
-Sequence:Add(P9_Terrain)
+--Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
 
 -- Sequence:Add({

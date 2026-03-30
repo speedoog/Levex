@@ -1,5 +1,5 @@
 
-FxCube = function(filename)
+FxModel = function(filename)
 	local fx = { name = filename }
 	fx.Init  = function(_)
 		-- _.vtx = {{-1,-1,-1},{-1,1,-1},{1,1,-1},{1,-1,-1},{-1,-1,1},{-1,1,1},{1,1,1},{1,-1,1}}
@@ -96,7 +96,7 @@ FxCube = function(filename)
 				local pa = proj[fa]
 				local nTri=#face-2
 				for i=1,nTri do
-					local col = k//3+1
+					local col = k%5+1
 					local fb = face[i+1]
 					local fc = face[i+2]
 					local pb = proj[fb]

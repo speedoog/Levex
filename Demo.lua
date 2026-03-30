@@ -188,23 +188,24 @@ P6_Levex =
 
 function Bounce()
 --	return { mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 7,1, 8,0), mdBounce("oy",-3,2,1.6,2) }
-	return { mdKF("ox",0,12, 2,4, 4,2, 5,1, 6,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 5,1, 6,0), mdBounce("oy",-3,2,1.6,2) }
+	return { mdKF("ox",0,12, 2,4, 4,2, 5,1, 6,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 5,1, 6,0), mdBounce("oy",-3.15,2,1.6,2) }
 end
 
 P7_Cube =
 {
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,			v=1, 	fx=FxCls() },
+	{	s=0,			v=1, 	fx=FxClsStart() },
 	--	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",200,false,true)},
-	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,true)},
+	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,false)},
 
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
-	{	s=0,	d=6, 	v=0,	fx=FxCube("cube.obj"), 			mod=Bounce() },
-	{	s=4,	d=6, 	v=0,	fx=FxCube("tetrahedron.obj"), 	mod=Bounce() },
-	{	s=8,	d=6, 	v=0,	fx=FxCube("octahedron.obj"), 	mod=Bounce() },
-	{	s=12,	d=6, 	v=0,	fx=FxCube("pyramid.obj"), 		mod=Bounce() },
-	{	s=16,	d=6, 	v=0,	fx=FxCube("cyl.obj"), 			mod=Bounce() },
+	{	s=0,	d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
+	{	s=4,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
+	{	s=8,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
+	{	s=12,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
+	{	s=16,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
+	{	s=20,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
 --	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 

@@ -104,7 +104,7 @@ P_MountainVista =
 	{	s=0, 	d=1,	v=1, 	fx=FxImage("MountainVista.c31") },
 	-- {	s=0,	d=5,	v=0, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
 	-- {	s=0,	d=5,	v=1, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
-	{	s=0,	d=10,	v=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 7,0, 8,0.1, 9,0.45, 10,1)}  },
+	{	s=0,	d=12,	v=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 9,0, 10,0.1, 11,0.45, 12,1)}  },
 	{	s=10,	d=1, 	v=0, 	fx=FxPalette(gPal.black) },
 	{	s=10,	d=1, 	v=1, 	fx=FxPalette(gPal.black) },
 	{	s=0,		 	v=0, 	fx=FxBorderStop(0)  },
@@ -186,16 +186,25 @@ P6_Levex =
 	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
 }
 
+function Bounce()
+--	return { mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 7,1, 8,0), mdBounce("oy",-3,2,1.6,2) }
+	return { mdKF("ox",0,12, 2,4, 4,2, 5,1, 6,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 5,1, 6,0), mdBounce("oy",-3,2,1.6,2) }
+end
+
 P7_Cube =
 {
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxCls() },
 	--	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",200,false,true)},
-	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Rando.draw",20000,false,true)},
+	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,true)},
 
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
-	{	s=0,	d=10, 	v=0,	fx=FxCube(), mod={ mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 7,1, 8,0), mdBounce("oy",-3,2,1.6,2) } },
+	{	s=0,	d=6, 	v=0,	fx=FxCube("cube.obj"), 			mod=Bounce() },
+	{	s=4,	d=6, 	v=0,	fx=FxCube("tetrahedron.obj"), 	mod=Bounce() },
+	{	s=8,	d=6, 	v=0,	fx=FxCube("octahedron.obj"), 	mod=Bounce() },
+	{	s=12,	d=6, 	v=0,	fx=FxCube("pyramid.obj"), 		mod=Bounce() },
+	{	s=16,	d=6, 	v=0,	fx=FxCube("cyl.obj"), 			mod=Bounce() },
 --	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 
@@ -230,14 +239,14 @@ P_End =
 	{	s=0,			v=0, 	fx=FxClsStop() 	},
 }
 
-Sequence:Add(P0_Boot)
-Sequence:Add(P1_TicLogo)
-Sequence:Add(P2_TxtMorning)
-Sequence:Add(P2_TxtMorning_)
-Sequence:Add(P4_Dear)
-Sequence:Add(P4_Spectrals,-3)
-Sequence:Add(P3_Tibet)
-Sequence:Add(P6_Levex)
+-- Sequence:Add(P0_Boot)
+-- Sequence:Add(P1_TicLogo)
+-- Sequence:Add(P2_TxtMorning)
+-- Sequence:Add(P2_TxtMorning_)
+-- Sequence:Add(P4_Dear)
+-- Sequence:Add(P4_Spectrals,-3)
+-- Sequence:Add(P3_Tibet)
+-- Sequence:Add(P6_Levex)
 Sequence:Add(P7_Cube)
 Sequence:Add(P_MountainVista)
 Sequence:Add(P8_Disolve)
@@ -349,14 +358,17 @@ function PlaybackControl(tStart)
 	end
 
 	-- CPU Warning
-	vbank(0)
-	if gBorderWarning then
-		poke(gAddBorderCol,0)
-		gBorderWarning=false
-	end
-	if CpuUsage >= 95 then
-		poke(gAddBorderCol,gTime*60)
-		gBorderWarning=true
+	local CPUWarning=false
+	if CPUWarning then
+		vbank(0)
+		if gBorderWarning then
+			poke(gAddBorderCol,0)
+			gBorderWarning=false
+		end
+		if CpuUsage >= 95 then
+			poke(gAddBorderCol,gTime*60)
+			gBorderWarning=true
+		end
 	end
 
 	-- infos
@@ -372,7 +384,7 @@ function PlaybackControl(tStart)
 		local y=1
 		for k,sh in pairsByKeys(RunningFx) do
 			local fx=sh.fx
-			Info(string.format("%d %.1f",k,fx.t),2,y)
+			Info(string.format("%.1f",fx.t),2,y)
 			Info(string.format("-%.1f",fx.d-fx.t),20,y)
 			Info(string.format("%s %d", fx.name, sh.v),40,y)
 			y=y+h

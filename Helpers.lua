@@ -26,6 +26,22 @@ gKeyLeft = 60
 gKeyRight = 61
 gKeyCtrl = 63
 
+function Split(s,sep)
+	if sep == nil then
+		sep = "%s"
+	end
+	local t = {}
+	for str in string.gmatch(s,"([^"..sep.."]+)") do
+		local n = tonumber(str)
+		if n == nil then
+			table.insert(t,str)
+		else
+			table.insert(t,n)
+		end
+	end
+	return t
+end
+
 function FontWrap(t,x,y,c)
 	local d = gWhite
 	PaletteMap(d,c) -- swaps white color with wanted color

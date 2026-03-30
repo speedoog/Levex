@@ -8,7 +8,8 @@ FxZoom = function()
 
 	fx.tic = function(_,t)
 		cls()
-		-- lerp center
+
+		--lerp center
 		local cl=clamp(remap(t,0,_.d/2.5,0,1),0,1)
 		local cx=lerp(gSizeX2, _.ctx, cl)
 		local cy=lerp(gSizeY2, _.cty, cl)
@@ -21,6 +22,13 @@ FxZoom = function()
 		x1 = cx+sx
 		y0 = cy-sy
 		y1 = cy+sy
+
+		-- local k=sqrt(t/_.d)
+		-- local r=gSizeX/gSizeY
+		-- local s0=gSizeX
+		-- local s1=10
+		-- local xc0=
+
 		for y = 0,gSizeY-1 do
 			local yy=round(remap(y,0,gSizeY-1,y0,y1))
 			for x=0,gSizeX-1 do

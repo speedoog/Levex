@@ -240,14 +240,14 @@ P_End =
 	{	s=0,			v=0, 	fx=FxClsStop() 	},
 }
 
--- Sequence:Add(P0_Boot)
--- Sequence:Add(P1_TicLogo)
--- Sequence:Add(P2_TxtMorning)
--- Sequence:Add(P2_TxtMorning_)
--- Sequence:Add(P4_Dear)
--- Sequence:Add(P4_Spectrals,-3)
--- Sequence:Add(P3_Tibet)
--- Sequence:Add(P6_Levex)
+Sequence:Add(P0_Boot)
+Sequence:Add(P1_TicLogo)
+Sequence:Add(P2_TxtMorning)
+Sequence:Add(P2_TxtMorning_)
+Sequence:Add(P4_Dear)
+Sequence:Add(P4_Spectrals,-3)
+Sequence:Add(P3_Tibet)
+Sequence:Add(P6_Levex)
 Sequence:Add(P7_Cube)
 Sequence:Add(P_MountainVista)
 Sequence:Add(P8_Disolve)

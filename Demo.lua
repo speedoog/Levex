@@ -115,8 +115,6 @@ P1_TicLogo =
 P_MountainVista =
 {
 	{	s=0, 	d=1,	v=1, 	fx=FxImage("MountainVista.c31") },
-	-- {	s=0,	d=5,	v=0, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
-	-- {	s=0,	d=5,	v=1, 	fx=FxText(80,55,"31 Colors Test",14), set={fnStyle=StyleOutline, c2=0} },
 	{	s=0,	d=12,	v=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 9,0, 10,0.1, 11,0.45, 12,1)}  },
 	{	s=10,	d=1, 	v=0, 	fx=FxPalette(gPal.black) },
 	{	s=10,	d=1, 	v=1, 	fx=FxPalette(gPal.black) },
@@ -128,15 +126,15 @@ P2_TxtMorning =
 	{	s=0,			v=1,	fx=FxCls()},
 	{	s=0,			v=0,	fx=FxCls()},
 	{	s=0,			v=0,	fx=FxPalette(gPal.black)},
-	{	s=0,	d=4, 	v=0, 	fx=FxFadepal(gPal.blueish) },
-	{	s=0,			v=0,   fx=FxText(30,30,"Every morning",2), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
-	{	s=2,			v=0,   fx=FxText(40,40,"you have two choices:",4), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
-	{	s=4,			v=0,   fx=FxText(20,55,"Continue to sleep",gWhite),mod={mdKF("x",0,-102,1,-12,2,18)} },
-	{	s=6,			v=0,   fx=FxText(125,55,"with your dreams",gWhite),mod={mdKF("x",0,245,1,155,2,125)} },
-	{	s=8,			v=0,   fx=FxText(110,65,"or",gWhite)},
-	{	s=8,			v=0,   fx=FxText(55,75,"wake up and chase them",14),mod={mdKF("y",0,140,2,75)} },
+	{	s=0,	d=4, 	v=0,	fx=FxFadepal(gPal.blueish) },
+	{	s=0,			v=0,	fx=FxText(30,30,"Every morning",2), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
+	{	s=2,			v=0,	fx=FxText(40,40,"you have two choices:",4), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
+	{	s=4,			v=0,	fx=FxText(20,55,"Continue to sleep",gWhite),mod={mdKF("x",0,-102,1,-12,2,18)} },
+	{	s=6,			v=0,	fx=FxText(125,55,"with your dreams",gWhite),mod={mdKF("x",0,245,1,155,2,125)} },
+	{	s=8,			v=0,	fx=FxText(110,65,"or",gWhite)},
+	{	s=8,			v=0,	fx=FxText(55,75,"wake up and chase them",14),mod={mdKF("y",0,140,2,75)} },
 	{	s=10,			v=0,	fx={name = "col", tic=function(_) PaletteSetColor(15,0xFF*_.k,0xCD*_.k,0x75*_.k) end},mod={mdKF("k",0,0,1.5,1)} },
-	{	s=10,	d=2,	v=0,   fx=FxText(63,100,"- Carmelo Anthony -",15), set={fnStyle=StyleItalic}},
+	{	s=10,	d=2,	v=0,	fx=FxText(63,100,"- Carmelo Anthony -",15), set={fnStyle=StyleItalic}},
 }
 
 P2_TxtMorning_ =
@@ -182,7 +180,8 @@ P4_Spectrals =
 	{	s=0,			v=0, 	fx=FxCls() },
 	{	s=6,			v=1, 	fx=FxCls() },
 
-	{	s=6,	d=15, 	v=1, 	fx=FxDraw("Spectrals.draw",100,false,true) },
+	{	s=6,	d=15,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
+
 	{	s=6,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
 	{	s=18,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
@@ -275,8 +274,7 @@ Sequence:Add(P_MountainVista)
 Sequence:Add(P8_Disolve)
 Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
-Sequence:AddGlobal({ s=6, v=0, fx={name = "music", Start=function(_) music(0) end }})
-
+Sequence:AddGlobal({s = 6,v = 0,fx = FxMusic()})
 
 -- Sequence:Add({
 -- 	{s = 0, v = 0,fx = FxCls()},
@@ -378,8 +376,10 @@ function PlaybackControl(tStart)
 	if keyp(gKeyTab) 	then gInfos = not gInfos end
 	if keyp(gKeySpace) 	then gPlay  = not gPlay	 end
 
-	local function Info(t,x,y,r)
-		return StyleOutline(t,x,y,gWhite,print,gGrey,false,1,true)
+	local function Info(i,t,x,y,r)
+		local sz=StyleOutline(t,x,y,gWhite,print,gGrey,false,1,true)
+		i[1]=max(i[1],sz[1]+x)
+		i[2]=max(i[2],sz[2])
 	end
 
 	-- CPU Warning
@@ -401,24 +401,27 @@ function PlaybackControl(tStart)
 	if gInfos then
 		-- global time
 		rect(2,129,RectInfo1[1],RectInfo1[2], gBlack)
-		RectInfo1=Info(string.format("%.1f",gTime),2,129)
+		RectInfo1={0,0}
+		Info(RectInfo1,string.format("%.1f",gTime),2,129)
 
 		-- Fx
 		local h=7
 		rect(0,0,RectInfo2[1],RectInfo2[2],gBlack)
+		RectInfo2 = {0,0}
 		local y=1
 		for k,sh in pairsByKeys(RunningFx) do
 			local fx=sh.fx
-			Info(string.format("%.1f",fx.t),2,y)
-			Info(string.format("-%.1f",fx.d-fx.t),20,y)
-			Info(string.format("%s %d", fx.name, sh.v),40,y)
+			Info(RectInfo2,string.format("%.1f",fx.t),2,y)
+			Info(RectInfo2,string.format("-%.1f",fx.d-fx.t),18,y)
+			Info(RectInfo2,string.format("%s %d", fx.name, sh.v),42,y)
 			y=y+h
 		end
-		RectInfo2={100, h*#RunningFx}
+		RectInfo2[2]=h*#RunningFx
 
 		-- CPU usage
 		rect(225,128,RectInfo3[1],RectInfo3[2],gBlack)
-		RectInfo3=Info(string.format("%.f %%",CpuUsage),225,129)
+		RectInfo3 = {0,0}
+		Info(RectInfo3,string.format("%.f %%",CpuUsage),225,129)
 	end
 
 

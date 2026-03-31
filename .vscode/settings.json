@@ -53,6 +53,7 @@
 		"rotatexyz",
 		"projScreen",
 		"poke4",
-		"rect"
+		"rect",
+		"music"
 	]
 }

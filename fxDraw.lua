@@ -32,6 +32,7 @@ FxDraw = function(file,speed,parts,full,clrColor)
 			_.ps.spd2 = 40
 			_.ps.rad = 2
 		end
+		_.echo=false
 		_:reset()
 	end
 
@@ -49,6 +50,27 @@ FxDraw = function(file,speed,parts,full,clrColor)
 	end
 
 	fx.tic = function(_, t)
+
+		if _.echo then
+			local transform = function(pt,pivot,sc)
+				local cx,cy = unpack(pivot)
+				return {(pt[1]-cx)*sc+cx,(pt[2]-cy)*sc+cy}
+			end
+			for it=5,0,-1 do
+				local tt = t-_.echot-it*0.05
+				if tt<0 then tt=0 end
+				local sc = exp(tt*2)
+				local pivot={gSizeX2,gSizeY2+20}
+				for i,item in pairs(_.scene.items) do
+					for i=2,#item.pts do
+						local pt1 = transform(item.pts[i-1],pivot,sc)
+						local pt2 = transform(item.pts[i],pivot,sc)
+						line(pt1[1],pt1[2],pt2[1],pt2[2], item.c+it*0.5)
+					end
+				end
+			end
+			return
+		end
 
 		if full then
 			_:reset()

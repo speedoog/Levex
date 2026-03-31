@@ -101,7 +101,7 @@ FxTerrain = function()
 			---			for j = 40+.5*(iFrame&3), 350,0 do
 			local inc = 1
 			local j = 0+.5*(iFrame&3)
-			while j < 350 do
+			while j < 300 do
 				j = j+inc
 				local _z = j/500.
 				local z = _z*_z*500

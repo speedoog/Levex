@@ -28,6 +28,8 @@ https://github.com/angerangel/LCR3D/blob/master/3D-models/cube.obj
 https://fr.wikipedia.org/wiki/Objet_3D_(format_de_fichier)
 https://en.wikipedia.org/wiki/OFF_(file_format)
 
+-- Music
+Calculating the BPM : https://github-wiki-see.page/m/nesbox/TIC-80/wiki/Music-Editor
 
 
 ---------- desc ------

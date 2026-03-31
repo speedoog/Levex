@@ -70,6 +70,19 @@ Sequence = {
 			end
 		end
 		_.e=maxtime
+	end,
+	AddGlobal=function(_, sh)
+		local maxtime=0
+		for k,sh in pairs(_.data) do
+			maxtime = max(maxtime,sh.e)
+		end
+
+		if sh.d==nil then
+			sh.e = maxtime
+			sh.d = maxtime-sh.s
+		end
+
+		table.insert(_.data, sh)
 	end
 }
 
@@ -133,11 +146,12 @@ P2_TxtMorning_ =
 
 P3_Tibet =
 {
-	{	s=0,	d=12,	v=0, 	fx=FxCls() },
-	{	s=0,			v=1, 	fx=FxClsStart() },
+	{	s=0,	d=11,	v=0, 	fx=FxCls() },
 	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=12,	v=0, 	fx=FxDraw("Tibet.draw",200,true,true)},
+	{	s=0,	d=11,	v=0, 	fx=FxDraw("Tibet.draw",200,true,true)},
+
+	{	s=0,			v=1, 	fx=FxClsStart() },
 	{	s=10,			v=1,	fx=FxBalls(),		mod={mdKF("scale",0,0,3,1,5,1,8,0)} },
 	{	s=16,	d=2, 	v=1, 	fx=FxFadepal(gPal.black) },
 	{	s=16,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
@@ -226,11 +240,19 @@ P9_Terrain =
 	{	s=0,	d=3, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
 	{	s=10,	d=13, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
 
-	{	s=0,	d=44,  	v=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
+	{	s=0,	d=46,  	v=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
 
-	{	s=38,	d=5,	v=1, 	fx=FxCls() 	},
-	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Code", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
-	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) } },
+	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=20,			v=1, 	fx=FxCls() 	},
+
+	{	s=28,	d=5, 	v=1, 	fx=FxText(50,50,"Graphics", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=28,	d=5, 	v=1, 	fx=FxText(50,50,"Made & Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+
+	{	s=33,	d=5, 	v=1, 	fx=FxText(50,50,"Music", gWhite), 			mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=33,	d=5, 	v=1, 	fx=FxText(50,50,"Virgill", gWhite),			mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+
+	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Code", gWhite), 			mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Speedman", gWhite),		mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
 }
 
 -- End
@@ -253,6 +275,8 @@ Sequence:Add(P_MountainVista)
 Sequence:Add(P8_Disolve)
 Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
+Sequence:AddGlobal({ s=6, v=0, fx={name = "music", Start=function(_) music(0) end }})
+
 
 -- Sequence:Add({
 -- 	{s = 0, v = 0,fx = FxCls()},

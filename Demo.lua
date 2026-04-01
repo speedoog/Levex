@@ -240,7 +240,7 @@ P9_Terrain =
 	{	s=0,	d=3, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
 	{	s=10,	d=13, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
 
-	{	s=0,	d=46,  	v=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
+	{	s=0,	d=50,  	v=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
 
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=20,			v=1, 	fx=FxCls() 	},
@@ -275,7 +275,7 @@ Sequence:Add(P_MountainVista)
 Sequence:Add(P8_Disolve)
 Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
-Sequence:AddGlobal({s = 6,v = 0,fx = FxMusic(0)})
+Sequence:AddGlobal({s = 5,v = 0,fx = FxMusic(0)})
 
 -- Sequence:Add({
 -- 	{s = 0, v = 0,fx = FxCls()},

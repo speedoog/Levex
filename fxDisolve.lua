@@ -34,7 +34,7 @@ FxDisolve = function()
 		local p0 = {3,4,5,11,12}
 		local p1 = {1,7,8,15}
 
-		local it=floor(t*1.7)
+		local it = floor(t*2*BPS)
 		if it>_.iTxt and it<#_.txt then
 			_.iTxt=it
 			local c0 = p0[_.iTxt%#p0+1]

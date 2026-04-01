@@ -32,6 +32,10 @@ Calculating the BPM : https://github-wiki-see.page/m/nesbox/TIC-80/wiki/Music-Ed
 `durationAsTicks = (120 * ROWS * FRAMES * SPD * 60) / (16 * 3 * TEMPO)`
 `                = (150 * ROWS * FRAMES * SPD) / TEMPO`
 
+-- RAM layout
+https://github.com/nesbox/TIC-80/wiki/RAM
+
+
 ---------- desc ------
 No AI was used during to process.
 Stop this AI non-sense, it confiscate your artistic and technical freedom.

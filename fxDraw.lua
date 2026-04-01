@@ -53,7 +53,7 @@ FxDraw = function(file,speed,parts,full,clrColor)
 
 		if _.echo then
 			local transform = function(pt,pivot,sc)
-				local cx,cy = unpack(pivot)
+				local cx,cy = table.unpack(pivot)
 				return {(pt[1]-cx)*sc+cx,(pt[2]-cy)*sc+cy}
 			end
 			for it=5,0,-1 do

@@ -82,7 +82,7 @@ FxDraw = function(file,speed,parts,full,clrColor)
 		local bComplete = false
 		local bContinue
 		local iTotalPix=_.scene.nPix
-		--for k,item in pairs(_.scene.items) do
+
 		while _.iCurItem<=#_.scene.items do
 			local item = _.scene.items[_.iCurItem]
 			bContinue = true
@@ -109,6 +109,17 @@ FxDraw = function(file,speed,parts,full,clrColor)
 						pix(round(xf),round(yf),c)
 					end
 
+					local fnPixHack2 = function(x,y,c)
+						local item = _.scene.items[_.iCurItem]
+						if item.type=="l" then
+							if f > 0.90 then c = c+1 end
+							if f > 0.95 then c = c+1 end
+							if f > 0.98 then c = c+1 end
+						end
+						_.ext = {x,y}
+						pix(round(x),round(y),c)
+					end
+
 					local fnPixBase = function(x,y,c)
 						_.ext = {x,y}
 						pix(x,y,c)
@@ -116,6 +127,8 @@ FxDraw = function(file,speed,parts,full,clrColor)
 
 					if _.Hack then 
 						bContinue = item:Draw(fnPixHack) > 0
+					elseif _.Hack2 then 
+						bContinue = item:Draw(fnPixHack2) > 0
 					else
 						bContinue = item:Draw(fnPixBase) > 0
 					end

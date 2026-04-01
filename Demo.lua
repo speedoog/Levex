@@ -39,7 +39,7 @@ gTime=0
 gInfos=false
 gPlay=true
 gDeltaTime=0
-
+gCPUWarning=true
 
 RunningFx = { }
 
@@ -180,7 +180,7 @@ P4_Spectrals =
 	{	s=0,			v=0, 	fx=FxCls() },
 	{	s=6,			v=1, 	fx=FxCls() },
 
-	{	s=6,	d=15,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
+	{	s=6,	d=15,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
 
 	{	s=6,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
@@ -225,6 +225,7 @@ P7_Cube =
 -- Disolve
 P8_Disolve =
 {
+	{	s=0,			v=0,	fx=FxMusic(1) },
 	{	s=0,			v=1, 	fx=FxClsStart() 	},
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
@@ -274,7 +275,7 @@ Sequence:Add(P_MountainVista)
 Sequence:Add(P8_Disolve)
 Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
-Sequence:AddGlobal({s = 6,v = 0,fx = FxMusic()})
+Sequence:AddGlobal({s = 6,v = 0,fx = FxMusic(0)})
 
 -- Sequence:Add({
 -- 	{s = 0, v = 0,fx = FxCls()},
@@ -383,8 +384,7 @@ function PlaybackControl(tStart)
 	end
 
 	-- CPU Warning
-	local CPUWarning=true
-	if CPUWarning then
+	if gCPUWarning then
 		vbank(0)
 		if gBorderWarning then
 			poke(gAddBorderCol,0)
@@ -428,6 +428,9 @@ function PlaybackControl(tStart)
 end
 
 function TIC()
+	poke(0x3FFB,1) -- hide cursor
+	poke(0x7FC3F,1,1) -- mouse relative mode
+
 	local tStart=time()
 	vbank(1)
 

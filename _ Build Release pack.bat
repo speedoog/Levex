@@ -1,6 +1,6 @@
 del release.lua
 del release.tic
-type inflate.lua Helpers.lua FileSystem.lua DrawCommon.lua Maths.lua Fx*.lua Demo.lua Levex.lua > release.lua
+type #Header.lua inflate.lua Helpers.lua FileSystem.lua DrawCommon.lua Maths.lua Fx*.lua Demo.lua #Footer.lua Levex.lua  > release.lua
 
 tic80_Pro_official.exe --skip --fs . --cmd "load release.lua & save release.tic"
 del release.lua

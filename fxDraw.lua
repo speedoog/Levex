@@ -17,7 +17,7 @@ end
 
 FxDraw = function(file,speed,parts,full,clrColor)
 	if clrColor==nil then clrColor=0 end
-	local fx = { name = "Draw", speed = speed, parts=parts}
+	local fx = {name = "Draw",speed = speed,full=full, parts = parts}
 
 	fx.Init = function(_)
 		_.scene = FS_LoadScene(file,clrColor)
@@ -72,7 +72,7 @@ FxDraw = function(file,speed,parts,full,clrColor)
 			return
 		end
 
-		if full then
+		if _.full then
 			_:reset()
 		end
 
@@ -136,8 +136,8 @@ FxDraw = function(file,speed,parts,full,clrColor)
 			end
 			if PixTarget>=iTotalPix then
 				_.ps.rate=0
-			else
-				_.ps.rate = 200
+			-- else
+			-- 	_.ps.rate = 200
 			end
 			_.ps:tic(_.dt)
 		end

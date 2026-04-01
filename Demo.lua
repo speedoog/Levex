@@ -144,10 +144,10 @@ P2_TxtMorning_ =
 
 P3_Tibet =
 {
-	{	s=0,	d=11,	v=0, 	fx=FxCls() },
+	{	s=0,	d=7,	v=0, 	fx=FxCls() },
 	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=11,	v=0, 	fx=FxDraw("Tibet.draw",200,true,true)},
+	{	s=0,	d=9.6,	v=0, 	fx=FxDraw("Tibet.draw",200,true,true), mod = {{call = function(self,fx) if fx.t>7 then fx.ps = nil fx.full=false elseif fx.t>6 and fx.ps then fx.ps.rate=0 end end}}},
 
 	{	s=0,			v=1, 	fx=FxClsStart() },
 	{	s=10,			v=1,	fx=FxBalls(),		mod={mdKF("scale",0,0,3,1,5,1,8,0)} },
@@ -383,7 +383,7 @@ function PlaybackControl(tStart)
 	end
 
 	-- CPU Warning
-	local CPUWarning=false
+	local CPUWarning=true
 	if CPUWarning then
 		vbank(0)
 		if gBorderWarning then

@@ -39,7 +39,6 @@ FxMusic = function()
 				poke(addSOUNDSTATE+1, _.frame)
 			end
 		end
---		music(0,-1,-1,true,true)
 	end
 	return fx
 end

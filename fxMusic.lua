@@ -1,21 +1,6 @@
 FxMusic = function(track)
 	local fx = {name = "Music"}
 	fx.Start = function(_)
-		local addMUSICTRACKS = 0x13E64
-		local patternsSize = floor((6*4*16)/8)
-		local info = addMUSICTRACKS+patternsSize
-		_.tempo = 150+peek(info)
-		_.rows = 64-peek(info+1)
-		_.speed = 6+peek(info+2)
-
-		TEMPO = 150
-		SPD = 8
-		rowsPerBeat = 8
-		BPM = 3*TEMPO/SPD
-		BPM = (24*TEMPO)/(rowsPerBeat*SPD)
-
-		BPS = BPM/60
-		RPS = BPS*8 --rowsPerBeat
 		_.rec ={}
 
 		music(track,-1,-1,false,true)

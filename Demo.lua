@@ -1,4 +1,19 @@
 
+-- music inits
+local addMUSICTRACKS = 0x13E64
+local patternsSize = floor((6*4*16)/8)
+local info = addMUSICTRACKS+patternsSize
+TEMPO = 150+peek(info)
+ROWS = 64-peek(info+1)
+SPD	= 6+peek(info+2)
+
+rowsPerBeat = 8
+--BPM = 3*TEMPO/SPD
+BPM = (24*TEMPO)/(rowsPerBeat*SPD)
+BPS = BPM/60
+--RPS = BPS*8   --rowsPerBeat
+
+
 function mdKF(att, ...)
 	local out,keys={},{...}
 	out.call =function(self, fx)
@@ -12,7 +27,8 @@ function mdSin(att,a,f,o,p)
 end
 
 function mdBounce(att,y0,y1,toff,tscale)
-	return {call = function(self,fx) fx[att] = y1-(y1-y0)*square(math.fmod(fx.t*tscale+toff,2)-1) end}
+--	return {call = function(self,fx) fx[att] = y1-(y1-y0)*square(math.fmod(fx.t*tscale+toff,2)-1) end}
+	return {call = function(self,fx) fx[att] = y1-(y1-y0)*square(math.fmod(gTime*tscale+toff,2)-1) end}
 end
 
 -- Source - https://stackoverflow.com/a/70096863
@@ -85,7 +101,7 @@ Sequence = {
 }
 
 -- Boot
-P0_Boot =
+P_Boot =
 {
 	{	s=0,	d=1, 	v=0, 	fx=FxPalette(gPal.sweetie16) },
 	{	s=0,	d=1, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
@@ -101,8 +117,7 @@ P0_Boot =
 	{	s=6,	d=1, 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 }
 
--- Tic logo
-P1_TicLogo =
+P_TicLogo =
 {
 	{	s=0,	d=4,	v=0, 	fx=FxCls() },
 	{	s=0,	d=4,	v=0, 	fx=FxSprite(96,24),mod={mdKF("y",0,-50,1,24,2,24,3,24,4,150)}},
@@ -110,16 +125,7 @@ P1_TicLogo =
 	{	s=1.2,	d=1.8, 	v=0, 	fx=FxText(80,90,"tiny computer",10)},
 }
 
-P_MountainVista =
-{
-	{	s=0, 	d=1,	v=1, 	fx=FxImage("MountainVista.c31") },
-	{	s=0,	d=12,	v=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 9,0, 10,0.1, 11,0.45, 12,1)}  },
-	{	s=10,	d=1, 	v=0, 	fx=FxPalette(gPal.black) },
-	{	s=10,	d=1, 	v=1, 	fx=FxPalette(gPal.black) },
-	{	s=0,		 	v=0, 	fx=FxBorderStop(0)  },
-}
-
-P2_TxtMorning =
+P_TxtMorning =
 {
 	{	s=0,			v=1,	fx=FxCls()},
 	{	s=0,			v=0,	fx=FxCls()},
@@ -135,12 +141,50 @@ P2_TxtMorning =
 	{	s=10,	d=2,	v=0,	fx=FxText(63,100,"- Carmelo Anthony -",15), set={fnStyle=StyleItalic}},
 }
 
-P2_TxtMorning_ =
+P_TxtMorning_ =
 {
 	{	s=0,	d=5.5,	v=0,   fx=FxSplit() },
 }
 
-P3_Tibet =
+P_Dear =
+{
+--	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+--	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,			v=0, 	fx=FxClsStart() },
+	{	s=0,			v=1, 	fx=FxClsStart() },
+
+	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,	d=21,	v=1, 	fx=FxDraw("Dear.draw",300,false,false)},
+
+	{	s=21,	d=2,	v=1, 	fx=FxDraw("Tunnel.draw",20,false,false, 1)},
+
+	{	s=23,	d=1.2,	v=1, 	fx=FxZoom(), set={speed=3.1,ctx=111,cty=85} },
+
+--	{	s=21,			v=1, 	fx=FxCls() },
+--	{	s=21,	d=15, 	v=1, 	fx=FxTunnel() },
+}
+
+P_TunnelSpectrals =
+{
+	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.black) },
+	{	s=0,	d=0.5, 	v=0, 	fx=FxFadepal(gPal.sweetie16mod) },
+	{	s=0,			v=0, 	fx=FxCls() },
+	{	s=0,	d=21, 	v=0, 	fx=FxTunnel() },
+
+	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
+	{	s=0,			v=1, 	fx=FxCls() },
+
+	{	s=6,	d=15,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
+
+	{	s=6,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+
+	{	s=18,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
+--	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
+
+	{	s=19,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
+}
+
+P_TibetBalls =
 {
 	{	s=0,	d=7,	v=0, 	fx=FxCls() },
 	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
@@ -153,45 +197,7 @@ P3_Tibet =
 	{	s=16,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
 }
 
-P4_Dear =
-{
---	{	s=0,			v=0, 	fx=FxPalette(gPal.sweetie16mod) },
---	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,			v=0, 	fx=FxClsStart() },
-	{	s=0,			v=1, 	fx=FxClsStart() },
-
-	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=21,	v=1, 	fx=FxDraw("Dear.draw",300,false,false)},
-
-	{	s=21,	d=2,	v=1, 	fx=FxDraw("Tunnel.draw",20,false,false, 1)},
-
-	{	s=23,	d=1.5,	v=1, 	fx=FxZoom(), set={speed=3,ctx=111,cty=85} },
-
---	{	s=21,			v=1, 	fx=FxCls() },
---	{	s=21,	d=15, 	v=1, 	fx=FxTunnel() },
-}
-
-P4_Spectrals =
-{
-	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.black) },
-	{	s=0,	d=1, 	v=0, 	fx=FxFadepal(gPal.sweetie16mod) },
-	{	s=0,			v=0, 	fx=FxCls() },
-	{	s=0,	d=21, 	v=0, 	fx=FxTunnel() },
-
-	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
-	{	s=6,			v=1, 	fx=FxCls() },
-
-	{	s=6,	d=15,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
-
-	{	s=6,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
-
-	{	s=18,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
---	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
-
-	{	s=19,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
-}
-
-P6_Levex =
+P_Levex =
 {
 	{	s=0,			v=0, 	fx=FxClsStart() },
 	{	s=0,			v=1, 	fx=FxCls() },
@@ -201,29 +207,43 @@ P6_Levex =
 
 function Bounce()
 --	return { mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 7,1, 8,0), mdBounce("oy",-3,2,1.6,2) }
-	return { mdKF("ox",0,12, 2,4, 4,2, 5,1, 6,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 5,1, 6,0), mdBounce("oy",-3.15,2,1.6,2) }
+	return {
+		mdKF("ox",0,12, 2,4, 4,2, 5,1, 6,-5),
+		mdKF("rx",0,0, 10,-41),
+		mdKF("rz",0,0, 10,61),
+		mdKF("scale", 0,1, 5,1, 6,0),
+		mdBounce("oy",-3.15,2,0,2*BPS)
+	}
 end
 
-P7_Cube =
+P_Rando =
 {
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxClsStart() },
-	--	{	s=0,	d=30, 	v=1, 	fx=FxDraw("Rando.draw",200,false,true)},
 	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,false)},
 
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
-	{	s=0,	d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
-	{	s=4,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
-	{	s=8,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
-	{	s=12,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
-	{	s=16,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
-	{	s=20,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
+	{	s=0,		d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
+	{	s=4*BPS,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
+	{	s=8*BPS,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
+	{	s=12*BPS,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
+	{	s=16*BPS,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
+	{	s=20*BPS,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
 --	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 
+P_MountainVista =
+{
+	{	s=0, 	d=1,	v=1, 	fx=FxImage("MountainVista.c31") },
+	{	s=0,	d=12,	v=0, 	fx=FxRoll(), mod={mdKF("k",0,-1, 2,-0.4, 4,-0.7, 5,0, 9,0, 10,0.1, 11,0.45, 12,1)}  },
+	{	s=10,	d=1, 	v=0, 	fx=FxPalette(gPal.black) },
+	{	s=10,	d=1, 	v=1, 	fx=FxPalette(gPal.black) },
+	{	s=0,		 	v=0, 	fx=FxBorderStop(0)  },
+}
+
 -- Disolve
-P8_Disolve =
+P_Greatz =
 {
 	{	s=0,			v=1, 	fx=FxClsStart() 	},
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
@@ -261,19 +281,19 @@ P_End =
 	{	s=0,			v=0, 	fx=FxClsStop() 	},
 }
 
-Sequence:Add(P0_Boot)
-Sequence:Add(P1_TicLogo)
-Sequence:Add(P2_TxtMorning)
-Sequence:Add(P2_TxtMorning_)
-Sequence:Add(P4_Dear)
-Sequence:Add(P4_Spectrals)
-Sequence:Add(P3_Tibet)
-Sequence:Add(P6_Levex)
-Sequence:Add(P7_Cube)
+Sequence:Add(P_Boot)
+Sequence:Add(P_TicLogo)
+Sequence:Add(P_TxtMorning)
+Sequence:Add(P_TxtMorning_)
+Sequence:Add(P_Dear)
+Sequence:Add(P_TunnelSpectrals)
+Sequence:Add(P_TibetBalls)
+Sequence:Add(P_Levex)
+Sequence:Add(P_Rando)
 Sequence:Add(P_MountainVista)
 local tMusicSwap=Sequence.e
 Sequence:AddGlobal({s = 5, d=tMusicSwap-5, v=0, fx = FxMusic(0)})
-Sequence:Add(P8_Disolve)
+Sequence:Add(P_Greatz)
 Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
 Sequence:AddGlobal({s = tMusicSwap, d=Sequence.e-tMusicSwap, v=1,fx = FxMusic(1)})

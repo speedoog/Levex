@@ -30,8 +30,7 @@ FxMusic = function(track)
 	fx.MusicStop=function()
 		music()
 		for i = 0,3 do
-			--sfx(0,"C-",0,i,15,0) --sfx(id note=-1 duration=-1 channel=0 volume=15 speed=0)
-			sfx(-1,nil,nil,i)
+			sfx(-1,nil,nil,i) 	--sfx(id note=-1 duration=-1 channel=0 volume=15 speed=0)
 		end
 	end
 	fx.Restore=function(_,iFrame)
@@ -58,19 +57,8 @@ FxMusic = function(track)
 			_:Restore(iFrame)
 		end
 
---		BPM = (3*_.tempo/_.speed)
---		BPS = BPM/60
---		RPS = BPS*8 --rowsPerBeat
+		-- 		_.name = string.format("Music t=%d f=%d r=%d    %.1f",_.track,_.frame,_.row,musictime-_.t)
 
--- 		currentRowGlobal = _.frame*_.rows+_.row
--- 		musictime = currentRowGlobal/RPS
-
--- 		_.name = string.format("Music t=%d f=%d r=%d    %.1f",_.track,_.frame,_.row,musictime-_.t)
-
--- 		if keyp(1) then
--- 			_.frame=_.frame-1
--- 			poke(addSOUNDSTATE+1, _.frame)
--- 		end
 	end
 	return fx
 end

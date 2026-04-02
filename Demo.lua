@@ -278,21 +278,6 @@ Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
 Sequence:AddGlobal({s = tMusicSwap, d=Sequence.e-tMusicSwap, v=1,fx = FxMusic(1)})
 
--- Sequence:Add({
--- 	{s = 0, v = 0,fx = FxCls()},
--- 	{s = 0, d = 600, v = 0,
--- 		fx = {
--- 			name = "parts",
--- 			Start = function(_) _.ps = CreateParticleSystem() end,
--- 			tic = function(
--- 				_)
--- 				_.ps:tic(_.dt)
--- 			end
--- 		}
--- 	},
--- }
--- )
-
 
 function Startfx(sh)
 	local fx=sh.fx

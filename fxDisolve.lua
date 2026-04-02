@@ -20,7 +20,8 @@ FxDisolve = function()
 			"ASD", "Spaceballs", "DeadLiners", "Conspiracy", "Logicoma", "Bomb", "Futuris", "LFT",
 			"Skaven", "Cookie Collective", "IQ", "Oxygene", "Limp Ninja", "Farbrausch", "Monad", "Rebels", "Calodox",
 			"Cocoon","Ninjadev","Mercury","Loonies","Altair","TBL","Still","Satori","Spectrox","Rez","Scoopex","Holon",
-			"MFX","TRSI","Orange","Alcatraz","Exist","Olympian","psenough","Mars","RBBS", "Joker","Arise","Nuance","Lemon"
+			"MFX","TRSI","Orange","Alcatraz","Exist","psenough","Mars","RBBS","Joker","Arise","Nuance",
+			"Lemon","Melon","Spreadpoint","NuSan"
 		}
 		_.iTxt=-1
 

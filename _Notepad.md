@@ -1,3 +1,12 @@
+
+# cheatsheet LUA
+https://skyelynwaddell.github.io/tic80-manual-cheatsheet/
+https://tic80.com/learn
+https://github.com/nesbox/TIC-80/wiki/code-examples-and-snippets
+https://github.com/nesbox/TIC-80/wiki/vbank
+https://www.tutorialspoint.com/lua/lua_table_iterators.htm
+
+
 Snowflakes
 Sac rando qui se remplit 
 - pack your stuff and hike

@@ -72,16 +72,14 @@ Sequence = {
 		_.e=maxtime
 	end,
 	AddGlobal=function(_, sh)
-		local maxtime=0
-		for k,sh in pairs(_.data) do
-			maxtime = max(maxtime,sh.e)
-		end
-
-		if sh.d==nil then
-			sh.e = maxtime
-			sh.d = maxtime-sh.s
-		end
-
+		-- local maxtime=0
+		-- for k,sh in pairs(_.data) do
+		-- 	maxtime = max(maxtime,sh.e)
+		-- end
+		-- if sh.d==nil then
+		-- 	sh.d = maxtime-sh.s
+		-- end
+		sh.e = sh.s+sh.d
 		table.insert(_.data, sh)
 	end
 }
@@ -163,11 +161,11 @@ P4_Dear =
 	{	s=0,			v=1, 	fx=FxClsStart() },
 
 	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=20,	v=1, 	fx=FxDraw("Dear.draw",300,false,false)},
+	{	s=0,	d=21,	v=1, 	fx=FxDraw("Dear.draw",300,false,false)},
 
-	{	s=20,	d=2,	v=1, 	fx=FxDraw("Tunnel.draw",30,false,false, 1)},
+	{	s=21,	d=2,	v=1, 	fx=FxDraw("Tunnel.draw",20,false,false, 1)},
 
-	{	s=22,	d=2,	v=1, 	fx=FxZoom(), set={speed=2,ctx=111,cty=85} },
+	{	s=23,	d=1.5,	v=1, 	fx=FxZoom(), set={speed=3,ctx=111,cty=85} },
 
 --	{	s=21,			v=1, 	fx=FxCls() },
 --	{	s=21,	d=15, 	v=1, 	fx=FxTunnel() },
@@ -175,9 +173,12 @@ P4_Dear =
 
 P4_Spectrals =
 {
-	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
+	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.black) },
+	{	s=0,	d=1, 	v=0, 	fx=FxFadepal(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() },
+	{	s=0,	d=21, 	v=0, 	fx=FxTunnel() },
+
+	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
 	{	s=6,			v=1, 	fx=FxCls() },
 
 	{	s=6,	d=15,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
@@ -187,7 +188,6 @@ P4_Spectrals =
 	{	s=18,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
 --	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
 
-	{	s=0,	d=21, 	v=0, 	fx=FxTunnel() },
 	{	s=19,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
 }
 
@@ -225,11 +225,10 @@ P7_Cube =
 -- Disolve
 P8_Disolve =
 {
-	{	s=0,			v=0,	fx=FxMusic(1) },
 	{	s=0,			v=1, 	fx=FxClsStart() 	},
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
-	{	s=0,	d=25,	v=0,	fx=FxDisolve()	},
+	{	s=0,	d=33,	v=0,	fx=FxDisolve()	},
 }
 
 -- Terrain
@@ -240,19 +239,19 @@ P9_Terrain =
 	{	s=0,	d=3, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x000000), 15,Hex2RGB(0x2580ff) })) },
 	{	s=10,	d=13, 	v=0, 	fx=FxFadepal(PaletteGradiant({0, Hex2RGB(0x101020 --[[0x1a1c2c]]), 4, Hex2RGB(0x5d275d), 7, Hex2RGB(0xb13e53), 11,Hex2RGB(0xef7d57), 15,Hex2RGB(0xffcd75) }) ) },
 
-	{	s=0,	d=50,  	v=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
+	{	s=0,	d=42,  	v=0,	fx=FxTerrain(),							mod={mdKF("alt",0,16,30,40), mdKF("mul",0,2,10,6,20,9,30,14) } },
 
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=20,			v=1, 	fx=FxCls() 	},
 
-	{	s=28,	d=5, 	v=1, 	fx=FxText(50,50,"Graphics", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
-	{	s=28,	d=5, 	v=1, 	fx=FxText(50,50,"Made & Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=20,	d=5, 	v=1, 	fx=FxText(50,50,"Graphics", gWhite), 		mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=20,	d=5, 	v=1, 	fx=FxText(50,50,"Made & Speedman", gWhite),	mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
 
-	{	s=33,	d=5, 	v=1, 	fx=FxText(50,50,"Music", gWhite), 			mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
-	{	s=33,	d=5, 	v=1, 	fx=FxText(50,50,"Virgill", gWhite),			mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=25,	d=5, 	v=1, 	fx=FxText(50,50,"Music", gWhite), 			mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=25,	d=5, 	v=1, 	fx=FxText(50,50,"Virgill", gWhite),			mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
 
-	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Code", gWhite), 			mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
-	{	s=38,	d=5, 	v=1, 	fx=FxText(50,50,"Speedman", gWhite),		mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=30,	d=5, 	v=1, 	fx=FxText(50,50,"Code", gWhite), 			mod={mdKF("x",0,-100,1,50,4,50,5,-100), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
+	{	s=30,	d=5, 	v=1, 	fx=FxText(50,50,"Speedman", gWhite),		mod={mdKF("x",0,350,1,150,4,150,5,350), mdKF("y",0,-10,1,20,2,20,3,20,4,10,5,-10) }, set={fnStyle=StyleOutline, c2=15} },
 }
 
 -- End
@@ -267,15 +266,17 @@ Sequence:Add(P1_TicLogo)
 Sequence:Add(P2_TxtMorning)
 Sequence:Add(P2_TxtMorning_)
 Sequence:Add(P4_Dear)
-Sequence:Add(P4_Spectrals,-3)
+Sequence:Add(P4_Spectrals)
 Sequence:Add(P3_Tibet)
 Sequence:Add(P6_Levex)
 Sequence:Add(P7_Cube)
 Sequence:Add(P_MountainVista)
+local tMusicSwap=Sequence.e
+Sequence:AddGlobal({s = 5, d=tMusicSwap-5, v=0, fx = FxMusic(0)})
 Sequence:Add(P8_Disolve)
 Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
-Sequence:AddGlobal({s = 5,v = 0,fx = FxMusic(0)})
+Sequence:AddGlobal({s = tMusicSwap, d=Sequence.e-tMusicSwap, v=1,fx = FxMusic(1)})
 
 -- Sequence:Add({
 -- 	{s = 0, v = 0,fx = FxCls()},
@@ -303,7 +304,9 @@ function Startfx(sh)
 		end
 	end
 
-	vbank(sh.v)
+	if sh.v then
+		vbank(sh.v)
+	end
 
 	if fx.Start then fx:Start() end
 
@@ -320,7 +323,9 @@ function Stopfx(sh)
 
 	for k,it in pairsByKeys(RunningFx) do
 		if it==sh  then 
-			vbank(sh.v)
+			if sh.v then
+				vbank(sh.v)
+			end
 			if fx.Stop then fx:Stop() end
 			RunningFx[k] = nil
 			fx.started=false
@@ -454,7 +459,9 @@ function TIC()
 	end
 
 	for k,sh in pairsByKeys(RunningFx) do
-		vbank(sh.v)
+		if sh.v then
+			vbank(sh.v)
+		end
 		local fx=sh.fx
 		local oldt=fx.t
 		fx.t=gTime-sh.s
@@ -480,7 +487,9 @@ function BDR(row)
 --	for k,sh in pairsByKeys(RunningFx) do
 		local fx=sh.fx
 		if fx.bdr then
-			vbank(sh.vbank)
+			if sh.v then
+				vbank(sh.v)
+			end
 			fx:bdr(row)
 		end
 	end

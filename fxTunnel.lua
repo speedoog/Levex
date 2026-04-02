@@ -23,7 +23,7 @@ FxTunnel = function()
 						seed(floor(3*z_)*floor(5*x_/y_)*17)
 					end
 
-					if z<10 and rand()>max(0.91+0.1*cos(z_/24),0.9) then
+					if z<10 and rand()>max(0.85+0.1*cos(z_/24),0.9) then
 						local rc = zmax/12
 						if rc>=0 and rc<=15 then
 							local c = floor(rc)

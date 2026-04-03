@@ -270,23 +270,22 @@ function HorizontalScan(q,lx,rx,y,o)
 end
 
 function ComputeProjRatio(a,b,p)
-	local vAP = V2Sub(p,a)
-	local vAB = V2Sub(b,a)
+	local vAP,vAB = V2Sub(p,a),V2Sub(b,a)
 
 	--	local dist=0
-	local rProjRatio = 0
-	local sqrLength = V2SqLength(vAB)
+	local ratio = 0
+	local sqrLen = V2SqLength(vAB)
 
-	if sqrLength == 0 then
+	if sqrLen == 0 then
 		--		dist = V2SqLength(vAP);
 	else
 		local rDot = V2Dot(vAP,vAB);
-		rProjRatio = rDot/sqrLength;
+		ratio = rDot/sqrLen;
 		--		rProjRatio = clamp(rProjRatio, 0, 1)
 		--		dist = rProjRatio * sqrt(sqrLength);
 	end
 
-	return rProjRatio;
+	return ratio;
 end
 
 function CreateFill(item)

@@ -1,12 +1,7 @@
 FxTerrain = function()
 	local _Distance = 1024
 	local _DistanceMask = 1024-1
-	local fx = {
-		name = "Terrain",
-		alt = 32,
-		mul = 9,
-		hi = 0.5,
-		map = {},
+	local fx = { name="Terrain", alt=32, mul=9, hi=0.5, map = {},
 		GetMapValue = function(_,x,y) return _.map[(x&_DistanceMask)+(y&_DistanceMask)*_Distance+1] end,
 		SetMapValue = function(_,x,y,v) _.map[(x&_DistanceMask)+(y&_DistanceMask)*_Distance+1] = v end,
 		Surface = function(_,u,v) return 1-_:GetMapValue(floor(u*_Distance),floor(v*_Distance))*_.mul end,
@@ -36,10 +31,7 @@ FxTerrain = function()
 			end
 			for j = 0,_Distance-1,T do
 				for i = 0,_Distance-1,T do
-					local w = _:GetMapValue(i,j)
-					local x = _:GetMapValue(i+T,j)
-					local y = _:GetMapValue(i,j+T)
-					local z = _:GetMapValue(i+T,j+T)
+					local w,x,y,z = _:GetMapValue(i,j),_:GetMapValue(i+T,j),_:GetMapValue(i,j+T),_:GetMapValue(i+T,j+T)
 					_:SetMapValue(i+M,j,(w+x)/2+_Random()*l)
 					_:SetMapValue(i+M,j+T,(y+z)/2+_Random()*l)
 					_:SetMapValue(i,j+M,(w+y)/2+_Random()*l)
@@ -133,13 +125,6 @@ FxTerrain = function()
 
 				if (s_y < e_y) then
 					local I = l-0.96*_:Surface(u+.01,v+.005)+.02
-					--					I = I * sign(I) * 30 + .2
-					--O=1.0-exp(-z*3e-4);
-					-- o_x = L(o_x,.6,2);
-					-- o_y = L(o_y,.25,4);
-					-- o_z = L(o_z,.15,10);
-
-					--d->AddLine(s,e,ImColor(o));
 
 					local color = clamp(I*12*30*clamp(6/z,0,1),0,15)
 					local icolor = floor(color)
@@ -153,8 +138,6 @@ FxTerrain = function()
 							pix(s_x,iy,color)
 						end
 					end
-					--					line(s_x,s_y,e_x,e_y, color)
-					--rect(s_x, s_y, 2, e_y - s_y + 1, color)
 
 					e_y = s_y
 				end

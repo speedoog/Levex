@@ -9,8 +9,8 @@ FxMusic = function(track)
 		local addSOUNDSTATE = 0x13FFC
 --		local track=peek(addSOUNDSTATE)
 		local frame = peek(addSOUNDSTATE+1)
-		local row = peek(addSOUNDSTATE+2)
-		_.rec[iFrame] = {track,frame,row}
+		ZIKrow = peek(addSOUNDSTATE+2)
+		_.rec[iFrame] = {track,frame,ZIKrow}
 	end
 	fx.MusicStop=function()
 		music()

@@ -24,10 +24,7 @@ FxImage = function(filename)
 				_.l1[i] = (v+1)&0xFF
 			end
 		end
-
-		-- temp hack
-		_.x0 = 6
-
+		_.x0 = 6	--hack
 	end
 	fx.Start = function(_,t)
 		vbank(0)

@@ -2,12 +2,12 @@
 FxDisolve = function()
 	local fx = { name = "Disolve" }
 
-	fx.scan = function(_,t,x0,x1,y0,y1)
+	fx.scan = function(_,t,x0,y0,x1,y1,i)
 		for y=y0,y1 do
 			for x=x0,x1 do
 				local c=pix(x,y)
 				if c~=0 then 
-					table.insert(_.list, {x=x,y=y,c=c,r=0,t=t+2+3*invEase(rand())})
+					table.insert(_.list, {i=i,x=x,y=y,c=c,r=0,t=t+2+3*invEase(rand())})
 				end
 			end
 		end
@@ -24,36 +24,43 @@ FxDisolve = function()
 			"Lemon","Melon","Spreadpoint","NuSan"
 		}
 		_.iTxt=-1
+		_.p0 = {3,4,5,11,12}
+		_.p1 = {1,7,8,15}
 
 		table.sort(_.txt)	-- sort ascending
 
 		cls()
-		_:scan(0,0,gSizeX-1,0,gSizeY-1)
+--		_:scan(0,0,gSizeX-1,0,gSizeY-1)
+	end
+	fx.print=function(_,sz)
+		local c0 = _.p0[_.iTxt%#_.p0+1]
+		local c1 = _.p1[_.iTxt%#_.p1+1]
+		local s=_.txt[(_.iTxt%#_.txt)+1]
+		local w=print(s,-500,-500, c0, false, 2)
+		local border=0
+		seed(_.iTxt)
+		local w2=w/2
+		local h2=8
+		local x=remap(rand(),0,1, border+w2, gSizeX-w2-border)
+		local y=remap(rand(),0,1, border+h2, gSizeY-h2-border)
+		if sz==1 then
+			w2=w2/2
+			h2=h2/2
+		end
+		StyleOutline(s,x-w2,y-h2,c0,print,c1,false,sz)
+		return x,y,w2,h2
 	end
 
 	fx.tic = function(_, t, dt)
 
-		local p0 = {3,4,5,11,12}
-		local p1 = {1,7,8,15}
-
 		local it = floor(t*2*BPS)
-		if it>_.iTxt and it<#_.txt then
+		local bDrawBig=false
+		if it==_.iTxt then
+			bDrawBig=true
+		elseif it>_.iTxt and it<#_.txt then
 			_.iTxt=it
-			local c0 = p0[_.iTxt%#p0+1]
-			local c1 = p1[_.iTxt%#p1+1]
-			local s=_.txt[(_.iTxt%#_.txt)+1]
-			local w=print(s,-500,-500, c0, false, 1)
-			local border=10
-			seed(_.iTxt)
-			local x=remap(rand(),0,1, border, gSizeX-w-border)
-			local y=remap(rand(),0,1, border, gSizeY-8-border)
-			for ix=-1,1 do
-				for iy=-1,1 do
-					print(s, x+ix, y+iy, c1, false, 1)
-				end
-			end
-			print(s, x, y, c0, false, 1)
-			_:scan(t,x-1,x+w+1,y-1,y+8-1)
+			local x,y,w2,h2=_:print(1)
+			_:scan(t,x-w2-1,y-h2-1, x+w2+1,y+h2-1,it)
 		end
 
 --		local mx,my,ml,mm,mr=mouse()
@@ -73,11 +80,19 @@ FxDisolve = function()
 				it.y=y*0.992+my
 			end
 
-			line(x1,y1,it.x,it.y,it.c)
+			if it.i~=_.iTxt then
+				line(x1,y1,it.x,it.y,it.c)
+			end
+
 			if t>(it.t+10) then 
 				_.list[k]=nil
 			end
 		end
+
+		if bDrawBig then
+			_:print(2)
+		end
+
 		return t>20
 	end
 

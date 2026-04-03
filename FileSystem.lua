@@ -33,42 +33,6 @@ function StringStream(str)
 	return ss
 end
 
--- function FS_Load(FS)
--- 	local ms = MemStream(gAddMap)
--- 	local nFileCount = ms:Read()
--- 	for ifile = 0,nFileCount-1 do
--- 		local f = MemStream()
--- 		f.name = ""
--- 		while true do
--- 			local c = ms:Read()
--- 			if c == 0 then break end
--- 			f.name = f.name..string.char(c)
--- 		end
-
--- 		local szlo = ms:Read()
--- 		local szhi = ms:Read()
--- 		f.size = (szhi<<8)+szlo
-
--- 		table.insert(FS,f)
--- 	end
-
--- 	local baseAddress = ms:Ptr()
--- 	for k,f in pairs(FS) do
--- 		f.add = baseAddress
--- 		baseAddress = baseAddress+f.size
--- 	end
--- end
-
--- function FS_Open(fn)
--- 	for k,f in pairs(FS) do
--- 		if f.name == fn then
--- 			f.offset = 0
--- 			return f
--- 		end
--- 	end
--- 	return nil
--- end
-
 function FS_Load()
 	local ms = MemStream(gAddMap)
 	local Zipsize = ms:Read()<<8|ms:Read()

@@ -1,4 +1,12 @@
 
+-- title:   Levex
+-- author:  Speedman / Spectrals
+-- desc:    demo for Revision 2026
+-- license: MIT License
+-- script:  lua
+
+
+
 # cheatsheet LUA
 https://skyelynwaddell.github.io/tic80-manual-cheatsheet/
 https://tic80.com/learn

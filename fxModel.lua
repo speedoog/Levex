@@ -2,19 +2,13 @@
 FxModel = function(filename)
 	local fx = { name = filename }
 	fx.Init  = function(_)
-		-- _.vtx = {{-1,-1,-1},{-1,1,-1},{1,1,-1},{1,-1,-1},{-1,-1,1},{-1,1,1},{1,1,1},{1,-1,1}}
-		-- _.lines = 	{{1,2},{2,3},{3,4},{4,1}, -- bot
-		-- 			{5,6},{6,7},{7,8},{8,5},  -- top
-		-- 			{1,5},{2,6},{3,7},{4,8}}  -- verticals
-		-- _.faces = {{3,7,8},{8,4,3},{1,5,6},{6,2,1},{7,3,2},{2,6,7},{4,8,5},{5,1,4},{8,7,6},{6,5,8},{3,4,1},{1,2,3}}
+		_.vtx 	= {}
+		_.faces = {}
 
 		local fStream = FS_Open(_.name)
 		if fStream == nil then
 			return
 		end
-
-		_.vtx 	= {}
-		_.faces = {}
 
 		local lines=Split(fStream.str, string.char(0x0A))
 		for k,line in pairs(lines) do
@@ -36,31 +30,9 @@ FxModel = function(filename)
 	end
 
 	fx.tic = function(_,t,dt)
-		
-		--[[
-		local at = dt*3
-		if t < 2 then
-			_.ox = 0 _.oy = 0 _.oz = remap(t,0,2,10,0)^1.5
-			_.rx = 0 _.ry = 0 _.rz = 3*t
-		elseif t < 4 then
-			_.ox = 0 _.oy = 0 _.oz = 0
-			_.rx = 3*(cos(t-2)-1)
-			_.ry = 0
-			_.rz = 3*t
-		else
-			_.ox = 5.5*sin(t-4)
-			local _t = math.fmod(t*2+1.6,2)-1
-			_.oy = 2-4*_t*_t
-			_.oz = 0
-			_.rx = _.rx+at
-			_.ry = _.ry+at*1.123
-			_.rz = _.rz+at*1.478
-		end
-		]]
-
 		local mRot = rotatexyz(_.rx,_.ry,_.rz)
 		local proj = _:Proj(mRot)
-		_:DrawCube(proj)
+		_:Draw(proj)
 	end
 
 	fx.Proj = function(_,mRot)
@@ -74,7 +46,7 @@ FxModel = function(filename)
 		return proj
 	end
 
-	fx.DrawCube = function(_,proj)
+	fx.Draw=function(_,proj)
 		local bDots,bWireframe,bFaces = false,false,true
 
 		if bWireframe then
@@ -90,7 +62,6 @@ FxModel = function(filename)
 		end
 
 		if bFaces then
---			for i = 1,#_.faces do
 			for k,face in pairs(_.faces) do
 				local fa = face[1]
 				local pa = proj[fa]
@@ -103,9 +74,6 @@ FxModel = function(filename)
 					local pc = proj[fc]
 					if FaceOrient(pa,pb,pc) < 0 then
 						tri(pa[1],pa[2],pb[1],pb[2],pc[1],pc[2],col)
-						-- line(a[1],a[2],b[1],b[2],gWhite)
-						-- line(b[1],b[2],c[1],c[2],gWhite)
-						-- line(c[1],c[2],a[1],a[2],gWhite)
 					end
 				end
 			end

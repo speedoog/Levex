@@ -11,7 +11,13 @@ rowsPerBeat = 8
 --BPM = 3*TEMPO/SPD
 BPM = (24*TEMPO)/(rowsPerBeat*SPD)
 BPS = BPM/60
+SPB = 1/BPS
 --RPS = BPS*8   --rowsPerBeat
+FRMDUR=SPB*rowsPerBeat
+
+function RoundToBeat(t)
+	return round((t-5)/BPS)*BPS+5
+end
 
 
 function mdKF(att, ...)
@@ -30,10 +36,6 @@ function mdBounce(att,y0,y1,toff,tscale)
 --	return {call = function(self,fx) fx[att] = y1-(y1-y0)*square(math.fmod(fx.t*tscale+toff,2)-1) end}
 	return {call = function(self,fx) fx[att] = y1-(y1-y0)*square(math.fmod(gTime*tscale+toff,2)-1) end}
 end
-
--- Source - https://stackoverflow.com/a/70096863
--- Posted by Paul Hilliar
--- Retrieved 2026-03-30, License - CC BY-SA 4.0
 
 local function pairsByKeys(t,f)
 	local a = {}
@@ -55,6 +57,7 @@ gTime=0
 gInfos=false
 gPlay=true
 gDeltaTime=0
+gFrameSkip=0
 gCPUWarning=true
 
 RunningFx = { }
@@ -71,14 +74,15 @@ Sequence = {
 
 		for k,sh in pairs(part) do
 			sh.s = sh.s+offset
+			if sh.sync then
+				sh.s=RoundToBeat(sh.s)
+			end
 			if sh.d then
 				sh.e = sh.s+sh.d
 				maxtime = max(maxtime,sh.e)
 			end
 			table.insert(_.data, sh)
 		end
-
-		--fix d & e
 		for k,sh in pairs(part) do
 			if sh.d==nil then
 				sh.e = maxtime
@@ -88,13 +92,6 @@ Sequence = {
 		_.e=maxtime
 	end,
 	AddGlobal=function(_, sh)
-		-- local maxtime=0
-		-- for k,sh in pairs(_.data) do
-		-- 	maxtime = max(maxtime,sh.e)
-		-- end
-		-- if sh.d==nil then
-		-- 	sh.d = maxtime-sh.s
-		-- end
 		sh.e = sh.s+sh.d
 		table.insert(_.data, sh)
 	end
@@ -134,7 +131,9 @@ P_TxtMorning =
 	{	s=0,			v=0,	fx=FxText(30,30,"Every morning",2), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
 	{	s=2,			v=0,	fx=FxText(40,40,"you have two choices:",4), set={fnStyle=StyleStripes},mod={mdKF("c",0,0,2,6)} },
 	{	s=4,			v=0,	fx=FxText(20,55,"Continue to sleep",gWhite),mod={mdKF("x",0,-102,1,-12,2,18)} },
-	{	s=6,			v=0,	fx=FxText(125,55,"with your dreams",gWhite),mod={mdKF("x",0,245,1,155,2,125)} },
+	{	s=6,			v=0,	fx=FxText(125,55,"with",gWhite),mod={mdKF("x",0,246,1,156,2,126)} },
+	{	s=6.5,			v=0,	fx=FxText(125,55,"your",gWhite),mod={mdKF("x",0,276,1,186,2,156)} },
+	{	s=7,			v=0,	fx=FxText(125,55,"dreams",gWhite),mod={mdKF("x",0,305,1,215,2,185)} },
 	{	s=8,			v=0,	fx=FxText(110,65,"or",gWhite)},
 	{	s=8,			v=0,	fx=FxText(55,75,"wake up and chase them",14),mod={mdKF("y",0,140,2,75)} },
 	{	s=10,			v=0,	fx={name = "col", tic=function(_) PaletteSetColor(15,0xFF*_.k,0xCD*_.k,0x75*_.k) end},mod={mdKF("k",0,0,1.5,1)} },
@@ -169,19 +168,19 @@ P_TunnelSpectrals =
 	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.black) },
 	{	s=0,	d=0.5, 	v=0, 	fx=FxFadepal(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() },
-	{	s=0,	d=21, 	v=0, 	fx=FxTunnel() },
+	{	s=0,	d=23.6,	v=0, 	fx=FxTunnel() },
 
 	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
 	{	s=0,			v=1, 	fx=FxCls() },
 
-	{	s=6,	d=15,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
+	{	s=6,	d=17.6,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
 
-	{	s=6,	d=15,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
+	{	s=6,	d=17.6,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
-	{	s=18,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
+	{	s=20.6,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
 --	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
 
-	{	s=19,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
+	{	s=21.6,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
 }
 
 P_TibetBalls =
@@ -199,10 +198,10 @@ P_TibetBalls =
 
 P_Levex =
 {
-	{	s=0,			v=0, 	fx=FxClsStart() },
-	{	s=0,			v=1, 	fx=FxCls() },
-	{	s=0,	d=10, 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=10, 	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
+	{	s=0,				v=0, 	fx=FxClsStart() },
+	{	s=0,				v=1, 	fx=FxCls() },
+	{	s=0,	d=FRMDUR, 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,	d=FRMDUR, 	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
 }
 
 function Bounce()
@@ -212,24 +211,25 @@ function Bounce()
 		mdKF("rx",0,0, 10,-41),
 		mdKF("rz",0,0, 10,61),
 		mdKF("scale", 0,1, 5,1, 6,0),
-		mdBounce("oy",-3.15,2,0,2*BPS)
+		mdBounce("oy",-3.15,2,0,2*SPB)
 	}
 end
 
 P_Rando =
 {
+	
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxClsStart() },
 	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,false)},
 
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
-	{	s=0,		d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
-	{	s=4*BPS,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
-	{	s=8*BPS,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
-	{	s=12*BPS,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
-	{	s=16*BPS,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
-	{	s=20*BPS,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
+	{	s=0,	 sync=1,	d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
+	{	s=4*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
+	{	s=8*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
+	{	s=12*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
+	-- {	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
+	{	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
 --	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 
@@ -360,6 +360,10 @@ function PlaybackControl(tStart)
 	gDeltaTime = lerp(gDeltaTime,tElapse,.1)
 	local CpuUsage=100*gDeltaTime/(1000/60)
 
+	if keyp(1,20,1) then
+		gFrameSkip=(gFrameSkip+1)%3
+	end
+
 	if keyp(gKeyRight,20,1) then
 		if key(gKeyCtrl) then
 		   gTime=gTime+10
@@ -429,9 +433,9 @@ function PlaybackControl(tStart)
 		RectInfo2[2]=h*#RunningFx
 
 		-- CPU usage
-		rect(225,128,RectInfo3[1],RectInfo3[2],gBlack)
+		rect(200,128,RectInfo3[1],RectInfo3[2],gBlack)
 		RectInfo3 = {0,0}
-		Info(RectInfo3,string.format("%.f %%",CpuUsage),225,129)
+		Info(RectInfo3,string.format("%.f %% FS=%d",CpuUsage,gFrameSkip),200,129)
 	end
 
 
@@ -463,21 +467,23 @@ function TIC()
 		end
 	end
 
-	for k,sh in pairsByKeys(RunningFx) do
-		if sh.v then
-			vbank(sh.v)
-		end
-		local fx=sh.fx
-		local oldt=fx.t
-		fx.t=gTime-sh.s
-		fx.dt=fx.t-oldt
-		if sh.mod then 							-- update modifiers
-			for k,md in pairs(sh.mod) do
-				md:call(fx)
+	if (floor(gTime*60)%(gFrameSkip+1))==0 then
+		for k,sh in pairsByKeys(RunningFx) do
+			if sh.v then
+				vbank(sh.v)
 			end
-		end
+			local fx=sh.fx
+			local oldt=fx.t
+			fx.t=gTime-sh.s
+			fx.dt=fx.t-oldt
+			if sh.mod then 							-- update modifiers
+				for k,md in pairs(sh.mod) do
+					md:call(fx)
+				end
+			end
 
-		if fx.tic then fx:tic(fx.t,fx.dt) end
+			if fx.tic then fx:tic(fx.t,fx.dt) end
+		end
 	end
 
 	PlaybackControl(tStart)

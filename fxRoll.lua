@@ -86,7 +86,7 @@ FxRoll = function()
 	fx.bdr = function(_,row)
 
 		row = row-4 --TOP BORDER
-		if row<0 then return end
+		if row<0 or _.linex==nil then return end
 
 		local ox = 0
 		local ix = _.linex[row]

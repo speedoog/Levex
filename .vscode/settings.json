@@ -54,6 +54,8 @@
 		"projScreen",
 		"poke4",
 		"rect",
-		"music"
+		"music",
+		"peek4",
+		"sfx"
 	]
 }

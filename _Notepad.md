@@ -15,6 +15,12 @@ https://github.com/nesbox/TIC-80/wiki/vbank
 https://www.tutorialspoint.com/lua/lua_table_iterators.htm
 
 
+# unzip / inflate
+- description = 'ZIP archive inflation in pure Lua.'
+- name = 'TohruMKDM/inflate'
+- homepage = 'https://github.com/TohruMKDM/lua-inflate'
+
+
 Snowflakes
 Sac rando qui se remplit 
 - pack your stuff and hike

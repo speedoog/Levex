@@ -15,6 +15,8 @@ SPB = 1/BPS
 --RPS = BPS*8   --rowsPerBeat
 FRMDUR=SPB*rowsPerBeat
 
+ZIKtime=0
+
 function RoundToBeat(t)
 	return round((t-5)/BPS)*BPS+5
 end
@@ -74,9 +76,9 @@ Sequence = {
 
 		for k,sh in pairs(part) do
 			sh.s = sh.s+offset
-			if sh.sync then
-				sh.s=RoundToBeat(sh.s)
-			end
+			-- if sh.sync then
+			-- 	sh.s=RoundToBeat(sh.s)
+			-- end
 			if sh.d then
 				sh.e = sh.s+sh.d
 				maxtime = max(maxtime,sh.e)
@@ -200,8 +202,10 @@ P_Levex =
 {
 	{	s=0,				v=0, 	fx=FxClsStart() },
 	{	s=0,				v=1, 	fx=FxCls() },
-	{	s=0,	d=FRMDUR, 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=0,				v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,	d=FRMDUR, 	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
+	{	s=0,				v=0,	fx=FxBdrGradient(0)},
+	{	s=FRMDUR-0.5,d=0.5, v=1, 	fx=FxFadepal(gPal.black) },
 }
 
 function Bounce()
@@ -211,13 +215,12 @@ function Bounce()
 		mdKF("rx",0,0, 10,-41),
 		mdKF("rz",0,0, 10,61),
 		mdKF("scale", 0,1, 5,1, 6,0),
-		mdBounce("oy",-3.15,2,0,2*SPB)
+		mdBounce("oy",-3.15,2.5,0,2*BPS)
 	}
 end
 
 P_Rando =
 {
-	
 	{	s=0,		 	v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=1, 	fx=FxClsStart() },
 	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,false)},
@@ -225,11 +228,11 @@ P_Rando =
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
 	{	s=0,	 sync=1,	d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
-	{	s=4*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
-	{	s=8*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
-	{	s=12*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
+	{	s=4*BPS, sync=1,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
+	{	s=8*BPS, sync=1,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
+	{	s=12*BPS,sync=1,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
 	-- {	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
-	{	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
+	{	s=16*BPS,sync=1,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
 --	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 
@@ -292,11 +295,11 @@ Sequence:Add(P_Levex)
 Sequence:Add(P_Rando)
 Sequence:Add(P_MountainVista)
 local tMusicSwap=Sequence.e
-Sequence:AddGlobal({s = 5, d=tMusicSwap-5, v=0, fx = FxMusic(0)})
+Sequence:AddGlobal({s = 5, d=tMusicSwap-5, fx = FxMusic(0)})
 Sequence:Add(P_Greatz)
 Sequence:Add(P9_Terrain)
 Sequence:Add(P_End,-1.5)
-Sequence:AddGlobal({s = tMusicSwap, d=Sequence.e-tMusicSwap, v=1,fx = FxMusic(1)})
+Sequence:AddGlobal({s = tMusicSwap, d=Sequence.e-tMusicSwap, fx = FxMusic(1)})
 
 
 function Startfx(sh)
@@ -427,7 +430,9 @@ function PlaybackControl(tStart)
 			local fx=sh.fx
 			Info(RectInfo2,string.format("%.1f",fx.t),2,y)
 			Info(RectInfo2,string.format("-%.1f",fx.d-fx.t),18,y)
-			Info(RectInfo2,string.format("%s %d", fx.name, sh.v),42,y)
+			local n=fx.name
+			if sh.v then n=sh.v..n end
+			Info(RectInfo2,n,42,y)
 			y=y+h
 		end
 		RectInfo2[2]=h*#RunningFx
@@ -444,6 +449,11 @@ end
 function TIC()
 	poke(0x3FFB,1) -- hide cursor
 	poke(0x7FC3F,1,1) -- mouse relative mode
+
+	local addSOUNDSTATE = 0x13FFC
+	ZIKtrack=peek(addSOUNDSTATE)
+	ZIKframe=peek(addSOUNDSTATE+1)
+	ZIKrow=peek(addSOUNDSTATE+2)
 
 	local tStart=time()
 	vbank(1)
@@ -485,10 +495,12 @@ function TIC()
 			if fx.tic then fx:tic(fx.t,fx.dt) end
 		end
 	end
+	ZIKtime=ZIKtime+1/60
 
 	PlaybackControl(tStart)
 
 	if gPlay then gTime=gTime+(1/60) end
+
 
 end
 

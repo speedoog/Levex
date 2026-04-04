@@ -29,6 +29,7 @@ require "fxCls"
 require "fxRoll"
 require "fxZoom"
 require "fxMusic"
+require "fxBdrGradient"
 
 require "Demo"
 

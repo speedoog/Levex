@@ -27,6 +27,16 @@ function clamp(x, l, h)
 	if x<l then return l elseif x>h then return h else return x end
 end
 
+function ramp(t,a,s,d)
+	local k,as=1,a+s
+	if t<a then
+		k=t/a
+	elseif t>as then
+		k=1-(t-as)/d
+	end
+	return clamp(k,0,1)
+end
+
 function lerp(a,b,r)
 	return a+(b-a)*r
 end
@@ -341,10 +351,14 @@ function PaletteCapture()
 	return pal
 end
 
+function ColorBlend(c1, c2, k)
+	return {lerp(c1[1],c2[1],k),lerp(c1[2],c2[2],k),lerp(c1[3],c2[3],k)}
+end
+
 function PaletteBlend(pal1, pal2, k)
 	local pal = {}
 	for i = 1,16 do
-		pal[i] = {lerp(pal1[i][1],pal2[i][1],k),lerp(pal1[i][2],pal2[i][2],k),lerp(pal1[i][3],pal2[i][3],k)}
+ 		pal[i] = ColorBlend(pal1[i],pal2[i],k)
 	end
 	return pal
 end

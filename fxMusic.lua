@@ -6,11 +6,7 @@ FxMusic = function(track)
 		music(track,-1,-1,false,true)
 	end
 	fx.Store=function(_,iFrame)
-		local addSOUNDSTATE = 0x13FFC
---		local track=peek(addSOUNDSTATE)
-		local frame = peek(addSOUNDSTATE+1)
-		ZIKrow = peek(addSOUNDSTATE+2)
-		_.rec[iFrame] = {track,frame,ZIKrow}
+		_.rec[iFrame] = {track,ZIKframe,ZIKrow}
 	end
 	fx.MusicStop=function()
 		music()
@@ -26,6 +22,7 @@ FxMusic = function(track)
 		end
 	end
 	fx.tic = function(_,t)
+		ZIKtime=t
 		local iFrame=floor(t*60)
 		if _.dt==0 and not _.musicpaused then
 			_:Store(iFrame)
@@ -41,9 +38,7 @@ FxMusic = function(track)
 		elseif _.dt < 0 and not _.musicpaused then
 			_:Restore(iFrame)
 		end
-
-		-- 		_.name = string.format("Music t=%d f=%d r=%d    %.1f",_.track,_.frame,_.row,musictime-_.t)
-
+		_.name = string.format("Music t=%d      fr %d      row %d",ZIKtrack,ZIKframe,ZIKrow)
 	end
 	return fx
 end

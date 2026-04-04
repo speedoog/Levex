@@ -1,9 +1,12 @@
 FxBdrGradient = function(c)
 local fx = { name = "BdrGradient", c=c, cBlack=Hex2RGB(0), cTarget=Hex2RGB(0x205080) }
 
--- fx.Start = function(_)
+fx.Start = function(_)
 -- 	music(0,11,0)
--- end
+	_.a=_.cBlack
+	_.b=_.cTarget
+	_.beat=0
+end
 
 fx.tic = function(_,t)
 	_.a=Hex2RGB(0)
@@ -14,7 +17,7 @@ fx.tic = function(_,t)
 end
 
 fx.bdr = function(_, row)
-	local r,mx,k,o=40,143,0
+	local r,mx,k,o=40,143,0	
 	if row<r then
 		k=clamp(remap(row,0,r,1,0)-_.beat*0.3,0,1)
 	elseif row>mx-r then

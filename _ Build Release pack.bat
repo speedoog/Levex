@@ -9,4 +9,6 @@ pause
 
 tic-tool.exe pack release.tic releasePack.tic
 
-pause
+del "Release\Levex.tic"
+copy releasePack.tic "Release\Levex.tic"
+

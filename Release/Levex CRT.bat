@@ -1,0 +1,1 @@
+tic80.exe Levex.tic --fullscreen --crt --vsync

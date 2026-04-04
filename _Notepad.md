@@ -15,6 +15,18 @@ https://github.com/nesbox/TIC-80/wiki/vbank
 https://www.tutorialspoint.com/lua/lua_table_iterators.htm
 
 
+# description
+Hike with us on this mountain
+Many paths can lead you to the peak.
+50 Kb - Run on a vanilla TIC80 (no PRO version needed)
+
+# orga
+This demo is designed to be run with CRT mode ON :
+- F6 key
+- or the batch file
+
+
+
 # unzip / inflate
 - description = 'ZIP archive inflation in pure Lua.'
 - name = 'TohruMKDM/inflate'

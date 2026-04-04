@@ -203,18 +203,17 @@ P_Levex =
 	{	s=0,				v=0, 	fx=FxClsStart() },
 	{	s=0,				v=1, 	fx=FxCls() },
 	{	s=0,				v=1, 	fx=FxPalette(gPal.sweetie16mod) },
-	{	s=0,	d=FRMDUR, 	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
+	{	s=0, d=FRMDUR+1.25,	v=1, 	fx=FxDraw("Levex.draw",30,true,true), set={Hack=true} },
 	{	s=0,				v=0,	fx=FxBdrGradient(0)},
-	{	s=FRMDUR-0.5,d=0.5, v=1, 	fx=FxFadepal(gPal.black) },
+	{	s=FRMDUR+1.25-0.5,d=0.5, v=1, 	fx=FxFadepal(gPal.black) },
 }
 
 function Bounce()
---	return { mdKF("ox",0,15, 2,4, 4,2, 6,6, 8,-5), mdKF("rx",0,0, 10,-41), mdKF("rz",0,0, 10,61), mdKF("scale", 0,1, 7,1, 8,0), mdBounce("oy",-3,2,1.6,2) }
 	return {
-		mdKF("ox",0,12, 2,4, 4,2, 5,1, 6,-5),
+		mdKF("ox",0,12, 2,4, 4,2, 4.75,1, 5.5,-5),
 		mdKF("rx",0,0, 10,-41),
 		mdKF("rz",0,0, 10,61),
-		mdKF("scale", 0,1, 5,1, 6,0),
+		mdKF("scale", 0,1, 4.7,1, 5.5,0),
 		mdBounce("oy",-3.15,2.5,0,2*BPS)
 	}
 end
@@ -225,14 +224,17 @@ P_Rando =
 	{	s=0,			v=1, 	fx=FxClsStart() },
 	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,false)},
 
+	--Hack
+--	{	s=5,			v=1, 	fx={Start=function() music(0,12,0) end } },
+
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
 	{	s=0,	 sync=1,	d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
-	{	s=4*BPS, sync=1,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
-	{	s=8*BPS, sync=1,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
-	{	s=12*BPS,sync=1,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
+	{	s=4*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
+	{	s=8*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
+	{	s=12*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
 	-- {	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
-	{	s=16*BPS,sync=1,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
+	{	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
 --	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
 }
 

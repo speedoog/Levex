@@ -30,6 +30,8 @@ require "fxRoll"
 require "fxZoom"
 require "fxMusic"
 require "fxBdrGradient"
+require "fxRandoSky"
+require "fxStarfield"
 
 require "Demo"
 

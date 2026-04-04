@@ -17,7 +17,7 @@ fx.tic = function(_,t)
 end
 
 fx.bdr = function(_, row)
-	local r,mx,k,o=40,143,0	
+	local r,mx,k,o=40,143,0
 	if row<r then
 		k=clamp(remap(row,0,r,1,0)-_.beat*0.3,0,1)
 	elseif row>mx-r then

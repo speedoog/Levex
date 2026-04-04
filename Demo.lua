@@ -157,7 +157,7 @@ P_Dear =
 	{	s=0,			v=1, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,	d=21,	v=1, 	fx=FxDraw("Dear.draw",300,false,false)},
 
-	{	s=21,	d=2,	v=1, 	fx=FxDraw("Tunnel.draw",20,false,false, 1)},
+	{	s=21,	d=2,	v=1, 	fx=FxDraw("Tunnel.draw",15,false,false, 1)},
 
 	{	s=23,	d=1.2,	v=1, 	fx=FxZoom(), set={speed=3.1,ctx=111,cty=85} },
 
@@ -170,19 +170,22 @@ P_TunnelSpectrals =
 	{	s=0,	d=15, 	v=0, 	fx=FxPalette(gPal.black) },
 	{	s=0,	d=0.5, 	v=0, 	fx=FxFadepal(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() },
-	{	s=0,	d=23.6,	v=0, 	fx=FxTunnel() },
+	{	s=0,	d=19,	v=0, 	fx=FxTunnel() },
+	{	s=15,	d=4, 	v=0, 	fx=FxFadepal(gPal.black) },
 
 	{	s=0,	d=15, 	v=1, 	fx=FxPalette(gPal.sweetie16) },
 	{	s=0,			v=1, 	fx=FxCls() },
 
-	{	s=6,	d=17.6,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
+	{	s=2,	d=12.2,	v=1,	fx=FxDraw("Spectrals.draw",100,false,true), set={Hack2=true}, mod = {{call = function(self,fx) if fx.t>10 and not fx.echo then fx.echo = true fx.echot = fx.t end end}}},
+	{	s=2,	d=12.2,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
 
-	{	s=6,	d=17.6,	v=1,	fx={name="black logo", Start = function() PaletteSetColor(15,0,0,0) end}},			-- black opaque interior logo
-
+	{	s=14.5,			v=1, 	fx=FxPalette(gPal.grayscale) },
+	{	s=14.5,			v=1, 	fx=FxStarField() },
 	{	s=20.6,	d=3, 	v=1, 	fx=FxFadepal(gPal.black) },
---	{	s=8,	d=7,	v=1, 	fx=FxBeziers()		},
 
-	{	s=21.6,	d=2, 	v=0, 	fx=FxFadepal(gPal.black) },
+	{	s=22.4,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
+	{	s=22.4,	d=1.2, 	v=0,	fx=FxBlower()},
+
 }
 
 P_TibetBalls =
@@ -208,13 +211,14 @@ P_Levex =
 	{	s=FRMDUR+1.25-0.5,d=0.5, v=1, 	fx=FxFadepal(gPal.black) },
 }
 
-function Bounce()
+function Bounce(o)
+	if not o then o=0 end
 	return {
 		mdKF("ox",0,12, 2,4, 4,2, 4.75,1, 5.5,-5),
 		mdKF("rx",0,0, 10,-41),
 		mdKF("rz",0,0, 10,61),
 		mdKF("scale", 0,1, 4.7,1, 5.5,0),
-		mdBounce("oy",-3.15,2.5,0,2*BPS)
+		mdBounce("oy",-3.15-o,2.5,0,2*BPS)
 	}
 end
 
@@ -225,17 +229,18 @@ P_Rando =
 	{	s=0,			v=1, 	fx=FxDraw("Rando.draw",150,false,false)},
 
 	--Hack
---	{	s=5,			v=1, 	fx={Start=function() music(0,12,0) end } },
+--	{	s=0,				 	fx={Start=function() music(0,12,0) end } },
 
 	{	s=0,		 	v=0, 	fx=FxPalette(gPal.sweetie16mod) },
 	{	s=0,			v=0, 	fx=FxCls() 	},
+	{	s=0,			v=0, 	fx=FxRandoSky(0) 	},
+	
 	{	s=0,	 sync=1,	d=6, 	v=0,	fx=FxModel("cube.obj"), 		mod=Bounce() },
 	{	s=4*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("tetrahedron.obj"), 	mod=Bounce() },
 	{	s=8*SPB, sync=1,	d=6, 	v=0,	fx=FxModel("octahedron.obj"), 	mod=Bounce() },
 	{	s=12*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("pyramid.obj"), 		mod=Bounce() },
 	-- {	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("cyl.obj"), 			mod=Bounce() },
-	{	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce() },
---	{	s=11.8,	d=1.4, 	v=1,	fx=FxBlower()},
+	{	s=16*SPB,sync=1,	d=6, 	v=0,	fx=FxModel("sphere.obj"), 		mod=Bounce(0.2) },
 }
 
 P_MountainVista =

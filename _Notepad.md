@@ -25,6 +25,15 @@ This demo is designed to be run with CRT mode ON :
 - F6 key
 - or the batch file
 
+Could you add this text in the description, please :
+
+Let's go for a hike on the mountain.
+Many paths can lead you to the peak.
+51 Kb - Runs on a vanilla TIC80 (no PRO version needed)
+
+Code by Speedman
+Soundtrack by Virgill
+Artwork by Made
 
 
 # unzip / inflate
